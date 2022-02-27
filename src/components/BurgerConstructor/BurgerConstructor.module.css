@@ -1,0 +1,37 @@
+.section {
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.middleContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: calc(100vh - 490px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.ingredient {
+  display: flex;
+  align-items: center;
+}
+
+.order {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.sum {
+  display: flex;
+  align-items: center;
+}

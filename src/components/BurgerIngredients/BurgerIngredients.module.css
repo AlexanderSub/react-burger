@@ -1,0 +1,20 @@
+.section {
+  max-width: 600px;
+}
+
+.nav {
+  display: flex;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 24px;
+  row-gap: 32px;
+}
+
+.window {
+  height: calc(100vh - 284px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
