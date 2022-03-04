@@ -1,6 +1,8 @@
-import React from "react";
+import React from "react"
+import PropTypes from 'prop-types'
 import BurgerConstructorStyles from './BurgerConstructor.module.css'
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import ingredientPropType from "../../utils/types"
 
 const BurgerConstructor = ( {data} ) => {
 
@@ -46,7 +48,7 @@ const BurgerConstructor = ( {data} ) => {
       <div className={BurgerConstructorStyles.order}>
         <div className={`${BurgerConstructorStyles.sum} mr-10`}>
           <p className={`text text_type_digits-medium mr-2`}>610</p>
-          <CurrencyIcon type="primary" style={{width: '33px', height: '33px'}}/>
+          <CurrencyIcon type="primary" />
         </div>
         <Button type='primary' size='large'>
           Оформить заказ
@@ -54,6 +56,10 @@ const BurgerConstructor = ( {data} ) => {
       </div>
     </section>
   )
+}
+
+BurgerConstructor.propTypes = {
+  data: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired
 }
 
 export default BurgerConstructor

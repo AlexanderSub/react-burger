@@ -1,7 +1,9 @@
-import React from "react";
+import React from "react"
+import PropTypes from 'prop-types'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import BurgerIngredientsStyles from './BurgerIngredients.module.css'
-import IngredientItem from "../IngredientItem/IngredientItem";
+import IngredientItem from "../IngredientItem/IngredientItem"
+import ingredientPropType from "../../utils/types"
 
 const BurgerIngredients = ({ data }) => {
   const [current, setCurrent] = React.useState('bun')
@@ -49,6 +51,10 @@ const BurgerIngredients = ({ data }) => {
     </section>
 
   )
+}
+
+BurgerIngredients.propTypes = {
+  data: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired
 }
 
 export default BurgerIngredients
