@@ -25,14 +25,15 @@ const Modal = ({children, closeModal}) => {
 
 
   return createPortal (
-    <ModalOverlay onClose={closeModal}>
+    <>
       <div className={ModalStyles.container}>
         <button className={ModalStyles.button} onClick={closeModal}>
           <CloseIcon />
         </button>
         {children}
       </div>
-    </ModalOverlay>,
+      <ModalOverlay onClose={closeModal} />
+    </>,
     modalRoot
   )
 }

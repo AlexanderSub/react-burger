@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import AppStyles from './App.module.css'
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
@@ -6,20 +6,40 @@ import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 
-import useGetIngredientsData from "../../utils/data";
+const URL = 'https://norma.nomoreparties.space/api/ingredients';
 
 
 const App = () => {
-  const products = useGetIngredientsData();
   const [orderDetailsModalState, setOrderDetailsModalState] = useState({visible: false})
   const [ingredientDetailsModalState, setIngredientDetailsModalState] = useState({visible: false})
-  const [ingredient, setIngredient] = useState({})
+  const [ingredient, setIngredient] = useState(null)
   const identifier = '034536'
+  const [state, setState] = useState({
+    productsData: [],
+    isLoading: false,
+  })
+
+  useEffect(() => {
+    const getProductData = async () => {
+      try {
+        setState({...state, isLoading: true})
+      const res = await fetch(URL);
+      const data = await res.json();
+      setState({productsData: data.data, isLoading: false});
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    getProductData();
+  }, [])
+
+  const products = state.productsData
+
 
   const openOrderDetailsModal = () => {
     setOrderDetailsModalState({visible: true})
   }
-
  
   const openIngredientDetailsModal = (ingredientData) => {
     setIngredient(ingredientData)

@@ -1,4 +1,7 @@
 .container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -6,7 +9,8 @@
   width: 720px;
   border-radius: 40px;
   background-color: #1C1C21;
-  position: relative;
+  z-index: 1;
+  transform: translate(-50%, -50%);
 }
 
 .button {
