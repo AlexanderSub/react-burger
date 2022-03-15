@@ -24,10 +24,13 @@ const App = () => {
       try {
         setState({...state, isLoading: true})
       const res = await fetch(URL);
+      if (!res.ok) {
+        throw new Error(`Ошибка ответа сети: ${res.status}, ${res.statusMessage}`)
+      }
       const data = await res.json();
       setState({productsData: data.data, isLoading: false});
       } catch (error) {
-        console.log(error)
+        console.log('Возникла проблема с вашим fetch запросом: ', error.message)
       }
     }
 
