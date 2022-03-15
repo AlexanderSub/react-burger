@@ -4,9 +4,9 @@ import BurgerConstructorStyles from './BurgerConstructor.module.css'
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import ingredientPropType from "../../utils/types"
 
-const BurgerConstructor = ( {data} ) => {
+const BurgerConstructor = ( {products, openModal} ) => {
 
-  const ingredients = data.filter(ingredient => ingredient.type !== 'bun')
+  const ingredients = products.filter(ingredient => ingredient.type !== 'bun')
 
   return (
     <section className={`${BurgerConstructorStyles.section} mt-25`}>
@@ -17,7 +17,7 @@ const BurgerConstructor = ( {data} ) => {
             isLocked={true}
             text="Краторная булка N-200i (верх)"
             price={200}
-            thumbnail={data[0].image}
+            thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
           />
         </div>
         
@@ -39,7 +39,7 @@ const BurgerConstructor = ( {data} ) => {
             isLocked={true}
             text="Краторная булка N-200i (низ)"
             price={200}
-            thumbnail={data[0].image}
+            thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
           />
         </div>
 
@@ -50,7 +50,7 @@ const BurgerConstructor = ( {data} ) => {
           <p className={`text text_type_digits-medium mr-2`}>610</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button type='primary' size='large'>
+        <Button type='primary' size='large' onClick={openModal}>
           Оформить заказ
         </Button>
       </div>
@@ -59,7 +59,8 @@ const BurgerConstructor = ( {data} ) => {
 }
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired
+  products: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
+  openModal: PropTypes.func.isRequired
 }
 
 export default BurgerConstructor

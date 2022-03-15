@@ -1,21 +1,29 @@
-import React from "react"
+import React, {useState} from "react"
 import PropTypes from 'prop-types'
-import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
+import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import BurgerIngredientsStyles from './BurgerIngredients.module.css'
-import IngredientItem from "../IngredientItem/IngredientItem"
 import ingredientPropType from "../../utils/types"
 
-const BurgerIngredients = ({ data }) => {
-  const [current, setCurrent] = React.useState('bun')
+const BurgerIngredients = ({ products, openModal }) => {
+  const [current, setCurrent] = useState('bun')
 
-  const buns = data.filter(ingredient => ingredient.type === 'bun')
-  .map(ingredient => <IngredientItem key={ingredient._id} {...ingredient} />)
+  const buns = products.filter(ingredient => ingredient.type === 'bun')
+  const sauces = products.filter(ingredient => ingredient.type === 'sauce')
+  const mains = products.filter(ingredient => ingredient.type === 'main')
 
-  const sauces = data.filter(ingredient => ingredient.type === 'sauce')
-  .map(ingredient => <IngredientItem key={ingredient._id} {...ingredient} />)
-
-  const mains = data.filter(ingredient => ingredient.type === 'main')
-  .map(ingredient => <IngredientItem key={ingredient._id} {...ingredient} />)
+  const ingredientsList = (list) => {
+    return list.map(ingredient => 
+      (<li className={BurgerIngredientsStyles.item} key={ingredient._id} onClick={() => openModal(ingredient)} >
+      <Counter count={1} size="default" />
+      <img src={ingredient.image} alt={ingredient.name} className={`pl-4 pr-4 mb-1`}/>
+      <div className={`${BurgerIngredientsStyles.wrapper} mb-1`}>
+        <p className={`text text_type_digits-default mr-2`}>{ingredient.price}</p>
+        <CurrencyIcon type="primary" />
+      </div>
+      <span className={`${BurgerIngredientsStyles.span} text text_type_main-default`}>{ingredient.name}</span>
+    </li>)
+    )
+  }
 
   return (
     <section className={BurgerIngredientsStyles.section}>
@@ -29,32 +37,31 @@ const BurgerIngredients = ({ data }) => {
         <section className={BurgerIngredientsStyles.menu}>
           <h2 className='text text_type_main-medium mb-6' id='bun'>Булки</h2>
           <ul className={`${BurgerIngredientsStyles.list} pl-4 pr-4 mb-10`}>
-            {buns}
+            {ingredientsList(buns)}
           </ul>
         </section>
 
         <section className={BurgerIngredientsStyles.menu}>
           <h2 className='text text_type_main-medium mb-6' id='sauce'>Соусы</h2>
           <ul className={`${BurgerIngredientsStyles.list} pl-4 pr-4 mb-10`}>
-            {sauces}
+            {ingredientsList(sauces)}
           </ul>
         </section>
 
         <section className={BurgerIngredientsStyles.menu}>
           <h2 className='text text_type_main-medium mb-6' id='main'>Начинки</h2>
           <ul className={`${BurgerIngredientsStyles.list} pl-4 pr-4 mb-10`}>
-            {mains}
+            {ingredientsList(mains)}
           </ul>
         </section>
       </div>
-
     </section>
-
   )
 }
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired
+  products: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
+  openModal: PropTypes.func.isRequired
 }
 
 export default BurgerIngredients
