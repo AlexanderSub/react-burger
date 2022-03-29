@@ -1,44 +1,44 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useReducer, useState} from "react";
 import AppStyles from './App.module.css'
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import { DataContext, ConstructorContext } from "../../services/productContext";
 
 const URL = 'https://norma.nomoreparties.space/api/ingredients';
-
 
 const App = () => {
   const [orderDetailsModalState, setOrderDetailsModalState] = useState({visible: false})
   const [ingredientDetailsModalState, setIngredientDetailsModalState] = useState({visible: false})
   const [ingredient, setIngredient] = useState(null)
   const identifier = '034536'
-  const [state, setState] = useState({
-    productsData: [],
-    isLoading: false,
+
+  const [ingredients, setIngredients]= useState({
+    data: []
   })
 
   useEffect(() => {
-    const getProductData = async () => {
+    const getData = async () => {
       try {
-        setState({...state, isLoading: true})
-      const res = await fetch(URL);
-      if (!res.ok) {
-        throw new Error(`Ошибка ответа сети: ${res.status}, ${res.statusMessage}`)
-      }
-      const data = await res.json();
-      setState({productsData: data.data, isLoading: false});
+        setIngredients({
+          ...ingredients
+        })
+        const res = await fetch(URL)
+        if (!res.ok) {
+          throw new Error(`Ошибка ответа сети: ${res.status}`)
+        }
+        const data = await res.json();
+        setIngredients({
+          data: data.data
+        })
       } catch (error) {
         console.log('Возникла проблема с вашим fetch запросом: ', error.message)
       }
     }
-
-    getProductData();
+    getData()
   }, [])
-
-  const products = state.productsData
-
 
   const openOrderDetailsModal = () => {
     setOrderDetailsModalState({visible: true})
@@ -58,8 +58,10 @@ const App = () => {
     <div className={AppStyles.page}>
       <AppHeader />
       <main className={AppStyles.main}>
-        <BurgerIngredients products={products} openModal={openIngredientDetailsModal} />
-        <BurgerConstructor products={products} openModal={openOrderDetailsModal} />
+        <DataContext.Provider value={ingredients}>
+          <BurgerIngredients openModal={openIngredientDetailsModal} />
+          <BurgerConstructor openModal={openOrderDetailsModal} />
+        </DataContext.Provider>
       </main>
       {orderDetailsModalState.visible && <OrderDetails identifier={identifier} closeModal={closeModal} />}
       {ingredientDetailsModalState.visible && <IngredientDetails ingredient={ingredient} closeModal={closeModal} />}

@@ -1,15 +1,17 @@
-import React, {useState} from "react"
+import React, {useState, useContext} from "react"
 import PropTypes from 'prop-types'
 import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import BurgerIngredientsStyles from './BurgerIngredients.module.css'
-import ingredientPropType from "../../utils/types"
+import { DataContext } from "../../services/productContext"
 
-const BurgerIngredients = ({ products, openModal }) => {
+const BurgerIngredients = ({ openModal }) => {
+  const ingredients = useContext(DataContext).data
+
   const [current, setCurrent] = useState('bun')
 
-  const buns = products.filter(ingredient => ingredient.type === 'bun')
-  const sauces = products.filter(ingredient => ingredient.type === 'sauce')
-  const mains = products.filter(ingredient => ingredient.type === 'main')
+  const buns = ingredients.filter(ingredient => ingredient.type === 'bun')
+  const sauces = ingredients.filter(ingredient => ingredient.type === 'sauce')
+  const mains = ingredients.filter(ingredient => ingredient.type === 'main')
 
   const ingredientsList = (list) => {
     return list.map(ingredient => 
@@ -60,7 +62,6 @@ const BurgerIngredients = ({ products, openModal }) => {
 }
 
 BurgerIngredients.propTypes = {
-  products: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
   openModal: PropTypes.func.isRequired
 }
 

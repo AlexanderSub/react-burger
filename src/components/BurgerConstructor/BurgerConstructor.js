@@ -1,12 +1,13 @@
-import React from "react"
+import React, { useContext } from "react"
 import PropTypes from 'prop-types'
 import BurgerConstructorStyles from './BurgerConstructor.module.css'
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import ingredientPropType from "../../utils/types"
+import { DataContext } from "../../services/productContext"
 
-const BurgerConstructor = ( {products, openModal} ) => {
+const BurgerConstructor = ( {openModal} ) => {
+  const ingredients = useContext(DataContext).data
 
-  const ingredients = products.filter(ingredient => ingredient.type !== 'bun')
+  const fillings = ingredients.filter(ingredient => ingredient.type !== 'bun')
 
   return (
     <section className={`${BurgerConstructorStyles.section} mt-25`}>
@@ -23,7 +24,7 @@ const BurgerConstructor = ( {products, openModal} ) => {
         
 
         <div className={`${BurgerConstructorStyles.middleContainer} custom-scroll`}>
-          {ingredients.map((item, index) => {
+          {fillings.map((item, index) => {
             return (
               <div className={BurgerConstructorStyles.ingredient} key={index}>
                 <DragIcon type="primary" />
@@ -59,7 +60,6 @@ const BurgerConstructor = ( {products, openModal} ) => {
 }
 
 BurgerConstructor.propTypes = {
-  products: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
   openModal: PropTypes.func.isRequired
 }
 
