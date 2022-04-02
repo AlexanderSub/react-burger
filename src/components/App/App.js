@@ -1,57 +1,43 @@
-import React, {useEffect, useReducer, useState} from "react";
+import React, {useEffect, useState} from "react";
 import AppStyles from './App.module.css'
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import { DataContext, ConstructorContext } from "../../services/productContext";
-
-const URL = 'https://norma.nomoreparties.space/api';
+import { DataContext } from "../../services/productContext";
+import { URL } from "../../utils/constants";
 
 const App = () => {
   const [orderDetailsModalState, setOrderDetailsModalState] = useState({visible: false})
   const [ingredientDetailsModalState, setIngredientDetailsModalState] = useState({visible: false})
   const [ingredient, setIngredient] = useState(null)
-  const identifier = '034536'
+  const [order, setOrder] = useState(null);
 
   const [ingredients, setIngredients]= useState({
     data: []
   })
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        setIngredients({
-          ...ingredients
-        })
-        const res = await fetch(`${URL}/ingredients`)
-        if (!res.ok) {
-          throw new Error(`Ошибка ответа сети: ${res.status}`)
-        }
-        const data = await res.json();
-        setIngredients({
-          data: data.data
-        })
-      } catch (error) {
-        console.log('Возникла проблема с вашим fetch запросом: ', error.message)
-      }
-    }
     getData()
   }, [])
 
-  const getOrderData = (burgerIngredients) => {
-    fetch(`${URL}/orders`, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({'ingredients': burgerIngredients})
-    })
-    .then((res) => {
-      if (res.ok) return res.json();
-    })
-    .catch((error) => {
+  const getData = async () => {
+    try {
+      setIngredients({
+        ...ingredients
+      })
+      const res = await fetch(`${URL}/ingredients`)
+      if (!res.ok) {
+        throw new Error(`Ошибка ответа сети: ${res.status}`)
+      }
+      const data = await res.json();
+      setIngredients({
+        data: data.data
+      })
+    } catch (error) {
       console.log('Возникла проблема с вашим fetch запросом: ', error.message)
-    });
+    }
   }
 
   const openOrderDetailsModal = () => {
@@ -74,10 +60,10 @@ const App = () => {
       <main className={AppStyles.main}>
         <DataContext.Provider value={ingredients}>
           <BurgerIngredients openModal={openIngredientDetailsModal} />
-          <BurgerConstructor openModal={openOrderDetailsModal} />
+          <BurgerConstructor openModal={openOrderDetailsModal} setOrderDetails={setOrder} />
         </DataContext.Provider>
       </main>
-      {orderDetailsModalState.visible && <OrderDetails identifier={identifier} closeModal={closeModal} />}
+      {orderDetailsModalState.visible && <OrderDetails orderDetails={order} closeModal={closeModal} />}
       {ingredientDetailsModalState.visible && <IngredientDetails ingredient={ingredient} closeModal={closeModal} />}
     </div>
   )

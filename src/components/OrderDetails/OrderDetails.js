@@ -1,12 +1,14 @@
 import React from "react";
 import PropTypes from 'prop-types'
 import OrderDetailsStyles from './OrderDetails.module.css'
-import Modal from "../Modal/Modal";
+import Modal from "../Modal/Modal"
 
-const OrderDetails = ({identifier, closeModal}) => {
+const OrderDetails = ({orderDetails, closeModal}) => {
+  const { number } = orderDetails.order;
+
   return (
     <Modal className={OrderDetailsStyles.container} closeModal={closeModal}>
-      <h2 className={`${OrderDetailsStyles.orderNumber} text text_type_digits-large mt-30 mb-8`}>{identifier}</h2>
+      <h2 className={`${OrderDetailsStyles.orderNumber} text text_type_digits-large mt-30 mb-8`}>{number}</h2>
       <h3 className="text text_type_main-medium mb-15">Идентификатор заказа</h3>
       <div className={`${OrderDetailsStyles.doneImage} mb-15`} />
       <p className="text text_type_main-default mb-2">Ваш заказ начали готовить</p>
@@ -16,7 +18,7 @@ const OrderDetails = ({identifier, closeModal}) => {
 }
 
 OrderDetails.propTypes = {
-  identifier: PropTypes.string.isRequired,
+  orderDetails: PropTypes.object.isRequired,
   closeModal: PropTypes.func.isRequired
 }
 

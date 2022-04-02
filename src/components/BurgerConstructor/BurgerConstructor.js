@@ -1,14 +1,29 @@
-import React, { useContext } from "react"
+import React from "react"
 import PropTypes from 'prop-types'
 import BurgerConstructorStyles from './BurgerConstructor.module.css'
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import { DataContext } from "../../services/productContext"
+import data from '../../utils/default-ingredients.json'
+import { getOrderData, checkResponse } from "../../utils/utils"
 
-const BurgerConstructor = ( {openModal} ) => {
-  const ingredients = useContext(DataContext).data
+const BurgerConstructor = ( {openModal, setOrderDetails} ) => {
 
-  const fillings = ingredients.filter(ingredient => ingredient.type !== 'bun')
+  const bun = data.find(el => el.type === 'bun')
+  const fillings = data.filter(el => el.type !== 'bun')
+  const burgerPrice = fillings.reduce((acc, el) => acc + el.price, bun.price*2)
 
+  const currentBurger = []
+
+  fillings.forEach(el => currentBurger.push(el._id))
+  currentBurger.push(bun._id)
+
+  const handleOrderButtonClick = () => {
+    getOrderData(currentBurger)
+      .then(checkResponse)
+      .then(setOrderDetails)
+      .then(openModal)
+      .catch(error => console.log(error));
+  }
+ 
   return (
     <section className={`${BurgerConstructorStyles.section} mt-25`}>
       <div className={`${BurgerConstructorStyles.container} mb-10`}>
@@ -16,13 +31,12 @@ const BurgerConstructor = ( {openModal} ) => {
           <ConstructorElement
             type="top"
             isLocked={true}
-            text="Краторная булка N-200i (верх)"
-            price={200}
-            thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
+            text={`${bun.name} (верх)`}
+            price={bun.price}
+            thumbnail={bun.image}
           />
         </div>
         
-
         <div className={`${BurgerConstructorStyles.middleContainer} custom-scroll`}>
           {fillings.map((item, index) => {
             return (
@@ -38,20 +52,19 @@ const BurgerConstructor = ( {openModal} ) => {
           <ConstructorElement
             type="bottom"
             isLocked={true}
-            text="Краторная булка N-200i (низ)"
-            price={200}
-            thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
+            text={`${bun.name} (низ)`}
+            price={bun.price}
+            thumbnail={bun.image}
           />
         </div>
-
       </div>
 
       <div className={BurgerConstructorStyles.order}>
         <div className={`${BurgerConstructorStyles.sum} mr-10`}>
-          <p className={`text text_type_digits-medium mr-2`}>610</p>
+          <p className={`text text_type_digits-medium mr-2`}>{burgerPrice ? burgerPrice : '...'}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button type='primary' size='large' onClick={openModal}>
+        <Button type='primary' size='large' onClick={handleOrderButtonClick}>
           Оформить заказ
         </Button>
       </div>
@@ -60,7 +73,8 @@ const BurgerConstructor = ( {openModal} ) => {
 }
 
 BurgerConstructor.propTypes = {
-  openModal: PropTypes.func.isRequired
+  openModal: PropTypes.func.isRequired,
+  setOrderDetails: PropTypes.func.isRequired
 }
 
 export default BurgerConstructor
