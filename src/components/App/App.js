@@ -7,7 +7,7 @@ import OrderDetails from "../OrderDetails/OrderDetails";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import { DataContext, ConstructorContext } from "../../services/productContext";
 
-const URL = 'https://norma.nomoreparties.space/api/ingredients';
+const URL = 'https://norma.nomoreparties.space/api';
 
 const App = () => {
   const [orderDetailsModalState, setOrderDetailsModalState] = useState({visible: false})
@@ -25,7 +25,7 @@ const App = () => {
         setIngredients({
           ...ingredients
         })
-        const res = await fetch(URL)
+        const res = await fetch(`${URL}/ingredients`)
         if (!res.ok) {
           throw new Error(`Ошибка ответа сети: ${res.status}`)
         }
@@ -39,6 +39,20 @@ const App = () => {
     }
     getData()
   }, [])
+
+  const getOrderData = (burgerIngredients) => {
+    fetch(`${URL}/orders`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({'ingredients': burgerIngredients})
+    })
+    .then((res) => {
+      if (res.ok) return res.json();
+    })
+    .catch((error) => {
+      console.log('Возникла проблема с вашим fetch запросом: ', error.message)
+    });
+  }
 
   const openOrderDetailsModal = () => {
     setOrderDetailsModalState({visible: true})
