@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useMemo} from "react"
 import PropTypes from 'prop-types'
 import BurgerConstructorStyles from './BurgerConstructor.module.css'
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -9,14 +9,22 @@ const BurgerConstructor = ( {openModal, setOrderDetails} ) => {
 
   const bun = data.find(el => el.type === 'bun')
   const fillings = data.filter(el => el.type !== 'bun')
-  const burgerPrice = fillings.reduce((acc, el) => acc + el.price, bun.price*2)
 
-  const currentBurger = []
-
-  fillings.forEach(el => currentBurger.push(el._id))
-  currentBurger.push(bun._id)
+  const burgerPrice = useMemo(
+    () => {
+      let price = 0
+      price = fillings.reduce((acc, el) => acc + el.price, bun.price*2)
+      return price
+    },
+    [bun, fillings]
+  )
 
   const handleOrderButtonClick = () => {
+    const currentBurger = []
+
+    fillings.forEach(el => currentBurger.push(el._id))
+    currentBurger.push(bun._id)
+
     getOrderData(currentBurger)
       .then(checkResponse)
       .then(setOrderDetails)

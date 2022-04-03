@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from 'prop-types'
 import OrderDetailsStyles from './OrderDetails.module.css'
 import Modal from "../Modal/Modal"
+import { orderDetailsPropType } from "../../utils/types";
 
 const OrderDetails = ({orderDetails, closeModal}) => {
   const { number } = orderDetails.order;
@@ -18,7 +19,7 @@ const OrderDetails = ({orderDetails, closeModal}) => {
 }
 
 OrderDetails.propTypes = {
-  orderDetails: PropTypes.object.isRequired,
+  orderDetails: orderDetailsPropType.isRequired,
   closeModal: PropTypes.func.isRequired
 }
 

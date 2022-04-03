@@ -12,7 +12,7 @@ const App = () => {
   const [orderDetailsModalState, setOrderDetailsModalState] = useState({visible: false})
   const [ingredientDetailsModalState, setIngredientDetailsModalState] = useState({visible: false})
   const [ingredient, setIngredient] = useState(null)
-  const [order, setOrder] = useState(null);
+  const [order, setOrder] = useState(null)
 
   const [ingredients, setIngredients]= useState({
     data: []
@@ -24,9 +24,6 @@ const App = () => {
 
   const getData = async () => {
     try {
-      setIngredients({
-        ...ingredients
-      })
       const res = await fetch(`${URL}/ingredients`)
       if (!res.ok) {
         throw new Error(`Ошибка ответа сети: ${res.status}`)
