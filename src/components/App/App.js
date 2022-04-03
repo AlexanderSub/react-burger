@@ -3,6 +3,7 @@ import AppStyles from './App.module.css'
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
+import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import { DataContext } from "../../services/productContext";
@@ -60,8 +61,16 @@ const App = () => {
           <BurgerConstructor openModal={openOrderDetailsModal} setOrderDetails={setOrder} />
         </DataContext.Provider>
       </main>
-      {orderDetailsModalState.visible && <OrderDetails orderDetails={order} closeModal={closeModal} />}
-      {ingredientDetailsModalState.visible && <IngredientDetails ingredient={ingredient} closeModal={closeModal} />}
+      {orderDetailsModalState.visible && (
+        <Modal closeModal={closeModal}>
+          <OrderDetails orderDetails={order} />
+        </Modal>
+      )}
+      {ingredientDetailsModalState.visible && (
+        <Modal closeModal={closeModal}>
+          <IngredientDetails ingredient={ingredient} />
+        </Modal>
+      )}
     </div>
   )
 }

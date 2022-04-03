@@ -1,9 +1,8 @@
 import React from "react";
 import PropTypes from 'prop-types'
 import IngredientDetailsStyles from './IngredientDetails.module.css'
-import Modal from "../Modal/Modal";
 
-const IngredientDetails = ({closeModal, ingredient}) => {
+const IngredientDetails = ({ingredient}) => {
 
   const nutritionalValue = [
     {name: 'Калории,ккал', value: ingredient.calories},
@@ -13,7 +12,7 @@ const IngredientDetails = ({closeModal, ingredient}) => {
   ]
 
   return (
-    <Modal className={IngredientDetailsStyles.container} closeModal={closeModal}>
+    <>
       <h2 className={`${IngredientDetailsStyles.title} text text_type_main-large mt-10`}>Детали ингредиента</h2>
       <img className="mb-4" src={ingredient.image_large} alt={ingredient.name} />
       <h3 className="text text_type_main-medium mb-8">{ingredient.name}</h3>
@@ -30,13 +29,12 @@ const IngredientDetails = ({closeModal, ingredient}) => {
           })
         }
       </ul>
-    </Modal>
+    </>
   )
 }
 
 IngredientDetails.propTypes = {
-  ingredient: PropTypes.object.isRequired,
-  closeModal: PropTypes.func.isRequired
+  ingredient: PropTypes.object.isRequired
 }
 
 export default IngredientDetails
