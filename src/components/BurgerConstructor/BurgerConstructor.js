@@ -1,11 +1,16 @@
 import React, {useMemo} from "react"
-import PropTypes from 'prop-types'
 import BurgerConstructorStyles from './BurgerConstructor.module.css'
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import Modal from "../Modal/Modal"
+import OrderDetails from "../OrderDetails/OrderDetails"
 import data from '../../utils/default-ingredients.json'
-import { getOrderData, checkResponse } from "../../utils/utils"
+import { useDispatch, useSelector } from "react-redux"
+import { CLOSE_ORDER_DETAILS, OPEN_ORDER_DETAILS, getOrder } from "../../services/actions/order"
 
-const BurgerConstructor = ( {openModal, setOrderDetails} ) => {
+const BurgerConstructor = () => {
+  const dispatch = useDispatch()
+  const openOrderDetails = useSelector(state => state.order.isOpen)
+  const order = useSelector(store => store.order.order)
 
   const bun = data.find(el => el.type === 'bun')
   const fillings = data.filter(el => el.type !== 'bun')
@@ -19,17 +24,21 @@ const BurgerConstructor = ( {openModal, setOrderDetails} ) => {
     [bun, fillings]
   )
 
-  const handleOrderButtonClick = () => {
-    const currentBurger = []
+  const orderDetails = () => {
+    const ingredients = []
 
-    fillings.forEach(el => currentBurger.push(el._id))
-    currentBurger.push(bun._id)
+    fillings.forEach(el => ingredients.push(el._id))
+    ingredients.push(bun._id)
+    dispatch(getOrder(ingredients))
+    dispatch({
+      type: OPEN_ORDER_DETAILS
+    })
+  }
 
-    getOrderData(currentBurger)
-      .then(checkResponse)
-      .then(setOrderDetails)
-      .then(openModal)
-      .catch(error => console.log(error));
+  const closeOrderDetails = () => {
+    dispatch({
+      type: CLOSE_ORDER_DETAILS
+    })
   }
  
   return (
@@ -72,17 +81,17 @@ const BurgerConstructor = ( {openModal, setOrderDetails} ) => {
           <p className={`text text_type_digits-medium mr-2`}>{burgerPrice ? burgerPrice : '...'}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button type='primary' size='large' onClick={handleOrderButtonClick}>
+        <Button type='primary' size='large' onClick={orderDetails}>
           Оформить заказ
         </Button>
       </div>
+      {openOrderDetails && order && (
+        <Modal closeModal={closeOrderDetails}>
+          <OrderDetails order={order}/>
+        </Modal>
+      )}
     </section>
   )
-}
-
-BurgerConstructor.propTypes = {
-  openModal: PropTypes.func.isRequired,
-  setOrderDetails: PropTypes.func.isRequired
 }
 
 export default BurgerConstructor

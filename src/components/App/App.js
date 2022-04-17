@@ -1,76 +1,28 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from 'react'
 import AppStyles from './App.module.css'
-import AppHeader from "../AppHeader/AppHeader";
-import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
-import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
-import Modal from "../Modal/Modal";
-import OrderDetails from "../OrderDetails/OrderDetails";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import { DataContext } from "../../services/productContext";
-import { URL } from "../../utils/constants";
+import AppHeader from '../AppHeader/AppHeader'
+import BurgerIngredients from '../BurgerIngredients/BurgerIngredients'
+import BurgerConstructor from '../BurgerConstructor/BurgerConstructor'
+import { useDispatch } from 'react-redux'
+import { getIngredients } from '../../services/actions/ingredients'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 const App = () => {
-  const [orderDetailsModalState, setOrderDetailsModalState] = useState({visible: false})
-  const [ingredientDetailsModalState, setIngredientDetailsModalState] = useState({visible: false})
-  const [ingredient, setIngredient] = useState(null)
-  const [order, setOrder] = useState(null)
-
-  const [ingredients, setIngredients]= useState({
-    data: []
-  })
-
+  const dispatch = useDispatch()
   useEffect(() => {
-    getData()
-  }, [])
-
-  const getData = async () => {
-    try {
-      const res = await fetch(`${URL}/ingredients`)
-      if (!res.ok) {
-        throw new Error(`Ошибка ответа сети: ${res.status}`)
-      }
-      const data = await res.json();
-      setIngredients({
-        data: data.data
-      })
-    } catch (error) {
-      console.log('Возникла проблема с вашим fetch запросом: ', error.message)
-    }
-  }
-
-  const openOrderDetailsModal = () => {
-    setOrderDetailsModalState({visible: true})
-  }
- 
-  const openIngredientDetailsModal = (ingredientData) => {
-    setIngredient(ingredientData)
-    setIngredientDetailsModalState({visible: true})
-  }
-
-  const closeModal = () => {
-    setOrderDetailsModalState({visible: false})
-    setIngredientDetailsModalState({visible: false})
-  }
+    dispatch(getIngredients())
+  }, [dispatch])
 
   return (
     <div className={AppStyles.page}>
       <AppHeader />
       <main className={AppStyles.main}>
-        <DataContext.Provider value={ingredients}>
-          <BurgerIngredients openModal={openIngredientDetailsModal} />
-          <BurgerConstructor openModal={openOrderDetailsModal} setOrderDetails={setOrder} />
-        </DataContext.Provider>
+        <DndProvider backend={HTML5Backend}>
+          <BurgerIngredients />
+          <BurgerConstructor />
+        </DndProvider>
       </main>
-      {orderDetailsModalState.visible && (
-        <Modal closeModal={closeModal}>
-          <OrderDetails orderDetails={order} />
-        </Modal>
-      )}
-      {ingredientDetailsModalState.visible && (
-        <Modal closeModal={closeModal}>
-          <IngredientDetails ingredient={ingredient} />
-        </Modal>
-      )}
     </div>
   )
 }

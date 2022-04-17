@@ -1,11 +1,29 @@
-import React, {useState, useContext} from "react"
-import PropTypes from 'prop-types'
+import React, {useState} from "react"
 import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import BurgerIngredientsStyles from './BurgerIngredients.module.css'
-import { DataContext } from "../../services/productContext"
+import { useDispatch, useSelector } from "react-redux"
+import Modal from "../Modal/Modal"
+import IngredientDetails from "../IngredientDetails/IngredientDetails"
+import { OPEN_INGREDIENT_DETAILS, CLOSE_INGREDIENT_DETAILS } from "../../services/actions/details" 
 
-const BurgerIngredients = ({ openModal }) => {
-  const ingredients = useContext(DataContext).data
+const BurgerIngredients = () => {
+  const dispatch = useDispatch()
+  const ingredients = useSelector(store => store.ingredients.data)
+  const ingredientDetails = useSelector(state => state.details.ingredient)
+  const openDetails = useSelector(state => state.details.isOpen)
+
+  const openIngredientDetails = (ingredient) => {
+    dispatch({
+      type: OPEN_INGREDIENT_DETAILS,
+      payload: ingredient
+    })
+  }
+
+  const closeIngredientDetails = () => {
+    dispatch({
+      type: CLOSE_INGREDIENT_DETAILS
+    })
+  }
 
   const [current, setCurrent] = useState('bun')
 
@@ -15,7 +33,7 @@ const BurgerIngredients = ({ openModal }) => {
 
   const ingredientsList = (list) => {
     return list.map(ingredient => 
-      (<li className={BurgerIngredientsStyles.item} key={ingredient._id} onClick={() => openModal(ingredient)} >
+      (<li className={BurgerIngredientsStyles.item} key={ingredient._id} onClick={() => openIngredientDetails(ingredient)} >
       <Counter count={1} size="default" />
       <img src={ingredient.image} alt={ingredient.name} className={`pl-4 pr-4 mb-1`}/>
       <div className={`${BurgerIngredientsStyles.wrapper} mb-1`}>
@@ -57,12 +75,13 @@ const BurgerIngredients = ({ openModal }) => {
           </ul>
         </section>
       </div>
+      {openDetails && (
+        <Modal closeModal={closeIngredientDetails}>
+          <IngredientDetails data={ingredientDetails} />
+        </Modal>
+      )}
     </section>
   )
-}
-
-BurgerIngredients.propTypes = {
-  openModal: PropTypes.func.isRequired
 }
 
 export default BurgerIngredients

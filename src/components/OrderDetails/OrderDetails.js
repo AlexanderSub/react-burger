@@ -1,13 +1,12 @@
 import React from "react";
 import OrderDetailsStyles from './OrderDetails.module.css'
-import { orderDetailsPropType } from "../../utils/types";
+import PropTypes from 'prop-types'
 
-const OrderDetails = ({orderDetails}) => {
-  const { number } = orderDetails.order;
+const OrderDetails = ({order}) => {
 
   return (
     <>
-      <h2 className={`${OrderDetailsStyles.orderNumber} text text_type_digits-large mt-30 mb-8`}>{number}</h2>
+      <h2 className={`${OrderDetailsStyles.orderNumber} text text_type_digits-large mt-30 mb-8`}>{order.number}</h2>
       <h3 className="text text_type_main-medium mb-15">Идентификатор заказа</h3>
       <div className={`${OrderDetailsStyles.doneImage} mb-15`} />
       <p className="text text_type_main-default mb-2">Ваш заказ начали готовить</p>
@@ -17,7 +16,7 @@ const OrderDetails = ({orderDetails}) => {
 }
 
 OrderDetails.propTypes = {
-  orderDetails: orderDetailsPropType.isRequired,
+  // order: PropTypes.number.isRequired,
 }
 
 export default OrderDetails
