@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react'
 import AppHeaderStyles from './AppHeader.module.css'
 import { Logo, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import NavBar from "../NavBar/NavBar";
-import NavItem from "../NavItem/NavItem";
+import NavBar from '../NavBar/NavBar'
+import NavItem from '../NavItem/NavItem'
 
 const AppHeader = () => {
   return (

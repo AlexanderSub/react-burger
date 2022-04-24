@@ -6,14 +6,14 @@ import {
   CLOSE_ORDER_DETAILS
 } from '../actions/order'
 
-const orderInitialState = {
+const initialState = {
   order: null,
   orderRequest: false,
   orderFailed: false,
   isOpen: false
 }
 
-export const orderReducer = (state = orderInitialState, action) => {
+export const orderReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ORDER_REQUEST: {
       return {
@@ -50,7 +50,7 @@ export const orderReducer = (state = orderInitialState, action) => {
       }
     }
     default: {
-      return state;
+      return state
     }
   }
 }

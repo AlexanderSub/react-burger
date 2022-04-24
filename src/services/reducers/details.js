@@ -3,12 +3,12 @@ import {
   CLOSE_INGREDIENT_DETAILS
 } from '../actions/details'
 
-const detailsInitialState = {
+const initialState = {
   isOpen: false,
   ingredient: {}
 }
 
-export const detailsReducer = (state = detailsInitialState, action) => {
+export const detailsReducer = (state = initialState, action) => {
   switch (action.type) {
     case OPEN_INGREDIENT_DETAILS: {
       return {
@@ -26,6 +26,6 @@ export const detailsReducer = (state = detailsInitialState, action) => {
     }
   
     default:
-      return state;
+      return state
   }
 }

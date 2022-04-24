@@ -1,0 +1,11 @@
+.ingredient {
+  display: flex;
+  align-items: center;
+  cursor: grab;
+  transition: transform 0.3s ease-in-out;
+}
+
+.ingredient:hover {
+  transform: scale(1.02);
+  transition: transform 0.3s ease-in-out;
+}

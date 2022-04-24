@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from 'prop-types'
+import React from 'react'
 import IngredientDetailsStyles from './IngredientDetails.module.css'
+import { ingredientPropType } from '../../utils/utils'
 
 const IngredientDetails = ({ data }) => {
   const { name, image_large, calories, proteins, fat, carbohydrates } = data
@@ -34,7 +34,7 @@ const IngredientDetails = ({ data }) => {
 }
 
 IngredientDetails.propTypes = {
-  data: PropTypes.object.isRequired
+  data: ingredientPropType.isRequired
 }
 
 export default IngredientDetails
