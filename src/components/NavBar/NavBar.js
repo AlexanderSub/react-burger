@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react'
 import NavBarStyles from './NavBar.module.css'
-import NavItem from "../NavItem/NavItem";
+import NavItem from '../NavItem/NavItem'
 import { BurgerIcon, MenuIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
 const NavBar = () => {

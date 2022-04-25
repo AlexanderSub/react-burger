@@ -9,6 +9,10 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  height: calc(100vh - 320px);
+  width: 574px;
+  border: 1px solid transparent;
+  border-radius: 40px;
 }
 
 .middleContainer {
@@ -18,6 +22,7 @@
   height: calc(100vh - 490px);
   overflow-y: auto;
   overflow-x: hidden;
+  width: 100%;
 }
 
 .ingredient {

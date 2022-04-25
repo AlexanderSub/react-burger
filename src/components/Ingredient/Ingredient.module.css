@@ -1,0 +1,23 @@
+.item {
+  width: 272px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+.wrapper {
+  display: flex;
+}
+
+.span {
+  height: 48px;
+  text-align: center;
+}
+
+.item:hover {
+  transform: scale(1.02);
+  transition: transform 0.3s ease-in-out;
+}
