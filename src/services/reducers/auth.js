@@ -141,6 +141,9 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         request: false,
         failed: false,
+        authorized: true,
+        name: action.auth.name,
+        email: action.auth.email
       }
     }
     default: {

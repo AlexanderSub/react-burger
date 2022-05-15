@@ -187,6 +187,10 @@ export function getUser() {
       if (res && res.success) {
         dispatch({
           type: GET_USER_SUCCESS,
+          auth: {
+            name: res.user.name,
+            email: res.user.email
+          }
         })
       } else {
         dispatch({
