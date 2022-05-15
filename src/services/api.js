@@ -12,8 +12,8 @@ export const registerUserRequest = async form => {
     redirect: 'follow',
     referrerPolicy: 'no-referrer',
     body: JSON.stringify(form)
-  });
-};
+  })
+}
 
 export const loginRequest = async form => {
   return await fetch('https://norma.nomoreparties.space/api/auth/login', {
@@ -27,8 +27,8 @@ export const loginRequest = async form => {
     redirect: 'follow',
     referrerPolicy: 'no-referrer',
     body: JSON.stringify(form)
-  });
-};
+  })
+}
 
 export const getUserRequest = async () =>
   await fetch('https://norma.nomoreparties.space/api/auth/user', {
@@ -38,11 +38,11 @@ export const getUserRequest = async () =>
     credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + getCookie('token')
+      Authorization: 'Bearer ' + getCookie('accessToken')
     },
     redirect: 'follow',
     referrerPolicy: 'no-referrer'
-  });
+  })
 
 export const logoutRequest = async () => {
   return await fetch('https://norma.nomoreparties.space/api/auth/logout', {
@@ -58,5 +58,35 @@ export const logoutRequest = async () => {
     body: JSON.stringify({
       'token': `${getCookie('refreshToken')}`
     })
-  });
-};
+  })
+}
+
+export const forgotPasswordRequest = async form => {
+  return await fetch('https://norma.nomoreparties.space/api/password-reset', {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify(form)
+  })
+}
+
+export const resetPasswordRequest = async form => {
+  return await fetch('https://norma.nomoreparties.space/api/password-reset/reset', {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify(form)
+  })
+}

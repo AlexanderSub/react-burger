@@ -28,48 +28,48 @@ const Login = () => {
         }}
       />
     )
-  }
-
-  return (
-    <div className={AppStyles.login}>
-      <div className={AppStyles.card}>
-        <h4 className={`text text_type_main-medium mb-6`}>Вход</h4>
-        <div className={`${AppStyles.input} mb-6`}>
-          <Input
-            type={'email'}
-            placeholder={'E-mail'}
-            onChange={onChange}
-            value={form.email}
-            name={'email'}
-            size={'default'}
-          />
+  } else {
+    return (
+      <div className={AppStyles.login}>
+        <div className={AppStyles.card}>
+          <h4 className={`text text_type_main-medium mb-6`}>Вход</h4>
+          <div className={`${AppStyles.input} mb-6`}>
+            <Input
+              type={'email'}
+              placeholder={'E-mail'}
+              onChange={onChange}
+              value={form.email}
+              name={'email'}
+              size={'default'}
+            />
+          </div>
+          <div className={`${AppStyles.input} mb-6`}>
+            <PasswordInput
+              type={'password'}
+              placeholder={'Пароль'}
+              onChange={onChange}
+              icon={'ShowIcon'}
+              value={form.password}
+              name={'password'}
+              size={'default'}
+            />
+          </div>
+          <div className={'mb-20'}>
+            <Button onClick={() => login(form)} type="primary" size="medium" disabled={form.password.length === 0 || form.email.length === 0}>Войти</Button>
+          </div>
+          
+          <span className={'text text_type_main-default text_color_inactive mb-4'}>
+            Вы - новый пользователь? 
+            <Link to={URL_REGISTER} className={AppStyles.linkText}> Зарегистрироваться</Link>
+          </span>
+          <span className={'text text_type_main-default text_color_inactive'}>
+            Забыли пароль?
+            <Link to={URL_FORGOT} className={AppStyles.linkText}> Восстановить пароль</Link>
+          </span>
         </div>
-        <div className={`${AppStyles.input} mb-6`}>
-          <PasswordInput
-            type={'password'}
-            placeholder={'Пароль'}
-            onChange={onChange}
-            icon={'ShowIcon'}
-            value={form.password}
-            name={'password'}
-            size={'default'}
-          />
-        </div>
-        <div className={'mb-20'}>
-          <Button onClick={() => login(form)} type="primary" size="medium">Войти</Button>
-        </div>
-        
-        <span className={'text text_type_main-default text_color_inactive mb-4'}>
-          Вы - новый пользователь? 
-          <Link to={URL_REGISTER} className={AppStyles.linkText}> Зарегистрироваться</Link>
-        </span>
-        <span className={'text text_type_main-default text_color_inactive'}>
-          Забыли пароль?
-          <Link to={URL_FORGOT} className={AppStyles.linkText}> Восстановить пароль</Link>
-        </span>
       </div>
-    </div>
-  )
+    )
+  }
 }
 
 export default Login

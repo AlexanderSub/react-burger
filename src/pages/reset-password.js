@@ -3,17 +3,21 @@ import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burg
 import {Link, useHistory} from 'react-router-dom'
 import AppStyles from '../components/App/App.module.css'
 import { URL_LOGIN, URL_MAIN } from '../utils/constants'
+import { useDispatch, useSelector } from "react-redux";
+import { resetPasswordUser } from "../services/actions/auth";
 
 const Reset = () => {
-  const [form, setValue] = useState({password: '', code: ''})
-  const inputRef = React.useRef(null)
-  const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0)
-    alert('Icon Click Callback')
-  }
+  const dispatch = useDispatch()
+  const [form, setValue] = useState({password: '', token: ''})
+  const isPasswordReset = useSelector(state => state.auth.isPasswordReset)
 
   const onChange = e => {
     setValue({...form, [e.target.name]: e.target.value})
+  }
+
+  const resetPassword = form => {
+    dispatch(resetPasswordUser(form))
+    goToPage(URL_MAIN)
   }
 
   const history = useHistory()
@@ -37,8 +41,6 @@ const Reset = () => {
             value={form.password}
             name={'password'}
             error={false}
-            ref={inputRef}
-            onIconClick={onIconClick}
             errorText={'Ошибка'}
             size={'default'}
           />
@@ -48,13 +50,13 @@ const Reset = () => {
             type={'text'}
             placeholder={'Введите код из письма'}
             onChange={onChange}
-            value={form.code}
-            name={'code'}
+            value={form.token}
+            name={'token'}
             size={'default'}
           />
         </div>
         <div className={'mb-20'}>
-          <Button onClick={() => goToPage(URL_MAIN)} type="primary" size="medium">Сохранить</Button>
+          <Button onClick={() => resetPassword(form)} type="primary" size="medium">Сохранить</Button>
         </div>
         
         <span className={'text text_type_main-default text_color_inactive'}>

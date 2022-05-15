@@ -34,8 +34,20 @@ const Profile = () => {
   return (
     <section className={`${ProfileStyles.profile} mt-30`}>
       <div className={`${ProfileStyles.leftContainer} mr-15`}>
-        <NavLink to={URL_PROFILE} className={`${ProfileStyles.link} ${ProfileStyles.linkActive} text text_type_main-medium`}>Профиль</NavLink>
-        <NavLink to={URL_ORDERS} className={`${ProfileStyles.link} text text_type_main-medium text_color_inactive`}>История заказов</NavLink>
+        <NavLink 
+          to={URL_PROFILE} 
+          className={`${ProfileStyles.link} text text_type_main-medium text_color_inactive`}
+          activeClassName={ProfileStyles.linkActive}
+        >
+          Профиль
+        </NavLink>
+        <NavLink 
+          to={URL_ORDERS} 
+          className={`${ProfileStyles.link} text text_type_main-medium text_color_inactive`}
+          activeClassName={ProfileStyles.linkActive}
+        >
+          История заказов
+        </NavLink>
         <p onClick={logout} className={`${ProfileStyles.link} text text_type_main-medium text_color_inactive mb-20`}>Выход</p>
         <p className={`${ProfileStyles.text} text text_type_main-medium text_color_inactive`}>В этом разделе вы можете изменить свои персональные данные</p>
       </div>

@@ -8,11 +8,6 @@ import { registerUser } from "../services/actions/auth";
 
 const Register = () => {
   const [form, setValue] = useState({email: '', password: '', name: ''})
-  // const inputRef = React.useRef(null)
-  // const onIconClick = () => {
-  //   setTimeout(() => inputRef.current.focus(), 0)
-  //   alert('Icon Click Callback')
-  // }
 
   const dispatch = useDispatch()
   const history = useHistory()
@@ -29,6 +24,7 @@ const Register = () => {
 
   const register = (form) => {
     dispatch(registerUser(form))
+    goToPage(URL_MAIN)
   }
 
   return (
@@ -43,8 +39,6 @@ const Register = () => {
             value={form.name}
             name={'name'}
             error={false}
-            // ref={inputRef}
-            // onIconClick={onIconClick}
             errorText={'Ошибка'}
             size={'default'}
           />
@@ -57,8 +51,6 @@ const Register = () => {
             value={form.email}
             name={'email'}
             error={false}
-            // ref={inputRef}
-            // onIconClick={onIconClick}
             errorText={'Ошибка'}
             size={'default'}
           />
@@ -72,14 +64,19 @@ const Register = () => {
             value={form.password}
             name={'password'}
             error={false}
-            // ref={inputRef}
-            // onIconClick={onIconClick}
             errorText={'Ошибка'}
             size={'default'}
           />
         </div>
         <div className={'mb-20'}>
-          <Button onClick={() => register(form)} type="primary" size="medium">Зарегистрироваться</Button>
+          <Button 
+            onClick={() => register(form)} 
+            type="primary" 
+            size="medium" 
+            disabled={form.name.length === 0 || form.email.length === 0 || form.password.length === 0}
+          >
+            Зарегистрироваться
+          </Button>
         </div>
         
         <span className={'text text_type_main-default text_color_inactive'}>

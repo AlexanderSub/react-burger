@@ -1,5 +1,5 @@
 import { checkResponse, deleteCookie, setCookie } from '../../utils/utils'
-import { loginRequest, logoutRequest, registerUserRequest } from '../api'
+import { forgotPasswordRequest, getUserRequest, loginRequest, logoutRequest, registerUserRequest, resetPasswordRequest } from '../api'
 
 export const REGISTER_REQUEST = 'REGISTER_REQUEST'
 export const REGISTER_FAILED = 'REGISTER_FAILED'
@@ -117,6 +117,87 @@ export function logoutUser() {
       console.log(err)
       dispatch({
         type: LOGOUT_FAILED
+      })
+    })
+  }
+}
+
+export function forgotPasswordUser(form) {
+  return function(dispatch) {
+    dispatch({
+      type: FORGOT_PASSWORD_REQUEST
+    })
+    forgotPasswordRequest(form)
+    .then(checkResponse)
+    .then(res => {
+      if (res && res.success) {
+        dispatch({
+          type: FORGOT_PASSWORD_SUCCESS,
+        })
+      } else {
+        dispatch({
+          type: FORGOT_PASSWORD_FAILED
+        })
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+      dispatch({
+        type: FORGOT_PASSWORD_FAILED
+      })
+    })
+  }
+}
+
+export function resetPasswordUser(form) {
+  return function(dispatch) {
+    dispatch({
+      type: RESET_PASSWORD_REQUEST
+    })
+    resetPasswordRequest(form)
+    .then(checkResponse)
+    .then(res => {
+      if (res && res.success) {
+        dispatch({
+          type: RESET_PASSWORD_SUCCESS,
+        })
+      } else {
+        dispatch({
+          type: RESET_PASSWORD_FAILED
+        })
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+      dispatch({
+        type: RESET_PASSWORD_FAILED
+      })
+    })
+  }
+}
+
+export function getUser() {
+  return function(dispatch) {
+    dispatch({
+      type: GET_USER_REQUEST
+    })
+    getUserRequest()
+    .then(checkResponse)
+    .then(res => {
+      if (res && res.success) {
+        dispatch({
+          type: GET_USER_SUCCESS,
+        })
+      } else {
+        dispatch({
+          type: GET_USER_FAILED
+        })
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+      dispatch({
+        type: GET_USER_FAILED
       })
     })
   }

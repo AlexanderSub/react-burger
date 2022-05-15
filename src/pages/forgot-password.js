@@ -3,14 +3,18 @@ import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-component
 import {Link, useHistory} from 'react-router-dom'
 import AppStyles from '../components/App/App.module.css'
 import { URL_LOGIN, URL_RESET } from '../utils/constants'
+import { useDispatch, useSelector } from "react-redux";
+import { forgotPasswordUser } from "../services/actions/auth";
 
 const Forgot = () => {
+  const dispatch = useDispatch()
   const [form, setValue] = useState({email: ''})
-  const inputRef = React.useRef(null)
-  const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0)
-    alert('Icon Click Callback')
-  }
+  const isPasswordForgotten = useSelector(state => state.auth.isPasswordForgotten)
+  // const inputRef = React.useRef(null)
+  // const onIconClick = () => {
+  //   setTimeout(() => inputRef.current.focus(), 0)
+  //   alert('Icon Click Callback')
+  // }
 
   const history = useHistory()
   const goToPage = useCallback(
@@ -22,6 +26,11 @@ const Forgot = () => {
 
   const onChange = e => {
     setValue({...form, [e.target.name]: e.target.value})
+  }
+
+  const forgotPassword = (form) => {
+    dispatch(forgotPasswordUser(form))
+    goToPage(URL_RESET)
   }
 
   return (
@@ -39,7 +48,7 @@ const Forgot = () => {
           />
         </div>
         <div className={'mb-20'}>
-          <Button onClick={() => goToPage(URL_RESET)} type="primary" size="medium">Восстановить</Button>
+          <Button onClick={() => forgotPassword(form)} type="primary" size="medium" disabled={form.email.length === 0}>Восстановить</Button>
         </div>
         
         <span className={'text text_type_main-default text_color_inactive'}>
