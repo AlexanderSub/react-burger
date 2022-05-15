@@ -16,7 +16,7 @@ export function getOrder(ingredients) {
     .then(checkResponse)
     .then(res => {
       if (res && res.success) {
-          dispatch({
+        dispatch({
           type: GET_ORDER_SUCCESS,
           order: res.order
         });

@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from "react";
-import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
+import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import {Link, useHistory} from 'react-router-dom'
 import AppStyles from '../components/App/App.module.css'
-import { URL_LOGIN, URL_MAIN } from '../utils/utils'
+import { URL_LOGIN, URL_MAIN } from '../utils/constants'
 
 const Reset = () => {
   const [form, setValue] = useState({password: '', code: ''})
@@ -29,7 +29,7 @@ const Reset = () => {
       <div className={AppStyles.card}>
         <h4 className={`text text_type_main-medium mb-6`}>Восстановление пароля</h4>
         <div className={`${AppStyles.input} mb-6`}>
-          <Input
+          <PasswordInput
             type={'password'}
             placeholder={'Введите новый пароль'}
             onChange={onChange}

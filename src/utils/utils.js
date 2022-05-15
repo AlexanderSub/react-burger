@@ -1,16 +1,5 @@
 import PropTypes from 'prop-types'
-import { useHistory } from 'react-router-dom'
-
-export const URL = 'https://norma.nomoreparties.space/api'
-export const URL_MAIN = '/'
-export const URL_LOGIN = '/login'
-export const URL_REGISTER = '/register'
-export const URL_FORGOT = '/forgot-password'
-export const URL_RESET = '/reset-password'
-export const URL_PROFILE = '/profile'
-export const URL_INGREDIENTS = '/ingredients'
-export const URL_INGREDIENT_DETAILS = '/ingredients/:id'
-export const URL_ORDERS = '/orders'
+import { URL, URL_INGREDIENTS, URL_ORDERS } from './constants'
 
 export const getIngredientsRequest = async () => {
   return await fetch(`${URL}${URL_INGREDIENTS}`)

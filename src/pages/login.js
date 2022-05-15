@@ -1,43 +1,26 @@
-import React, { useCallback, useState } from "react";
-import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
-import {Link, Redirect, useHistory} from 'react-router-dom'
+import React, { useState } from "react";
+import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
+import {Link, Redirect} from 'react-router-dom'
 import AppStyles from '../components/App/App.module.css'
-import { URL_REGISTER, URL_FORGOT, URL_MAIN } from '../utils/utils'
-import { useAuth } from "../services/auth";
+import { URL_REGISTER, URL_FORGOT, URL_MAIN } from '../utils/constants'
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../services/actions/auth";
 
 const Login = () => {
-  const history = useHistory()
-  const goToPage = useCallback(
-    (url) => {
-        history.replace({ pathname: url });
-    },
-    [history]
-  )
+  const dispatch = useDispatch()
+  const isAuthorized = useSelector(state => state.auth.authorized)
 
-  let auth = useAuth()
   const [form, setValue] = useState({email: '', password: ''})
-  
-  //Проверить надо или нет
-  const inputRef = React.useRef(null)
-  const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0)
-    alert('Icon Click Callback')
-  }
-
 
   const onChange = e => {
     setValue({...form, [e.target.name]: e.target.value})
   }
 
-  let login = useCallback(
-    e => {
-      e.preventDefault()
-      auth.signIn(form)
-    },
-    [auth, form]
-  )
+  const login = (form) => {
+    dispatch(loginUser(form))
+  }
 
-  if (auth.user) {
+  if (isAuthorized) {
     return (
       <Redirect 
         to={{
@@ -49,7 +32,7 @@ const Login = () => {
 
   return (
     <div className={AppStyles.login}>
-      <form className={AppStyles.card}>
+      <div className={AppStyles.card}>
         <h4 className={`text text_type_main-medium mb-6`}>Вход</h4>
         <div className={`${AppStyles.input} mb-6`}>
           <Input
@@ -62,20 +45,18 @@ const Login = () => {
           />
         </div>
         <div className={`${AppStyles.input} mb-6`}>
-          <Input
+          <PasswordInput
             type={'password'}
             placeholder={'Пароль'}
             onChange={onChange}
             icon={'ShowIcon'}
             value={form.password}
             name={'password'}
-            ref={inputRef}
-            onIconClick={onIconClick}
             size={'default'}
           />
         </div>
         <div className={'mb-20'}>
-          <Button onClick={login} type="primary" size="medium">Войти</Button>
+          <Button onClick={() => login(form)} type="primary" size="medium">Войти</Button>
         </div>
         
         <span className={'text text_type_main-default text_color_inactive mb-4'}>
@@ -86,7 +67,7 @@ const Login = () => {
           Забыли пароль?
           <Link to={URL_FORGOT} className={AppStyles.linkText}> Восстановить пароль</Link>
         </span>
-      </form>
+      </div>
     </div>
   )
 }

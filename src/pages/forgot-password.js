@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import {Link, useHistory} from 'react-router-dom'
 import AppStyles from '../components/App/App.module.css'
-import { URL_LOGIN, URL_RESET } from '../utils/utils'
+import { URL_LOGIN, URL_RESET } from '../utils/constants'
 
 const Forgot = () => {
   const [form, setValue] = useState({email: ''})

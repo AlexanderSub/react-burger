@@ -21,6 +21,10 @@
   justify-content: center;
   text-decoration: none;
   height: 64px;
+  cursor: pointer;
+}
+
+.linkActive {
   color: inherit;
 }
 

@@ -1,17 +1,20 @@
 import React, { useCallback, useState } from "react";
-import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
+import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import {Link, useHistory} from 'react-router-dom'
 import AppStyles from '../components/App/App.module.css'
-import { URL_LOGIN, URL_MAIN } from '../utils/utils'
+import { URL_LOGIN, URL_MAIN } from '../utils/constants'
+import { useDispatch } from "react-redux";
+import { registerUser } from "../services/actions/auth";
 
 const Register = () => {
   const [form, setValue] = useState({email: '', password: '', name: ''})
-  const inputRef = React.useRef(null)
-  const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0)
-    alert('Icon Click Callback')
-  }
+  // const inputRef = React.useRef(null)
+  // const onIconClick = () => {
+  //   setTimeout(() => inputRef.current.focus(), 0)
+  //   alert('Icon Click Callback')
+  // }
 
+  const dispatch = useDispatch()
   const history = useHistory()
   const goToPage = useCallback(
     (url) => {
@@ -22,6 +25,10 @@ const Register = () => {
 
   const onChange = e => {
     setValue({...form, [e.target.name]: e.target.value})
+  }
+
+  const register = (form) => {
+    dispatch(registerUser(form))
   }
 
   return (
@@ -36,8 +43,8 @@ const Register = () => {
             value={form.name}
             name={'name'}
             error={false}
-            ref={inputRef}
-            onIconClick={onIconClick}
+            // ref={inputRef}
+            // onIconClick={onIconClick}
             errorText={'Ошибка'}
             size={'default'}
           />
@@ -50,14 +57,14 @@ const Register = () => {
             value={form.email}
             name={'email'}
             error={false}
-            ref={inputRef}
-            onIconClick={onIconClick}
+            // ref={inputRef}
+            // onIconClick={onIconClick}
             errorText={'Ошибка'}
             size={'default'}
           />
         </div>
         <div className={`${AppStyles.input} mb-6`}>
-          <Input
+          <PasswordInput
             type={'password'}
             placeholder={'Пароль'}
             onChange={onChange}
@@ -65,14 +72,14 @@ const Register = () => {
             value={form.password}
             name={'password'}
             error={false}
-            ref={inputRef}
-            onIconClick={onIconClick}
+            // ref={inputRef}
+            // onIconClick={onIconClick}
             errorText={'Ошибка'}
             size={'default'}
           />
         </div>
         <div className={'mb-20'}>
-          <Button onClick={() => goToPage(URL_MAIN)} type="primary" size="medium">Зарегистрироваться</Button>
+          <Button onClick={() => register(form)} type="primary" size="medium">Зарегистрироваться</Button>
         </div>
         
         <span className={'text text_type_main-default text_color_inactive'}>

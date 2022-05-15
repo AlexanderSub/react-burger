@@ -1,5 +1,20 @@
 import { getCookie } from '../utils/utils'
 
+export const registerUserRequest = async form => {
+  return await fetch('https://norma.nomoreparties.space/api/auth/register', {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify(form)
+  });
+};
+
 export const loginRequest = async form => {
   return await fetch('https://norma.nomoreparties.space/api/auth/login', {
     method: 'POST',
@@ -39,6 +54,9 @@ export const logoutRequest = async () => {
       'Content-Type': 'application/json'
     },
     redirect: 'follow',
-    referrerPolicy: 'no-referrer'
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify({
+      'token': `${getCookie('refreshToken')}`
+    })
   });
 };
