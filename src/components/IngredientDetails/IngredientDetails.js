@@ -3,6 +3,8 @@ import IngredientDetailsStyles from './IngredientDetails.module.css'
 import { ingredientPropType } from '../../utils/utils'
 
 const IngredientDetails = ({ data }) => {
+  console.log(data)
+
   const { name, image_large, calories, proteins, fat, carbohydrates } = data
   const nutritionalValue = [
     {name: 'Калории,ккал', value: calories},
@@ -10,6 +12,7 @@ const IngredientDetails = ({ data }) => {
     {name: 'Жиры, г', value: fat},
     {name: 'Углеводы, г', value: carbohydrates},
   ]
+
 
   return (
     <>
