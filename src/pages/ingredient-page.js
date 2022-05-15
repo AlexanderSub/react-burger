@@ -1,11 +1,11 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { useRouteMatch } from "react-router-dom";
+import { useMatch } from "react-router-dom";
 import IngredientDetails from "../components/IngredientDetails/IngredientDetails";
 
 const IngredientPage = () => {
   const ingredients = useSelector(store => store.ingredients.data)
-  const match = useRouteMatch('/ingredients/:id')
+  const match = useMatch('/ingredients/:id')
 
   const ingr = (arr, id) => {
     return arr.filter(el => el._id === id)[0]

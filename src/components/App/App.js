@@ -3,7 +3,7 @@ import AppStyles from './App.module.css'
 import AppHeader from '../AppHeader/AppHeader'
 import { useDispatch } from 'react-redux'
 import { getIngredients } from '../../services/actions/ingredients'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { URL_MAIN, URL_LOGIN, URL_PROFILE, URL_FORGOT, URL_RESET, URL_REGISTER, URL_INGREDIENTS, URL_INGREDIENT_DETAILS } from '../../utils/utils'
 import Main from '../../pages/main'
 import Login from '../../pages/login'
@@ -26,29 +26,22 @@ const App = () => {
       <ProvideAuth>
         <Router>
           <AppHeader />
-          <Switch>
-            <Route path={URL_MAIN} exact>
-              <Main />
-            </Route>
-            <Route path={URL_LOGIN} exact>
-              <Login />
-            </Route>
-            <ProtectedRoute path={URL_PROFILE} exact>
+          <Routes>
+            <Route path={URL_MAIN} element={<Main />} />
+            <Route path={URL_LOGIN} element={<Login />} />
+            {/* <ProtectedRoute path={URL_PROFILE} >
               <Profile />
-            </ProtectedRoute>
-            <Route path={URL_FORGOT} exact>
-              <Forgot />
-            </Route>
-            <Route path={URL_RESET} exact>
-              <Reset />
-            </Route>
-            <Route path={URL_REGISTER} exact>
-              <Register />
-            </Route>
-            <Route path={URL_INGREDIENT_DETAILS} exact>
-              <IngredientPage />
-            </Route>
-          </Switch>
+            </ProtectedRoute> */}
+            <Route path={URL_PROFILE} element={
+              <ProtectedRoute >
+                <Profile />
+              </ProtectedRoute>
+            } />
+            <Route path={URL_FORGOT} element={<Forgot />} />
+            <Route path={URL_RESET} element={<Reset />} />
+            <Route path={URL_REGISTER} element={<Register />} />
+            <Route path={URL_INGREDIENT_DETAILS} element={<IngredientPage />} />
+          </Routes>
         </Router>
       </ProvideAuth>
     </div>

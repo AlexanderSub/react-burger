@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Route, Redirect } from "react-router-dom"
+import { Route, Navigate } from "react-router-dom"
 import { useAuth } from '../../services/auth'
 
 const ProtectedRoute = ({children, ...rest}) => {
@@ -26,8 +26,7 @@ const ProtectedRoute = ({children, ...rest}) => {
         auth.user ? (
           children
         ) : (
-          <Redirect
-            to={{
+          <Navigate replace to={{
               pathname: '/login',
               state: { from: location }
             }}

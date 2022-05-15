@@ -1,17 +1,17 @@
 import React, { useCallback, useState } from "react";
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
-import {Link, Redirect, useHistory} from 'react-router-dom'
+import {Link, Navigate, useNavigate} from 'react-router-dom'
 import AppStyles from '../components/App/App.module.css'
 import { URL_REGISTER, URL_FORGOT, URL_MAIN } from '../utils/utils'
 import { useAuth } from "../services/auth";
 
 const Login = () => {
-  const history = useHistory()
+  const navigate = useNavigate()
   const goToPage = useCallback(
     (url) => {
-        history.replace({ pathname: url });
+      navigate({ pathname: url });
     },
-    [history]
+    [navigate]
   )
 
   let auth = useAuth()
@@ -39,8 +39,7 @@ const Login = () => {
 
   if (auth.user) {
     return (
-      <Redirect 
-        to={{
+      <Navigate replace to={{
           pathname: '/'
         }}
       />

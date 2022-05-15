@@ -1,16 +1,17 @@
 import React, { useCallback } from 'react'
 import AppHeaderStyles from './AppHeader.module.css'
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import { NavLink, useHistory } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { URL_PROFILE, URL_MAIN, URL_ORDERS } from '../../utils/utils'
 
 const AppHeader = () => {
-  const history = useHistory()
+  const navigate = useNavigate()
+
   const goToPage = useCallback(
     (url) => {
-        history.replace({ pathname: url });
+      navigate({ pathname: url });
     },
-    [history]
+    [navigate]
   ); 
 
   return (

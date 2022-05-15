@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
-import {Link, useHistory} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import AppStyles from '../components/App/App.module.css'
 import { URL_LOGIN, URL_MAIN } from '../utils/utils'
 
@@ -16,12 +16,12 @@ const Reset = () => {
     setValue({...form, [e.target.name]: e.target.value})
   }
 
-  const history = useHistory()
+  const navigate = useNavigate()
   const goToPage = useCallback(
     (url) => {
-        history.replace({ pathname: url });
+      navigate({ pathname: url });
     },
-    [history]
+    [navigate]
   );
 
   return (
