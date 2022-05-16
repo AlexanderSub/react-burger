@@ -51,14 +51,14 @@ const Profile = () => {
         <NavLink 
           to={URL_PROFILE} 
           className={`${ProfileStyles.link} text text_type_main-medium text_color_inactive`}
-          activeClassName={ProfileStyles.linkActive}
+          activeClassName={ProfileStyles.active}
         >
           Профиль
         </NavLink>
         <NavLink 
           to={URL_ORDERS} 
           className={`${ProfileStyles.link} text text_type_main-medium text_color_inactive`}
-          activeClassName={ProfileStyles.linkActive}
+          activeClassName={ProfileStyles.active}
         >
           История заказов
         </NavLink>

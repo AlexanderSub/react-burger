@@ -24,8 +24,8 @@
   cursor: pointer;
 }
 
-.linkActive {
-  color: inherit;
+.active {
+  color: #F2F2F3;
 }
 
 .text {
