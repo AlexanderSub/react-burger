@@ -90,3 +90,19 @@ export const resetPasswordRequest = async form => {
     body: JSON.stringify(form)
   })
 }
+
+export const updateUserRequest = async (name, email) => {
+  return await fetch('https://norma.nomoreparties.space/api/auth/user', {
+    method: 'PATCH',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + getCookie('accessToken')
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify({name, email})
+  })
+}

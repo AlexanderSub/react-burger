@@ -1,5 +1,5 @@
 import { checkResponse, deleteCookie, setCookie } from '../../utils/utils'
-import { forgotPasswordRequest, getUserRequest, loginRequest, logoutRequest, registerUserRequest, resetPasswordRequest } from '../api'
+import { forgotPasswordRequest, getUserRequest, loginRequest, logoutRequest, registerUserRequest, resetPasswordRequest, updateUserRequest } from '../api'
 
 export const REGISTER_REQUEST = 'REGISTER_REQUEST'
 export const REGISTER_FAILED = 'REGISTER_FAILED'
@@ -24,6 +24,10 @@ export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS'
 export const GET_USER_REQUEST = 'GET_USER_REQUEST'
 export const GET_USER_FAILED = 'GET_USER_FAILED'
 export const GET_USER_SUCCESS = 'GET_USER_SUCCESS'
+
+export const UPDATE_USER_REQUEST = 'UPDATE_USER_REQUEST'
+export const UPDATE_USER_FAILED = 'UPDATE_USER_FAILED'
+export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS'
 
 export function registerUser(form) {
   return function(dispatch) {
@@ -202,6 +206,38 @@ export function getUser() {
       console.log(err)
       dispatch({
         type: GET_USER_FAILED
+      })
+    })
+  }
+}
+
+export function updateUser(name, email) {
+  return function(dispatch) {
+    dispatch({
+      type: UPDATE_USER_REQUEST
+    })
+    updateUserRequest(name, email)
+    .then(checkResponse)
+    .then(res => {
+      console.log(res)
+      if (res && res.success) {
+        dispatch({
+          type: UPDATE_USER_SUCCESS,
+          auth: {
+            name: res.user.name,
+            email: res.user.email
+          }
+        })
+      } else {
+        dispatch({
+          type: UPDATE_USER_FAILED
+        })
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+      dispatch({
+        type: UPDATE_USER_FAILED
       })
     })
   }

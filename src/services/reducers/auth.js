@@ -1,4 +1,4 @@
-import {REGISTER_REQUEST, REGISTER_FAILED, REGISTER_SUCCESS, LOGIN_REQUEST, LOGIN_FAILED, LOGIN_SUCCESS, LOGOUT_REQUEST, LOGOUT_FAILED, LOGOUT_SUCCESS, FORGOT_PASSWORD_REQUEST, FORGOT_PASSWORD_FAILED, FORGOT_PASSWORD_SUCCESS, RESET_PASSWORD_REQUEST, RESET_PASSWORD_FAILED, RESET_PASSWORD_SUCCESS, GET_USER_SUCCESS, GET_USER_FAILED, GET_USER_REQUEST } from '../actions/auth'
+import {REGISTER_REQUEST, REGISTER_FAILED, REGISTER_SUCCESS, LOGIN_REQUEST, LOGIN_FAILED, LOGIN_SUCCESS, LOGOUT_REQUEST, LOGOUT_FAILED, LOGOUT_SUCCESS, FORGOT_PASSWORD_REQUEST, FORGOT_PASSWORD_FAILED, FORGOT_PASSWORD_SUCCESS, RESET_PASSWORD_REQUEST, RESET_PASSWORD_FAILED, RESET_PASSWORD_SUCCESS, GET_USER_SUCCESS, GET_USER_FAILED, GET_USER_REQUEST, UPDATE_USER_REQUEST, UPDATE_USER_FAILED, UPDATE_USER_SUCCESS } from '../actions/auth'
 
 const initialState = {
   name: '',
@@ -142,6 +142,28 @@ export const authReducer = (state = initialState, action) => {
         request: false,
         failed: false,
         authorized: true,
+        name: action.auth.name,
+        email: action.auth.email
+      }
+    }
+    case UPDATE_USER_REQUEST: {
+      return {
+        ...state,
+        request: true
+      }
+    }
+    case UPDATE_USER_FAILED: {
+      return {
+        ...state,
+        failed: true,
+        request: false
+      }
+    }
+    case UPDATE_USER_SUCCESS: {
+      return {
+        ...state,
+        request: false,
+        failed: false,
         name: action.auth.name,
         email: action.auth.email
       }
