@@ -8,13 +8,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutUser, updateUser } from "../../services/actions/auth";
 
 const Profile = () => {
-  // const [form, setValue] = useState({email: '', password: '', name: ''})
   const dispatch = useDispatch()
   const auth = useSelector(state => state.auth)
 
   let [name, setName] = useState(auth.authorized ? auth.name : '')
   const [email, setEmail] = useState(auth.authorized ? auth.email : '')
   const [password, setPassword] = useState('')
+
+  const [editName, setEditName] = useState(false)
+  const [editEmail, setEditEmail] = useState(false)
+  const [editPassword, setEditPassword] = useState(false)
 
   const logout = () => {
     dispatch(
@@ -26,24 +29,19 @@ const Profile = () => {
     dispatch(
       updateUser(name, email, password)
     )
+    setEditName(false)
+    setEditEmail(false)
+    setEditPassword(false)
   }
 
   const cancelChanges = () => {
     setName(auth.name)
     setEmail(auth.email)
     setPassword('')
+    setEditName(false)
+    setEditEmail(false)
+    setEditPassword(false)
   }
-
-
-  const inputRef = React.useRef(null)
-  const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0)
-    alert('Icon Click Callback')
-  }
-
-  // const onChange = e => {
-  //   setValue({...form, [e.target.name]: e.target.value})
-  // }
 
   return (
     <section className={`${ProfileStyles.profile} mt-30`}>
@@ -71,15 +69,15 @@ const Profile = () => {
             type={'text'}
             placeholder={'Имя'}
             onChange={(e) => setName(e.target.value)}
-            icon={'EditIcon'}
+            icon={ editName ? 'CloseIcon' : 'EditIcon'}
             value={name}
             name={'name'}
             error={false}
-            ref={inputRef}
-            // onIconClick={() => {update(form)}}
+            onIconClick={() => setEditName(!editName)}
             errorText={'Ошибка'}
             size={'default'}
             className={'mb-6'}
+            disabled={editName === false}
           />
         </div>
         <div className={`${AppStyles.input} mb-6`}>
@@ -87,14 +85,14 @@ const Profile = () => {
             type={'email'}
             placeholder={'Логин'}
             onChange={(e) => setEmail(e.target.value)}
-            icon={'EditIcon'}
+            icon={ editEmail ? 'CloseIcon' : 'EditIcon'}
             value={email}
             name={'email'}
             error={false}
-            ref={inputRef}
-            // onIconClick={() => {update(form)}}
+            onIconClick={() => setEditEmail(!editEmail)}
             errorText={'Ошибка'}
             size={'default'}
+            disabled={editEmail === false}
           />
         </div>
         <div className={`${AppStyles.input} mb-6`}>
@@ -102,24 +100,24 @@ const Profile = () => {
             type={'password'}
             placeholder={'Пароль'}
             onChange={(e) => setPassword(e.target.value)}
-            icon={'EditIcon'}
+            icon={ editPassword ? 'CloseIcon' : 'EditIcon'}
             value={password}
             name={'password'}
             error={false}
-            ref={inputRef}
-            // onIconClick={() => console.log(form.password)}
+            onIconClick={() => setEditPassword(!editPassword)}
             errorText={'Ошибка'}
             size={'default'}
+            disabled={editPassword === false}
           />
         </div>
-        <div className={ProfileStyles.buttons}>
+        {(editName || editEmail || editPassword) && <div className={ProfileStyles.buttons}>
           <Button type="secondary" size="medium" onClick={() => {cancelChanges()}}>
             Отмена
           </Button>
           <Button type="primary" size="medium" onClick={() => {update(name, email, password)}}>
             Сохранить
           </Button>
-        </div>
+        </div>}
       </div>
     </section>
   )

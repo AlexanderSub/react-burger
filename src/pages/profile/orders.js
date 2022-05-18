@@ -36,9 +36,6 @@ const Orders = () => {
         <p className={`${ProfileStyles.text} text text_type_main-medium text_color_inactive`}>В этом разделе вы можете просмотреть свою историю заказов</p>
       </div>
       <div className={ProfileStyles.middleContainer}>
-
-
-
       </div>
     </section>
   )

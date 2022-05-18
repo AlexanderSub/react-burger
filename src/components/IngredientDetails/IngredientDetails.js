@@ -1,11 +1,22 @@
 import React from 'react'
 import IngredientDetailsStyles from './IngredientDetails.module.css'
-import { ingredientPropType } from '../../utils/utils'
+import { useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { ClipLoader } from 'react-spinners'
 
-const IngredientDetails = ({ data }) => {
-  console.log(data)
+const IngredientDetails = () => {
+  const { id } = useParams()
+  const ingredients = useSelector(state => state.ingredients.data)
+  const currentIngredient = ingredients.find(ingredient => ingredient._id === id)
 
-  const { name, image_large, calories, proteins, fat, carbohydrates } = data
+  if (!ingredients) {
+    return <ClipLoader color={'#fff'} size={100} css={'position: absolute; top: 50%; left: 50%;'} />
+  }
+
+
+  console.log(currentIngredient)
+
+  const { name, image_large, calories, proteins, fat, carbohydrates } = currentIngredient
   const nutritionalValue = [
     {name: 'Калории,ккал', value: calories},
     {name: 'Белки, г', value: proteins},
@@ -36,8 +47,8 @@ const IngredientDetails = ({ data }) => {
   )
 }
 
-IngredientDetails.propTypes = {
-  data: ingredientPropType.isRequired
-}
+// IngredientDetails.propTypes = {
+//   data: ingredientPropType.isRequired
+// }
 
 export default IngredientDetails

@@ -1,16 +1,19 @@
 import React, { useCallback, useState } from "react";
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
-import {Link, Redirect, useHistory} from 'react-router-dom'
+import {Link, Redirect, useHistory, useLocation} from 'react-router-dom'
 import AppStyles from '../components/App/App.module.css'
 import { URL_LOGIN, URL_MAIN } from '../utils/constants'
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../services/actions/auth";
 
 const Register = () => {
-  const [form, setValue] = useState({email: '', password: '', name: ''})
-  const isAuthorized = useSelector(state => state.auth.authorized)
+  const location = useLocation()
   const dispatch = useDispatch()
   const history = useHistory()
+
+  const [form, setValue] = useState({email: '', password: '', name: ''})
+  const isAuthorized = useSelector(state => state.auth.authorized)
+  
   const goToPage = useCallback(
     (url) => {
         history.replace({ pathname: url });
@@ -28,11 +31,10 @@ const Register = () => {
   }
 
   if (isAuthorized) {
+    const { from } = location.state || { from: { pathname: '/' } }
     return (
       <Redirect 
-        to={{
-          pathname: '/'
-        }}
+        to={ from }
       />
     )
   } else {
