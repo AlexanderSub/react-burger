@@ -7,7 +7,7 @@ import { ingredientPropType } from '../../utils/utils'
 import { Link, useLocation } from 'react-router-dom'
 
 const Ingredient = ({data}) => {
-  const location = useLocation()
+  let location = useLocation()
   const id = data._id
 
   const fillings = useSelector(store => store.burgerConstructor.fillings)

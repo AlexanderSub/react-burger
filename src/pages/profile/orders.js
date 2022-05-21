@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import AppStyles from '../../components/App/App.module.css'
 import ProfileStyles from './profile.module.css'
 import { NavLink } from "react-router-dom"
-import { URL_PROFILE, URL_ORDERS, URL_MAIN } from '../../utils/constants'
+import { URL_PROFILE, URL_ORDERS } from '../../utils/constants'
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../services/actions/auth";
 

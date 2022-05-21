@@ -1,5 +1,5 @@
-import { checkResponse, deleteCookie, setCookie } from '../../utils/utils'
-import { forgotPasswordRequest, getUserRequest, loginRequest, logoutRequest, registerUserRequest, resetPasswordRequest, updateUserRequest } from '../api'
+import { URL } from '../../utils/constants'
+import { checkResponse, deleteCookie, getCookie, setCookie } from '../../utils/utils'
 
 export const REGISTER_REQUEST = 'REGISTER_REQUEST'
 export const REGISTER_FAILED = 'REGISTER_FAILED'
@@ -29,12 +29,27 @@ export const UPDATE_USER_REQUEST = 'UPDATE_USER_REQUEST'
 export const UPDATE_USER_FAILED = 'UPDATE_USER_FAILED'
 export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS'
 
+export const UPDATE_TOKEN_REQUEST = 'UPDATE_TOKEN_REQUEST'
+export const UPDATE_TOKEN_FAILED = 'UPDATE_TOKEN_FAILED'
+export const UPDATE_TOKEN_SUCCESS = 'UPDATE_TOKEN_SUCCESS'
+
 export function registerUser(form) {
   return function(dispatch) {
     dispatch({
       type: REGISTER_REQUEST
     })
-    registerUserRequest(form)
+    fetch(`${URL}/auth/register`, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify(form)
+    })
     .then(checkResponse)
     .then(res => {
       if (res && res.success) {
@@ -48,10 +63,6 @@ export function registerUser(form) {
             email: res.user.email
           }
         })
-      } else {
-        dispatch({
-          type: REGISTER_FAILED
-        })
       }
     })
     .catch((err) => {
@@ -63,12 +74,23 @@ export function registerUser(form) {
   }
 }
 
-export function loginUser(form) {
+export function loginUserRequest(form) {
   return function(dispatch) {
     dispatch({
       type: LOGIN_REQUEST
     })
-    loginRequest(form)
+    fetch(`${URL}/auth/login`, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify(form)
+    })
     .then(checkResponse)
     .then(res => {
       if (res && res.success) {
@@ -81,10 +103,6 @@ export function loginUser(form) {
             name: res.user.name,
             email: res.user.email
           }
-        })
-      } else {
-        dispatch({
-          type: LOGIN_FAILED
         })
       }
     })
@@ -102,7 +120,20 @@ export function logoutUser() {
     dispatch({
       type: LOGOUT_REQUEST
     })
-    logoutRequest()
+    fetch(`${URL}/auth/logout`, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({
+        'token': `${getCookie('refreshToken')}`
+      })
+    })
     .then(checkResponse)
     .then(res => {
       if (res && res.success) {
@@ -110,10 +141,6 @@ export function logoutUser() {
         deleteCookie('refreshToken')
         dispatch({
           type: LOGOUT_SUCCESS,
-        })
-      } else {
-        dispatch({
-          type: LOGOUT_FAILED
         })
       }
     })
@@ -131,16 +158,23 @@ export function forgotPasswordUser(form) {
     dispatch({
       type: FORGOT_PASSWORD_REQUEST
     })
-    forgotPasswordRequest(form)
+    fetch(`${URL}/password-reset`, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify(form)
+    })
     .then(checkResponse)
     .then(res => {
       if (res && res.success) {
         dispatch({
           type: FORGOT_PASSWORD_SUCCESS,
-        })
-      } else {
-        dispatch({
-          type: FORGOT_PASSWORD_FAILED
         })
       }
     })
@@ -158,16 +192,23 @@ export function resetPasswordUser(form) {
     dispatch({
       type: RESET_PASSWORD_REQUEST
     })
-    resetPasswordRequest(form)
+    fetch(`${URL}/password-reset/reset`, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify(form)
+    })
     .then(checkResponse)
     .then(res => {
       if (res && res.success) {
         dispatch({
           type: RESET_PASSWORD_SUCCESS,
-        })
-      } else {
-        dispatch({
-          type: RESET_PASSWORD_FAILED
         })
       }
     })
@@ -185,7 +226,18 @@ export function getUser() {
     dispatch({
       type: GET_USER_REQUEST
     })
-    getUserRequest()
+    fetch(`${URL}/auth/user`, {
+      method: 'GET',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + getCookie('accessToken')
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer'
+    })
     .then(checkResponse)
     .then(res => {
       if (res && res.success) {
@@ -196,17 +248,21 @@ export function getUser() {
             email: res.user.email
           }
         })
-      } else {
-        dispatch({
-          type: GET_USER_FAILED
-        })
       }
     })
     .catch((err) => {
       console.log(err)
-      dispatch({
-        type: GET_USER_FAILED
-      })
+      if ((err.message === 'jwt expired') || (err.message === 'Token is invalid')) {
+        dispatch(updateToken())
+        .then(() => {
+          dispatch(getUser())
+        })
+      } else {
+        console.log(err);
+        dispatch({
+          type: GET_USER_FAILED
+        })
+      }
     })
   }
 }
@@ -216,10 +272,21 @@ export function updateUser(name, email) {
     dispatch({
       type: UPDATE_USER_REQUEST
     })
-    updateUserRequest(name, email)
+    fetch(`${URL}/auth/user`, {
+      method: 'PATCH',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + getCookie('accessToken')
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({name, email})
+    })
     .then(checkResponse)
     .then(res => {
-      console.log(res)
       if (res && res.success) {
         dispatch({
           type: UPDATE_USER_SUCCESS,
@@ -228,16 +295,51 @@ export function updateUser(name, email) {
             email: res.user.email
           }
         })
-      } else {
-        dispatch({
-          type: UPDATE_USER_FAILED
-        })
       }
     })
     .catch((err) => {
       console.log(err)
       dispatch({
         type: UPDATE_USER_FAILED
+      })
+    })
+  }
+}
+
+export function updateToken() {
+  return function(dispatch) {
+    dispatch({
+      type: UPDATE_TOKEN_REQUEST
+    })
+    fetch(`${URL}/auth/token`, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({
+        'token': `${getCookie('refreshToken')}`
+      })
+    })
+    .then(checkResponse)
+    .then(res => {
+      if (res && res.success) {
+        let accessToken = res.accessToken.split('Bearer ')[1]
+        setCookie('accessToken', accessToken)
+        setCookie('refreshToken', res.refreshToken)
+        dispatch({
+          type: UPDATE_TOKEN_SUCCESS
+        })
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+      dispatch({
+        type: UPDATE_TOKEN_FAILED
       })
     })
   }

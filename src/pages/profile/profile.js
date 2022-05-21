@@ -3,7 +3,7 @@ import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-component
 import AppStyles from '../../components/App/App.module.css'
 import ProfileStyles from './profile.module.css'
 import { NavLink } from "react-router-dom"
-import { URL_PROFILE, URL_ORDERS, URL_MAIN } from '../../utils/constants'
+import { URL_PROFILE, URL_ORDERS } from '../../utils/constants'
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser, updateUser } from "../../services/actions/auth";
 

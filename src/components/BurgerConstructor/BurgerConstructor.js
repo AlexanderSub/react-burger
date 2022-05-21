@@ -9,9 +9,13 @@ import { useDrop } from 'react-dnd'
 import { ADD_BUN, ADD_FILLING, GENERATE_ID, MOVE_ITEM, RESET_CONSTRUCTOR } from '../../services/actions/constructor'
 import { v4 as uuidv4 } from 'uuid'
 import { BurgerConstructorItem } from '../BurgerConstructorItem/BurgerConstructorItem'
+import { useHistory } from 'react-router-dom'
+import { URL_LOGIN } from '../../utils/constants'
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch()
+  const history = useHistory()
+
   const data = useSelector(store => store.ingredients.data)
   const bun = useSelector(store => store.burgerConstructor.bun)
   const fillings = useSelector(store => store.burgerConstructor.fillings)
@@ -22,6 +26,8 @@ const BurgerConstructor = () => {
   const orderId = items.map(item => item._id)
   const order = useSelector(store => store.order.order)
   const openOrderDetails = useSelector(state => state.order.isOpen)
+
+  const isAuthorized = useSelector(state => state.auth.authorized)
 
   const [{ bunHover }, drop] = useDrop({
     accept: 'bun',
@@ -73,6 +79,10 @@ const BurgerConstructor = () => {
   )
 
   const orderDetails = () => {
+    if (!isAuthorized) {
+      history.push({pathname: URL_LOGIN, state: {prevPathname: history.location.pathname}})
+      return
+    }
     dispatch(getOrder(orderId))
     dispatch({
       type: OPEN_ORDER_DETAILS
@@ -90,6 +100,12 @@ const BurgerConstructor = () => {
  
   return (
     <section className={`${BurgerConstructorStyles.section} mt-25`}>
+      {(bun.length === 0 || fillings.length === 0) && 
+        <div className={BurgerConstructorStyles.containerEmpty}>
+          <p className={`${BurgerConstructorStyles.text} text text_type_main-medium`}>
+            Перетащите сюда булку и любые ингредиенты, чтобы сделать заказ
+          </p>
+        </div>}
       <div className={`${BurgerConstructorStyles.container} mb-10`} style={{borderColor}} ref={drop}>
         {bun[0] && (<div className={'ml-6'}>
           <ConstructorElement
@@ -132,7 +148,7 @@ const BurgerConstructor = () => {
           <p className={`text text_type_digits-medium mr-2`}>{burgerPrice ? burgerPrice : 0}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button type='primary' size='large' onClick={orderDetails} disabled={items.length === 0}>
+        <Button type='primary' size='large' onClick={orderDetails} disabled={bun.length === 0 || fillings.length === 0 }>
           Оформить заказ
         </Button>
       </div>
