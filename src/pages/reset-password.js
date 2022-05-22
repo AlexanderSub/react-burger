@@ -9,16 +9,20 @@ import { resetPasswordUser } from "../services/actions/auth";
 const Reset = () => {
   const dispatch = useDispatch()
   const [form, setValue] = useState({password: '', token: ''})
-  const isAuthorized = useSelector(state => state.auth.authorized)
+  const isPasswordForgotten = useSelector(state => state.auth.isPasswordForgotten)
 
   const onChange = e => {
     setValue({...form, [e.target.name]: e.target.value})
   }
 
-  const resetPassword = form => {
-    dispatch(resetPasswordUser(form))
-    goToPage(URL_MAIN)
-  }
+  const resetPassword = useCallback(
+    e => {
+      e.preventDefault()
+      dispatch(resetPasswordUser(form))
+      goToPage(URL_MAIN)
+    },
+    [dispatch, form]
+  )
 
   const history = useHistory()
   const goToPage = useCallback(
@@ -28,18 +32,18 @@ const Reset = () => {
     [history]
   )
 
-  if (isAuthorized) {
-    return (
-      <Redirect 
-        to={{
-          pathname: '/'
-        }}
-      />
-    )
-  } else {
+  // if (!isPasswordForgotten) {
+  //   return (
+  //     <Redirect 
+  //       to={{
+  //         pathname: '/'
+  //       }}
+  //     />
+  //   )
+  // } else {
     return (
       <div className={AppStyles.login}>
-        <div className={AppStyles.card}>
+        <form onSubmit={resetPassword} className={AppStyles.card}>
           <h4 className={`text text_type_main-medium mb-6`}>Восстановление пароля</h4>
           <div className={`${AppStyles.input} mb-6`}>
             <PasswordInput
@@ -65,19 +69,25 @@ const Reset = () => {
             />
           </div>
           <div className={'mb-20'}>
-            <Button onClick={() => resetPassword(form)} type="primary" size="medium">Сохранить</Button>
+            <Button
+              type="primary"
+              size="medium"
+              disabled={form.password.length === 0 || form.token.length === 0}
+            >
+              Сохранить
+            </Button>
           </div>
           
           <span className={'text text_type_main-default text_color_inactive'}>
             Вспомнили пароль?
             <Link to={URL_LOGIN} className={AppStyles.linkText}> Войти</Link>
           </span>
-        </div>
+        </form>
       </div>
     )
   }
 
   
-}
+// }
 
 export default Reset

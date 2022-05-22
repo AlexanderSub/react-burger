@@ -25,10 +25,14 @@ const Register = () => {
     setValue({...form, [e.target.name]: e.target.value})
   }
 
-  const register = (form) => {
-    dispatch(registerUser(form))
-    goToPage(URL_MAIN)
-  }
+  const register = useCallback(
+    e => {
+      e.preventDefault()
+      dispatch(registerUser(form))
+      goToPage(URL_MAIN)
+    },
+    [dispatch, form]
+  )
 
   if (isAuthorized) {
     const { from } = location.state || { from: { pathname: '/' } }
@@ -40,7 +44,7 @@ const Register = () => {
   } else {
     return (
       <div className={AppStyles.login}>
-        <div className={AppStyles.card}>
+        <form onSubmit={register} className={AppStyles.card}>
           <h4 className={`text text_type_main-medium mb-6`}>Регистрация</h4>
           <div className={`${AppStyles.input} mb-6`}>
             <Input
@@ -80,10 +84,9 @@ const Register = () => {
             />
           </div>
           <div className={'mb-20'}>
-            <Button 
-              onClick={() => register(form)} 
-              type="primary" 
-              size="medium" 
+            <Button
+              type="primary"
+              size="medium"
               disabled={form.name.length === 0 || form.email.length === 0 || form.password.length === 0}
             >
               Зарегистрироваться
@@ -94,7 +97,7 @@ const Register = () => {
           Уже зарегистрированы?
             <Link to={URL_LOGIN} className={AppStyles.linkText}> Войти</Link>
           </span>
-        </div>
+        </form>
       </div>
     )
   }

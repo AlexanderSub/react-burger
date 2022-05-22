@@ -11,7 +11,7 @@ const Profile = () => {
   const dispatch = useDispatch()
   const auth = useSelector(state => state.auth)
 
-  let [name, setName] = useState(auth.authorized ? auth.name : '')
+  const [name, setName] = useState(auth.authorized ? auth.name : '')
   const [email, setEmail] = useState(auth.authorized ? auth.email : '')
   const [password, setPassword] = useState('')
 

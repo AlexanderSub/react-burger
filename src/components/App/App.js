@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import AppStyles from './App.module.css'
 import AppHeader from '../AppHeader/AppHeader'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getIngredients } from '../../services/actions/ingredients'
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
 import { URL_MAIN, URL_LOGIN, URL_PROFILE, URL_FORGOT, URL_RESET, URL_REGISTER, URL_INGREDIENTS, URL_INGREDIENT_DETAILS, URL_ORDERS } from '../../utils/constants'
@@ -24,9 +24,7 @@ const App = () => {
   const location = useLocation()
   const history = useHistory()
 
-  let id = location.pathname.split('/').pop()
-
-  let background = location.state && location.state.background
+  const background = location.state && location.state.background
 
   const closeIngredientDetails = () => {
     history.goBack()
@@ -34,11 +32,15 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getIngredients())
+  }, [])
+
+  useEffect(() => {
     const accessToken = getCookie('accessToken')
     if (accessToken) {
       dispatch(getUser())
     }
   }, [dispatch])
+
 
   return (
     <div className={AppStyles.page}>
@@ -73,7 +75,7 @@ const App = () => {
         background && (
           <Route path={URL_INGREDIENT_DETAILS}>
             <Modal closeModal={closeIngredientDetails}>
-              <IngredientDetails id={id} />
+              <IngredientDetails />
             </Modal>
           </Route>
         )

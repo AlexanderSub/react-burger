@@ -10,6 +10,7 @@ const Forgot = () => {
   const dispatch = useDispatch()
   const [form, setValue] = useState({email: ''})
   const isAuthorized = useSelector(state => state.auth.authorized)
+  const isPasswordForgotten = useSelector(state => state.auth.isPasswordForgotten)
 
   const history = useHistory()
   const goToPage = useCallback(
@@ -23,10 +24,13 @@ const Forgot = () => {
     setValue({...form, [e.target.name]: e.target.value})
   }
 
-  const forgotPassword = (form) => {
-    dispatch(forgotPasswordUser(form))
-    goToPage(URL_RESET)
-  }
+  const forgotPassword = useCallback(
+    e => {
+      e.preventDefault()
+      dispatch(forgotPasswordUser(form))
+      goToPage(URL_RESET)
+    }
+  )
 
   if (isAuthorized) {
     return (
@@ -39,7 +43,7 @@ const Forgot = () => {
   } else {
     return (
       <div className={AppStyles.login}>
-        <div className={AppStyles.card}>
+        <form onSubmit={forgotPassword} className={AppStyles.card}>
           <h4 className={`text text_type_main-medium mb-6`}>Восстановление пароля</h4>
           <div className={`${AppStyles.input} mb-6`}>
             <Input
@@ -52,14 +56,14 @@ const Forgot = () => {
             />
           </div>
           <div className={'mb-20'}>
-            <Button onClick={() => forgotPassword(form)} type="primary" size="medium" disabled={form.email.length === 0}>Восстановить</Button>
+            <Button type="primary" size="medium" disabled={form.email.length === 0}>Восстановить</Button>
           </div>
           
           <span className={'text text_type_main-default text_color_inactive'}>
             Вспомнили пароль?
             <Link to={URL_LOGIN} className={AppStyles.linkText}> Войти</Link>
           </span>
-        </div>
+        </form>
       </div>
     )
   }

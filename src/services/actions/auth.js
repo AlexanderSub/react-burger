@@ -1,5 +1,5 @@
 import { URL } from '../../utils/constants'
-import { checkResponse, deleteCookie, getCookie, setCookie } from '../../utils/utils'
+import { checkResponse, deleteCookie, forgotPasswordRequest, getCookie, setCookie } from '../../utils/utils'
 
 export const REGISTER_REQUEST = 'REGISTER_REQUEST'
 export const REGISTER_FAILED = 'REGISTER_FAILED'
@@ -158,20 +158,22 @@ export function forgotPasswordUser(form) {
     dispatch({
       type: FORGOT_PASSWORD_REQUEST
     })
-    fetch(`${URL}/password-reset`, {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-      body: JSON.stringify(form)
-    })
+    forgotPasswordRequest(form)
+    // fetch(`${URL}/password-reset`, {
+    //   method: 'POST',
+    //   mode: 'cors',
+    //   cache: 'no-cache',
+    //   credentials: 'same-origin',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   redirect: 'follow',
+    //   referrerPolicy: 'no-referrer',
+    //   body: JSON.stringify(form)
+    // })
     .then(checkResponse)
     .then(res => {
+      console.log(res)
       if (res && res.success) {
         dispatch({
           type: FORGOT_PASSWORD_SUCCESS,

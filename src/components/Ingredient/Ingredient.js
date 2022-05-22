@@ -3,7 +3,7 @@ import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-c
 import { useSelector } from "react-redux"
 import IngredientStyles from './Ingredient.module.css'
 import { useDrag } from 'react-dnd'
-import { ingredientPropType } from '../../utils/utils'
+import { ingredientPropType } from '../../utils/types'
 import { Link, useLocation } from 'react-router-dom'
 
 const Ingredient = ({data}) => {

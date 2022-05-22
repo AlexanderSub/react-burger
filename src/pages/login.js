@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import {Link, Redirect, useLocation} from 'react-router-dom'
 import AppStyles from '../components/App/App.module.css'
@@ -8,7 +8,7 @@ import { loginUserRequest } from "../services/actions/auth";
 
 const Login = () => {
   const dispatch = useDispatch()
-  const location = useLocation() 
+  const location = useLocation()
   const isAuthorized = useSelector(state => state.auth.authorized)
 
   const [form, setValue] = useState({email: '', password: ''})
@@ -17,12 +17,16 @@ const Login = () => {
     setValue({...form, [e.target.name]: e.target.value})
   }
 
-  const login = (form) => {
-    dispatch(loginUserRequest(form))
-  }
+  const login = useCallback(
+    e => {
+      e.preventDefault()
+      dispatch(loginUserRequest(form))
+    },
+    [dispatch, form]
+  )
 
   if (isAuthorized) {
-    const { from } = location.state || { from: { pathname: URL_MAIN } }
+    let { from } = location.state || { from: { pathname: URL_MAIN } }
     return (
       <Redirect 
         to={ from }
@@ -31,7 +35,7 @@ const Login = () => {
   } else {
     return (
       <div className={AppStyles.login}>
-        <div className={AppStyles.card}>
+        <form onSubmit={login} className={AppStyles.card}>
           <h4 className={`text text_type_main-medium mb-6`}>Вход</h4>
           <div className={`${AppStyles.input} mb-6`}>
             <Input
@@ -55,7 +59,7 @@ const Login = () => {
             />
           </div>
           <div className={'mb-20'}>
-            <Button onClick={() => login(form)} type="primary" size="medium" disabled={form.password.length === 0 || form.email.length === 0}>Войти</Button>
+            <Button type='primary' size="medium" disabled={form.password.length === 0 || form.email.length === 0}>Войти</Button>
           </div>
           
           <span className={'text text_type_main-default text_color_inactive mb-4'}>
@@ -66,7 +70,7 @@ const Login = () => {
             Забыли пароль?
             <Link to={URL_FORGOT} className={AppStyles.linkText}> Восстановить пароль</Link>
           </span>
-        </div>
+        </form>
       </div>
     )
   }

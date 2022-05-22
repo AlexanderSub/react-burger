@@ -1,8 +1,10 @@
 import React from 'react'
 import IngredientDetailsStyles from './IngredientDetails.module.css'
 import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 
-const IngredientDetails = ({id}) => {
+const IngredientDetails = () => {
+  const { id } = useParams()
   const ingredients = useSelector(state => state.ingredients.data)
   const currentIngredient = ingredients.find(ingredient => ingredient._id === id)
 

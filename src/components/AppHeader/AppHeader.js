@@ -22,7 +22,9 @@ const AppHeader = () => {
             </NavLink>
           </li>
           <li className={AppHeaderStyles.navItem}>
-            <Logo />
+            <NavLink to={URL_MAIN}>
+              <Logo />
+            </NavLink>
           </li>
           <li className={AppHeaderStyles.navItem}>
             <NavLink to={URL_PROFILE} className={AppHeaderStyles.button} activeClassName={AppHeaderStyles.active}>
