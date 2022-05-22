@@ -1,7 +1,62 @@
 .header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background: #1C1C21;
+}
+
+.nav {
+  width: 80%;
+}
+
+.list {
+  list-style-type: none;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  justify-items: center;
-  width: 100%;
-  background: #1C1C21;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+
+.navItem:nth-child(1) {
+  grid-column: 1/2;
+  grid-row: 1/2;
+}
+
+.navItem:nth-child(2) {
+  grid-column: 1/2;
+  grid-row: 1/2;
+  justify-self: end;
+}
+
+.navItem:nth-child(3) {
+  justify-self: center;
+}
+
+.navItem:nth-child(4) {
+  justify-self: end;
+}
+
+
+.button {
+  border: none;
+  background-color: inherit;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.3s;
+  cursor: pointer;
+}
+
+.link:hover {
+  opacity: .8;
+}
+
+.active p {
+  color: #F2F2F3;
+}
+
+.active svg {
+  fill: #F2F2F3;
 }
