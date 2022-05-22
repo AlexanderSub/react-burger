@@ -8,5 +8,6 @@ export const URL_PROFILE = '/profile'
 export const URL_INGREDIENTS = '/ingredients'
 export const URL_INGREDIENT_DETAILS = '/ingredients/:id'
 export const URL_ORDERS = '/orders'
+export const URL_FEED = '/feed'
 
 export const loaderStyles = 'position: absolute; top: 45vh; left: 50vw;'

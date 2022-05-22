@@ -4,7 +4,7 @@ import AppHeader from '../AppHeader/AppHeader'
 import { useDispatch } from 'react-redux'
 import { getIngredients } from '../../services/actions/ingredients'
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
-import { URL_MAIN, URL_LOGIN, URL_PROFILE, URL_FORGOT, URL_RESET, URL_REGISTER, URL_INGREDIENT_DETAILS, URL_ORDERS } from '../../utils/constants'
+import { URL_MAIN, URL_LOGIN, URL_PROFILE, URL_FORGOT, URL_RESET, URL_REGISTER, URL_INGREDIENT_DETAILS, URL_ORDERS, URL_FEED } from '../../utils/constants'
 import Main from '../../pages/main'
 import Login from '../../pages/login'
 import Profile from '../../pages/profile/profile'
@@ -18,6 +18,7 @@ import { getCookie } from '../../utils/utils'
 import { getUserData } from '../../services/actions/auth'
 import Modal from '../Modal/Modal'
 import IngredientDetails from '../IngredientDetails/IngredientDetails'
+import { Feed } from '../../pages/feed'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -69,6 +70,9 @@ const App = () => {
         </Route>
         <Route path={URL_INGREDIENT_DETAILS}>
           <IngredientPage />
+        </Route>
+        <Route path={URL_FEED}>
+          <Feed />
         </Route>
       </Switch>
       {
