@@ -4,7 +4,7 @@ import {Link, Redirect, useHistory, useLocation} from 'react-router-dom'
 import AppStyles from '../components/App/App.module.css'
 import { URL_LOGIN, URL_MAIN } from '../utils/constants'
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../services/actions/auth";
+import { register } from "../services/actions/auth";
 
 const Register = () => {
   const location = useLocation()
@@ -25,10 +25,10 @@ const Register = () => {
     setValue({...form, [e.target.name]: e.target.value})
   }
 
-  const register = useCallback(
+  const registerHandler = useCallback(
     e => {
       e.preventDefault()
-      dispatch(registerUser(form))
+      dispatch(register(form))
       goToPage(URL_MAIN)
     },
     [dispatch, form]
@@ -44,7 +44,7 @@ const Register = () => {
   } else {
     return (
       <div className={AppStyles.login}>
-        <form onSubmit={register} className={AppStyles.card}>
+        <form onSubmit={registerHandler} className={AppStyles.card}>
           <h4 className={`text text_type_main-medium mb-6`}>Регистрация</h4>
           <div className={`${AppStyles.input} mb-6`}>
             <Input

@@ -28,6 +28,7 @@ import {
 const initialState = {
   name: '',
   email: '',
+  isAuthChecked: false,
   authorized: false,
   
   registerRequest: false,
@@ -173,14 +174,16 @@ export const authReducer = (state = initialState, action) => {
     case GET_USER_REQUEST: {
       return {
         ...state,
-        getUserRequest: true
+        getUserRequest: true,
+        isAuthChecked: false,
       }
     }
     case GET_USER_FAILED: {
       return {
         ...state,
         getUserFailed: true,
-        getUserRequest: false
+        getUserRequest: false,
+        isAuthChecked: true,
       }
     }
     case GET_USER_SUCCESS: {
@@ -188,6 +191,7 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         getUserRequest: false,
         getUserFailed: false,
+        isAuthChecked: true,
         authorized: true,
         name: action.auth.name,
         email: action.auth.email

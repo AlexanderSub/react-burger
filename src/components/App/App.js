@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react'
 import AppStyles from './App.module.css'
 import AppHeader from '../AppHeader/AppHeader'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { getIngredients } from '../../services/actions/ingredients'
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
-import { URL_MAIN, URL_LOGIN, URL_PROFILE, URL_FORGOT, URL_RESET, URL_REGISTER, URL_INGREDIENTS, URL_INGREDIENT_DETAILS, URL_ORDERS } from '../../utils/constants'
+import { URL_MAIN, URL_LOGIN, URL_PROFILE, URL_FORGOT, URL_RESET, URL_REGISTER, URL_INGREDIENT_DETAILS, URL_ORDERS } from '../../utils/constants'
 import Main from '../../pages/main'
 import Login from '../../pages/login'
 import Profile from '../../pages/profile/profile'
@@ -15,7 +15,7 @@ import IngredientPage from '../../pages/ingredient-page/ingredient-page'
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 import Orders from '../../pages/profile/orders'
 import { getCookie } from '../../utils/utils'
-import { getUser } from '../../services/actions/auth'
+import { getUserData } from '../../services/actions/auth'
 import Modal from '../Modal/Modal'
 import IngredientDetails from '../IngredientDetails/IngredientDetails'
 
@@ -37,7 +37,7 @@ const App = () => {
   useEffect(() => {
     const accessToken = getCookie('accessToken')
     if (accessToken) {
-      dispatch(getUser())
+      dispatch(getUserData())
     }
   }, [dispatch])
 

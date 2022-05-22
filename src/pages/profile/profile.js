@@ -5,7 +5,7 @@ import ProfileStyles from './profile.module.css'
 import { NavLink } from "react-router-dom"
 import { URL_PROFILE, URL_ORDERS } from '../../utils/constants'
 import { useDispatch, useSelector } from "react-redux";
-import { logoutUser, updateUser } from "../../services/actions/auth";
+import { logout, updateUserData } from "../../services/actions/auth";
 
 const Profile = () => {
   const dispatch = useDispatch()
@@ -19,15 +19,15 @@ const Profile = () => {
   const [editEmail, setEditEmail] = useState(false)
   const [editPassword, setEditPassword] = useState(false)
 
-  const logout = () => {
+  const logoutHandler = () => {
     dispatch(
-      logoutUser()
+      logout()
     )
   }
 
   const update = (name, email, password) => {
     dispatch(
-      updateUser(name, email, password)
+      updateUserData(name, email, password)
     )
     setEditName(false)
     setEditEmail(false)
@@ -60,7 +60,7 @@ const Profile = () => {
         >
           История заказов
         </NavLink>
-        <p onClick={logout} className={`${ProfileStyles.link} text text_type_main-medium text_color_inactive mb-20`}>Выход</p>
+        <p onClick={logoutHandler} className={`${ProfileStyles.link} text text_type_main-medium text_color_inactive mb-20`}>Выход</p>
         <p className={`${ProfileStyles.text} text text_type_main-medium text_color_inactive`}>В этом разделе вы можете изменить свои персональные данные</p>
       </div>
       <div className={ProfileStyles.middleContainer}>

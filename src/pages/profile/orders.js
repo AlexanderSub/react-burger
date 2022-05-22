@@ -3,14 +3,14 @@ import ProfileStyles from './profile.module.css'
 import { NavLink } from "react-router-dom"
 import { URL_PROFILE, URL_ORDERS } from '../../utils/constants'
 import { useDispatch } from "react-redux";
-import { logoutUser } from "../../services/actions/auth";
+import { logout } from "../../services/actions/auth";
 
 const Orders = () => {
   const dispatch = useDispatch()
 
-  const logout = () => {
+  const logoutHandler = () => {
     dispatch(
-      logoutUser()
+      logout()
     )
   }
 
@@ -31,7 +31,7 @@ const Orders = () => {
         >
           История заказов
         </NavLink>
-        <p onClick={logout} className={`${ProfileStyles.link} text text_type_main-medium text_color_inactive mb-20`}>Выход</p>
+        <p onClick={logoutHandler} className={`${ProfileStyles.link} text text_type_main-medium text_color_inactive mb-20`}>Выход</p>
         <p className={`${ProfileStyles.text} text text_type_main-medium text_color_inactive`}>В этом разделе вы можете просмотреть свою историю заказов</p>
       </div>
       <div className={ProfileStyles.middleContainer}>

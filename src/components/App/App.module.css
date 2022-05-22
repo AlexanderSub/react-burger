@@ -23,8 +23,6 @@
   align-items: center;
 }
 
-
-
 .card {
   display: flex;
   flex-direction: column;
@@ -41,4 +39,16 @@
 .input,
 .input div:not(input + div) {
   width: 100%;
+}
+
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute; 
+  top: 45vh; 
+  left: 50vw;
+  width: 200px;
+  text-align: center;
+  transform: translate(-50%, -50%);
 }

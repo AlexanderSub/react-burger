@@ -1,5 +1,4 @@
-import { URL } from '../../utils/constants'
-import { checkResponse, deleteCookie, forgotPasswordRequest, getCookie, setCookie } from '../../utils/utils'
+import { checkResponse, deleteCookie, forgotPassword, getUser, loginUser, logoutUser, refreshToken, registerUser, resetPassword, setCookie, updateUser } from '../../utils/utils'
 
 export const REGISTER_REQUEST = 'REGISTER_REQUEST'
 export const REGISTER_FAILED = 'REGISTER_FAILED'
@@ -33,316 +32,275 @@ export const UPDATE_TOKEN_REQUEST = 'UPDATE_TOKEN_REQUEST'
 export const UPDATE_TOKEN_FAILED = 'UPDATE_TOKEN_FAILED'
 export const UPDATE_TOKEN_SUCCESS = 'UPDATE_TOKEN_SUCCESS'
 
-export function registerUser(form) {
+//Регистрация в системе
+const registerRequest = () => ({
+  type: REGISTER_REQUEST
+})
+
+const registerSuccess = (res) => ({
+  type: REGISTER_SUCCESS,
+  auth: {
+    name: res.user.name,
+    email: res.user.email
+  }
+})
+
+const registerFailed = () => ({
+  type: REGISTER_FAILED
+})
+
+export function register(form) {
   return function(dispatch) {
-    dispatch({
-      type: REGISTER_REQUEST
-    })
-    fetch(`${URL}/auth/register`, {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-      body: JSON.stringify(form)
-    })
+    dispatch(registerRequest())
+    registerUser(form)
     .then(checkResponse)
     .then(res => {
       if (res && res.success) {
         let accessToken = res.accessToken.split('Bearer ')[1]
         setCookie('accessToken', accessToken)
-        setCookie('refreshToken', res.refreshToken)
-        dispatch({
-          type: REGISTER_SUCCESS,
-          auth: {
-            name: res.user.name,
-            email: res.user.email
-          }
-        })
+        localStorage.setItem('refreshToken', res.refreshToken)
+        dispatch(registerSuccess(res))
       }
     })
     .catch((err) => {
       console.log(err)
-      dispatch({
-        type: REGISTER_FAILED
-      })
+      dispatch(registerFailed())
     })
   }
 }
+
+//Вход в систему
+const loginRequest = () => ({
+  type: LOGIN_REQUEST
+})
+
+const loginSuccess = (res) => ({
+  type: LOGIN_SUCCESS,
+  auth: {
+    name: res.user.name,
+    email: res.user.email
+  }
+})
+
+const loginFailed = () => ({
+  type: LOGIN_FAILED
+})
 
 export function loginUserRequest(form) {
   return function(dispatch) {
-    dispatch({
-      type: LOGIN_REQUEST
-    })
-    fetch(`${URL}/auth/login`, {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-      body: JSON.stringify(form)
-    })
+    dispatch(loginRequest())
+    loginUser(form)
     .then(checkResponse)
     .then(res => {
       if (res && res.success) {
         let accessToken = res.accessToken.split('Bearer ')[1]
         setCookie('accessToken', accessToken)
-        setCookie('refreshToken', res.refreshToken)
-        dispatch({
-          type: LOGIN_SUCCESS,
-          auth: {
-            name: res.user.name,
-            email: res.user.email
-          }
-        })
+        localStorage.setItem('refreshToken', res.refreshToken)
+        dispatch(loginSuccess(res))
       }
     })
     .catch((err) => {
       console.log(err)
-      dispatch({
-        type: LOGIN_FAILED
-      })
+      dispatch(loginFailed())
     })
   }
 }
 
-export function logoutUser() {
+//Выход из системы
+const logoutRequest = () => ({
+  type: LOGOUT_REQUEST
+})
+
+const logoutSuccess = () => ({
+  type: LOGOUT_SUCCESS
+})
+
+const logoutFailed = () => ({
+  type: LOGOUT_FAILED
+})
+
+export function logout() {
   return function(dispatch) {
-    dispatch({
-      type: LOGOUT_REQUEST
-    })
-    fetch(`${URL}/auth/logout`, {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-      body: JSON.stringify({
-        'token': `${getCookie('refreshToken')}`
-      })
-    })
+    dispatch(logoutRequest())
+    logoutUser()
     .then(checkResponse)
     .then(res => {
       if (res && res.success) {
         deleteCookie('accessToken')
-        deleteCookie('refreshToken')
-        dispatch({
-          type: LOGOUT_SUCCESS,
+        localStorage.removeItem('refreshToken')
+        dispatch(logoutSuccess())
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+      dispatch(logoutFailed())
+    })
+  }
+}
+
+//Запрос сброса пароля
+const forgotPasswordRequest = () => ({
+  type: FORGOT_PASSWORD_REQUEST
+})
+
+const forgotPasswordSuccess = () => ({
+  type: FORGOT_PASSWORD_SUCCESS,
+})
+
+const forgotPasswordFailed = () => ({
+  type: FORGOT_PASSWORD_FAILED
+})
+
+export function forgotPasswordUser(form) {
+  return function(dispatch) {
+    dispatch(forgotPasswordRequest())
+    forgotPassword(form)
+    .then(checkResponse)
+    .then(res => {
+      if (res && res.success) {
+        dispatch(forgotPasswordSuccess())
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+      dispatch(forgotPasswordFailed())
+    })
+  }
+}
+
+//Сброс пароля
+const resetPasswordRequest = () => ({
+  type: RESET_PASSWORD_REQUEST
+})
+
+const resetPasswordSuccess = () => ({
+  type: RESET_PASSWORD_SUCCESS,
+})
+
+const resetPasswordFailed = () => ({
+  type: RESET_PASSWORD_FAILED
+})
+
+export function resetPasswordUser(form) {
+  return function(dispatch) {
+    dispatch(resetPasswordRequest())
+    resetPassword(form)
+    .then(checkResponse)
+    .then(res => {
+      if (res && res.success) {
+        dispatch(resetPasswordSuccess())
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+      dispatch(resetPasswordFailed())
+    })
+  }
+}
+
+// Получение данных о пользователе
+const getUserRequest = () => ({
+  type: GET_USER_REQUEST
+})
+
+const getUserSuccess = (res) => ({
+  type: GET_USER_SUCCESS,
+  auth: {
+    name: res.user.name,
+    email: res.user.email
+  }
+})
+
+const getUserFailed = () => ({
+  type: GET_USER_FAILED
+})
+
+export function getUserData() {
+  return function(dispatch) {
+    dispatch(getUserRequest())
+    getUser()
+    .then(checkResponse)
+    .then(res => {
+      if (res && res.success) {
+        dispatch(getUserSuccess(res))
+      } else {
+        dispatch(updateToken())
+        .then(() => {
+          dispatch(getUserData())
         })
       }
     })
     .catch((err) => {
       console.log(err)
-      dispatch({
-        type: LOGOUT_FAILED
-      })
+      dispatch(getUserFailed())
     })
   }
 }
 
-export function forgotPasswordUser(form) {
+//Обновление токена
+const updateTokenRequest = () => ({
+  type: UPDATE_TOKEN_REQUEST
+})
+
+const updateTokenSuccess = () => ({
+  type: UPDATE_TOKEN_SUCCESS
+})
+
+const updateTokenFailed = () => ({
+  type: UPDATE_TOKEN_FAILED
+})
+
+export function updateToken() {
   return function(dispatch) {
-    dispatch({
-      type: FORGOT_PASSWORD_REQUEST
-    })
-    forgotPasswordRequest(form)
-    // fetch(`${URL}/password-reset`, {
-    //   method: 'POST',
-    //   mode: 'cors',
-    //   cache: 'no-cache',
-    //   credentials: 'same-origin',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   redirect: 'follow',
-    //   referrerPolicy: 'no-referrer',
-    //   body: JSON.stringify(form)
-    // })
+    dispatch(updateTokenRequest())
+    refreshToken()
     .then(checkResponse)
     .then(res => {
       console.log(res)
       if (res && res.success) {
-        dispatch({
-          type: FORGOT_PASSWORD_SUCCESS,
-        })
-      }
-    })
-    .catch((err) => {
-      console.log(err)
-      dispatch({
-        type: FORGOT_PASSWORD_FAILED
-      })
-    })
-  }
-}
-
-export function resetPasswordUser(form) {
-  return function(dispatch) {
-    dispatch({
-      type: RESET_PASSWORD_REQUEST
-    })
-    fetch(`${URL}/password-reset/reset`, {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-      body: JSON.stringify(form)
-    })
-    .then(checkResponse)
-    .then(res => {
-      if (res && res.success) {
-        dispatch({
-          type: RESET_PASSWORD_SUCCESS,
-        })
-      }
-    })
-    .catch((err) => {
-      console.log(err)
-      dispatch({
-        type: RESET_PASSWORD_FAILED
-      })
-    })
-  }
-}
-
-export function getUser() {
-  return function(dispatch) {
-    dispatch({
-      type: GET_USER_REQUEST
-    })
-    fetch(`${URL}/auth/user`, {
-      method: 'GET',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + getCookie('accessToken')
-      },
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer'
-    })
-    .then(checkResponse)
-    .then(res => {
-      if (res && res.success) {
-        dispatch({
-          type: GET_USER_SUCCESS,
-          auth: {
-            name: res.user.name,
-            email: res.user.email
-          }
-        })
-      }
-    })
-    .catch((err) => {
-      console.log(err)
-      if ((err.message === 'jwt expired') || (err.message === 'Token is invalid')) {
-        dispatch(updateToken())
-        .then(() => {
-          dispatch(getUser())
-        })
-      } else {
-        console.log(err);
-        dispatch({
-          type: GET_USER_FAILED
-        })
-      }
-    })
-  }
-}
-
-export function updateUser(name, email) {
-  return function(dispatch) {
-    dispatch({
-      type: UPDATE_USER_REQUEST
-    })
-    fetch(`${URL}/auth/user`, {
-      method: 'PATCH',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + getCookie('accessToken')
-      },
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-      body: JSON.stringify({name, email})
-    })
-    .then(checkResponse)
-    .then(res => {
-      if (res && res.success) {
-        dispatch({
-          type: UPDATE_USER_SUCCESS,
-          auth: {
-            name: res.user.name,
-            email: res.user.email
-          }
-        })
-      }
-    })
-    .catch((err) => {
-      console.log(err)
-      dispatch({
-        type: UPDATE_USER_FAILED
-      })
-    })
-  }
-}
-
-export function updateToken() {
-  return function(dispatch) {
-    dispatch({
-      type: UPDATE_TOKEN_REQUEST
-    })
-    fetch(`${URL}/auth/token`, {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-      body: JSON.stringify({
-        'token': `${getCookie('refreshToken')}`
-      })
-    })
-    .then(checkResponse)
-    .then(res => {
-      if (res && res.success) {
         let accessToken = res.accessToken.split('Bearer ')[1]
         setCookie('accessToken', accessToken)
-        setCookie('refreshToken', res.refreshToken)
-        dispatch({
-          type: UPDATE_TOKEN_SUCCESS
-        })
+        localStorage.setItem('refreshToken', res.refreshToken)
+        dispatch(updateTokenSuccess)
       }
     })
     .catch((err) => {
       console.log(err)
-      dispatch({
-        type: UPDATE_TOKEN_FAILED
-      })
+      dispatch(updateTokenFailed())
+    })
+  }
+}
+
+// Обновление данных о пользователе
+const updateUserRequest = () => ({
+  type: UPDATE_USER_REQUEST
+})
+
+const updateUserSuccess = (res) => ({
+  type: UPDATE_USER_SUCCESS,
+  auth: {
+    name: res.user.name,
+    email: res.user.email
+  }
+})
+
+const updateUserFailed = () => ({
+  type: UPDATE_USER_FAILED
+})
+
+export function updateUserData(name, email) {
+  return function(dispatch) {
+    dispatch(updateUserRequest())
+    updateUser(name, email)
+    .then(checkResponse)
+    .then(res => {
+      if (res && res.success) {
+        dispatch(updateUserSuccess(res))
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+      dispatch(updateUserFailed())
     })
   }
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, Redirect, useHistory } from 'react-router-dom'
 import AppStyles from '../components/App/App.module.css'
@@ -20,6 +20,12 @@ const Forgot = () => {
     [history]
   )
 
+  useEffect(() => {
+    if (isPasswordForgotten) {
+      goToPage(URL_RESET)
+    }
+  })
+
   const onChange = e => {
     setValue({...form, [e.target.name]: e.target.value})
   }
@@ -28,7 +34,6 @@ const Forgot = () => {
     e => {
       e.preventDefault()
       dispatch(forgotPasswordUser(form))
-      goToPage(URL_RESET)
     }
   )
 
