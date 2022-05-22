@@ -1,16 +1,4 @@
-import PropTypes from 'prop-types'
-import { useHistory } from 'react-router-dom'
-
-export const URL = 'https://norma.nomoreparties.space/api'
-export const URL_MAIN = '/'
-export const URL_LOGIN = '/login'
-export const URL_REGISTER = '/register'
-export const URL_FORGOT = '/forgot-password'
-export const URL_RESET = '/reset-password'
-export const URL_PROFILE = '/profile'
-export const URL_INGREDIENTS = '/ingredients'
-export const URL_INGREDIENT_DETAILS = '/ingredients/:id'
-export const URL_ORDERS = '/orders'
+import { URL, URL_INGREDIENTS, URL_ORDERS } from './constants'
 
 export const getIngredientsRequest = async () => {
   return await fetch(`${URL}${URL_INGREDIENTS}`)
@@ -65,17 +53,135 @@ export function deleteCookie(name) {
   setCookie(name, null, { expires: -1 });
 }
 
-export const ingredientPropType = PropTypes.shape({
-  _id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  proteins: PropTypes.number.isRequired,
-  fat: PropTypes.number.isRequired,
-  carbohydrates: PropTypes.number.isRequired,
-  calories: PropTypes.number.isRequired,
-  price: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
-  image_mobile: PropTypes.string.isRequired,
-  image_large: PropTypes.string.isRequired,
-  __v: PropTypes.number.isRequired
-})
+//Регистрация в системе
+export const registerUser = async (form) => {
+  return await fetch(`${URL}/auth/register`, {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify(form)
+  })
+}
+
+//Вход в систему
+export const loginUser = async (form) => {
+  return await fetch(`${URL}/auth/login`, {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify(form)
+  })
+}
+
+//Выход из системы
+export const logoutUser = async () => {
+  return await fetch(`${URL}/auth/logout`, {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify({
+      'token': `${localStorage.getItem('refreshToken')}`
+    })
+  })
+}
+
+//Запрос сброса пароля
+export const forgotPassword = async (form) => {
+  return await fetch(`${URL}/password-reset`, {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify(form)
+  })
+}
+
+//Сброс пароля
+export const resetPassword = async (form) => {
+  return await fetch(`${URL}/password-reset/reset`, {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify(form)
+  })
+}
+
+// Получение данных о пользователе
+export const getUser = async () => {
+  return await fetch(`${URL}/auth/user`, {
+    method: 'GET',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + getCookie('accessToken')
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer'
+  })
+}
+
+//Обновление токена
+export const refreshToken = async () => {
+  return await fetch(`${URL}/auth/token`, {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify({
+      'token': `${localStorage.getItem('refreshToken')}`
+    })
+  })
+}
+
+// Обновление данных о пользователе
+export const updateUser = async (name, email) => {
+  return await fetch(`${URL}/auth/user`, {
+    method: 'PATCH',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + getCookie('accessToken')
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify({name, email})
+  })
+}

@@ -1,24 +1,27 @@
 import React from 'react'
 import IngredientDetailsStyles from './IngredientDetails.module.css'
-import { ingredientPropType } from '../../utils/utils'
+import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 
-const IngredientDetails = ({ data }) => {
-  console.log(data)
+const IngredientDetails = () => {
+  const { id } = useParams()
+  const ingredients = useSelector(state => state.ingredients.data)
+  const currentIngredient = ingredients.find(ingredient => ingredient._id === id)
 
-  const { name, image_large, calories, proteins, fat, carbohydrates } = data
+  if (!currentIngredient) return null
+
   const nutritionalValue = [
-    {name: 'Калории,ккал', value: calories},
-    {name: 'Белки, г', value: proteins},
-    {name: 'Жиры, г', value: fat},
-    {name: 'Углеводы, г', value: carbohydrates},
+    {name: 'Калории,ккал', value: currentIngredient.calories},
+    {name: 'Белки, г', value: currentIngredient.proteins},
+    {name: 'Жиры, г', value: currentIngredient.fat},
+    {name: 'Углеводы, г', value: currentIngredient.carbohydrates},
   ]
-
 
   return (
     <>
-      <h2 className={`${IngredientDetailsStyles.title} text text_type_main-large mt-10`}>Детали ингредиента</h2>
-      <img className="mb-4" src={image_large} alt={name} />
-      <h3 className="text text_type_main-medium mb-8">{name}</h3>
+      <h2 className={`${IngredientDetailsStyles.title} text text_type_main-large`}>Детали ингредиента</h2>
+      <img className="mb-4" src={currentIngredient.image_large} alt={currentIngredient.name} />
+      <h3 className="text text_type_main-medium mb-8">{currentIngredient.name}</h3>
 
       <ul className={`${IngredientDetailsStyles.list} mb-15`}>
         {
@@ -34,10 +37,6 @@ const IngredientDetails = ({ data }) => {
       </ul>
     </>
   )
-}
-
-IngredientDetails.propTypes = {
-  data: ingredientPropType.isRequired
 }
 
 export default IngredientDetails

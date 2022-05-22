@@ -1,14 +1,13 @@
 import React from 'react'
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import IngredientStyles from './Ingredient.module.css'
-import { OPEN_INGREDIENT_DETAILS } from '../../services/actions/details'
 import { useDrag } from 'react-dnd'
-import { ingredientPropType } from '../../utils/utils'
+import { ingredientPropType } from '../../utils/types'
+import { Link, useLocation } from 'react-router-dom'
 
 const Ingredient = ({data}) => {
-  const dispatch = useDispatch()
-
+  let location = useLocation()
   const id = data._id
 
   const fillings = useSelector(store => store.burgerConstructor.fillings)
@@ -24,24 +23,23 @@ const Ingredient = ({data}) => {
     })
   })
 
-  const openIngredientDetails = (ingredient) => {
-    dispatch({
-      type: OPEN_INGREDIENT_DETAILS,
-      payload: ingredient
-    })
-  }
-
   return (
     !isDrag && (
-      <li id={data._id} className={IngredientStyles.item} onClick={() => openIngredientDetails(data)} ref={ref} >
-      {count ? <Counter count={count} size="default" /> : null}
-      <img src={data.image} alt={data.name} className={`pl-4 pr-4 mb-1`}/>
-      <div className={`${IngredientStyles.wrapper} mb-1`}>
-        <p className={`text text_type_digits-default mr-2`}>{data.price}</p>
-        <CurrencyIcon type="primary" />
-      </div>
-      <span className={`${IngredientStyles.span} text text_type_main-default`}>{data.name}</span>
-    </li>
+      <li id={data._id} className={IngredientStyles.item} ref={ref} >
+        <Link 
+          className={IngredientStyles.link} 
+          to={`/ingredients/${id}`}
+          state={{background: location}}
+        >
+          {count ? <Counter count={count} size="default" /> : null}
+          <img src={data.image} alt={data.name} className={`pl-4 pr-4 mb-1`}/>
+          <div className={`${IngredientStyles.wrapper} mb-1`}>
+            <p className={`text text_type_digits-default mr-2`}>{data.price}</p>
+            <CurrencyIcon type="primary" />
+          </div>
+          <span className={`${IngredientStyles.span} text text_type_main-default`}>{data.name}</span>
+        </Link>
+      </li>
     )
   )
 }

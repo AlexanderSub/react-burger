@@ -3,7 +3,7 @@ import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burg
 import { useDrag, useDrop } from 'react-dnd'
 import { useDispatch } from 'react-redux'
 import { DELETE_FILLING } from '../../services/actions/constructor'
-import { ingredientPropType } from '../../utils/utils'
+import { ingredientPropType } from '../../utils/types'
 import PropTypes from 'prop-types'
 import BurgerConstructorItemStyles from './BurgerConstructorItem.module.css'
 

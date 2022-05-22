@@ -1,54 +1,78 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import AppStyles from '../components/App/App.module.css'
-import { URL_LOGIN, URL_RESET } from '../utils/utils'
+import { URL_LOGIN, URL_RESET } from '../utils/constants'
+import { useDispatch, useSelector } from "react-redux";
+import { forgotPasswordUser } from "../services/actions/auth";
 
 const Forgot = () => {
+  const dispatch = useDispatch()
   const [form, setValue] = useState({email: ''})
-  const inputRef = React.useRef(null)
-  const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0)
-    alert('Icon Click Callback')
-  }
+  const isAuthorized = useSelector(state => state.auth.authorized)
+  const isPasswordForgotten = useSelector(state => state.auth.isPasswordForgotten)
 
-  const navigate = useNavigate()
+  let history
   const goToPage = useCallback(
     (url) => {
-      navigate({ pathname: url });
+        history.replace({ pathname: url });
     },
-    [navigate]
+    [history]
   )
+
+  useEffect(() => {
+    if (isPasswordForgotten) {
+      goToPage(URL_RESET)
+    }
+  })
 
   const onChange = e => {
     setValue({...form, [e.target.name]: e.target.value})
   }
 
-  return (
-    <div className={AppStyles.login}>
-      <div className={AppStyles.card}>
-        <h4 className={`text text_type_main-medium mb-6`}>Восстановление пароля</h4>
-        <div className={`${AppStyles.input} mb-6`}>
-          <Input
-            type={'email'}
-            placeholder={'Укажите e-mail'}
-            onChange={onChange}
-            value={form.email}
-            name={'email'}
-            size={'default'}
-          />
-        </div>
-        <div className={'mb-20'}>
-          <Button onClick={() => goToPage(URL_RESET)} type="primary" size="medium">Восстановить</Button>
-        </div>
-        
-        <span className={'text text_type_main-default text_color_inactive'}>
-          Вспомнили пароль?
-          <Link to={URL_LOGIN} className={AppStyles.linkText}> Войти</Link>
-        </span>
-      </div>
-    </div>
+  const forgotPassword = useCallback(
+    e => {
+      e.preventDefault()
+      dispatch(forgotPasswordUser(form))
+    }
   )
+
+  if (isAuthorized) {
+    return (
+      <>  </>
+      // <Redirect 
+      //   to={{
+      //     pathname: '/'
+      //   }}
+      // />
+    )
+  } else {
+    return (
+      <div className={AppStyles.login}>
+        <form onSubmit={forgotPassword} className={AppStyles.card}>
+          <h4 className={`text text_type_main-medium mb-6`}>Восстановление пароля</h4>
+          <div className={`${AppStyles.input} mb-6`}>
+            <Input
+              type={'email'}
+              placeholder={'Укажите e-mail'}
+              onChange={onChange}
+              value={form.email}
+              name={'email'}
+              size={'default'}
+            />
+          </div>
+          <div className={'mb-20'}>
+            <Button type="primary" size="medium" disabled={form.email.length === 0}>Восстановить</Button>
+          </div>
+          
+          <span className={'text text_type_main-default text_color_inactive'}>
+            Вспомнили пароль?
+            <Link to={URL_LOGIN} className={AppStyles.linkText}> Войти</Link>
+          </span>
+        </form>
+      </div>
+    )
+  }
 }
 
 export default Forgot
