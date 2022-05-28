@@ -7,17 +7,14 @@ import {
 
 const initialState = {
   wsConnected: false,
-  messages: {
     success: false,
     orders: [],
     total: 0,
-    totalToday: 0
-  },
+    totalToday: 0,
     error: undefined
 };
 
 export const wsReducer = (state = initialState, action) => {
-  console.log(action)
   switch (action.type) {
     case WS_CONNECTION_SUCCESS:
       return {
@@ -38,10 +35,14 @@ export const wsReducer = (state = initialState, action) => {
         wsConnected: false
       };
     case WS_GET_MESSAGE:
+      const {success, orders, total, totalToday} = action.payload
       return {
         ...state,
-                error: undefined,
-        messages: action.payload
+        success,
+        orders,
+        total,
+        totalToday,
+                error: undefined,    
       };
     default:
       return state;

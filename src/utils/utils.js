@@ -186,3 +186,16 @@ export const updateUser = async (name, email) => {
     body: JSON.stringify({name, email})
   })
 }
+
+//Приведение даты и времени к формату
+export const formatDate = (createdDate) => {
+  const createdAt = new Date(createdDate);
+  const today = new Date();
+  const hours = createdAt.getHours();
+  const minutes = createdAt.getMinutes();
+  const dayDiff = today.getDate() - createdAt.getDate();
+  const day = dayDiff === 0 ? 'Сегодня' 
+    : dayDiff === 1 ? 'Вчера' 
+    : `${dayDiff}  дня назад`
+  return `${day}, ${hours}:${(minutes < 10) ? `0${minutes}` : minutes} i-GMT+3`;
+}

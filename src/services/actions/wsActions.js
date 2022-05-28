@@ -31,10 +31,9 @@ export const wsConnectionClosed = () => {
   };
 };
 
-export const wsGetMessage = message => {
+export const wsGetMessage = () => {
   return {
     type: WS_GET_MESSAGE,
-    payload: message
   };
 };
 

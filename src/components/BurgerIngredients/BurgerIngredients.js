@@ -10,16 +10,8 @@ import Ingredient from '../Ingredient/Ingredient'
 const BurgerIngredients = () => {
   const dispatch = useDispatch()
   const ingredients = useSelector(store => store.ingredients.data)
-  const ingredientDetails = useSelector(state => state.details.ingredient)
-  const openDetails = useSelector(state => state.details.isOpen)
 
   const [current, setCurrent] = useState('bun')
-
-  const closeIngredientDetails = () => {
-    dispatch({
-      type: CLOSE_INGREDIENT_DETAILS
-    })
-  }
 
   const handleScroll = (e) => {
     let element = e.target
@@ -73,11 +65,6 @@ const BurgerIngredients = () => {
           </ul>
         </section>
       </div>
-      {openDetails && (
-        <Modal closeModal={closeIngredientDetails}>
-          <IngredientDetails data={ingredientDetails} />
-        </Modal>
-      )}
     </section>
   )
 }

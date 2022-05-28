@@ -19,15 +19,17 @@ import { getUserData } from '../../services/actions/auth'
 import Modal from '../Modal/Modal'
 import IngredientDetails from '../IngredientDetails/IngredientDetails'
 import { Feed } from '../../pages/feed/feed'
+import { Order } from '../Order/Order'
+import OrderPage from '../../pages/order-page/order-page'
 
 const App = () => {
   const dispatch = useDispatch()
   const location = useLocation()
   const history = useHistory()
 
-  const background = location.state && location.state.background
+  const background = (history.action === 'PUSH' || history.action === 'REPLACE') && location.state && location.state.background
 
-  const closeIngredientDetails = () => {
+  const closeModal = () => {
     history.goBack()
   }
 
@@ -71,22 +73,34 @@ const App = () => {
         <Route path={URL_REGISTER}>
           <Register />
         </Route>
-        <Route path={URL_INGREDIENT_DETAILS}>
+        <Route path='/ingredients/:id'>
           <IngredientPage />
         </Route>
-        <Route path={URL_FEED}>
+        <Route path='/feed'>
           <Feed />
+        </Route>
+        <Route path='/feed/:id'>
+          <OrderPage />
         </Route>
       </Switch>
       {
         background && (
-          <Route path={URL_INGREDIENT_DETAILS}>
-            <Modal closeModal={closeIngredientDetails}>
+          <Route path='/ingredients/:id'>
+            <Modal closeModal={closeModal}>
               <IngredientDetails />
             </Modal>
           </Route>
         )
       }
+      {/* {
+        background && (
+          <Route path='/feed/:id'>
+            <Modal closeModal={closeModal}>
+              <Order />
+            </Modal>
+          </Route>
+        )
+      } */}
     </div>
   )
 }
