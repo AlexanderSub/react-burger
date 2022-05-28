@@ -18,7 +18,7 @@ import { getCookie } from '../../utils/utils'
 import { getUserData } from '../../services/actions/auth'
 import Modal from '../Modal/Modal'
 import IngredientDetails from '../IngredientDetails/IngredientDetails'
-import { Feed } from '../../pages/feed'
+import { Feed } from '../../pages/feed/feed'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -49,6 +49,9 @@ const App = () => {
       <Switch location={ background || location }>
         <Route path={URL_MAIN} exact>
           <Main />
+        </Route>
+        <Route path={URL_FEED} exact>
+          <Feed />
         </Route>
         <Route path={URL_LOGIN}>
           <Login />

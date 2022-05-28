@@ -53,6 +53,7 @@ export function deleteCookie(name) {
   setCookie(name, null, { expires: -1 });
 }
 
+
 //Регистрация в системе
 export const registerUser = async (form) => {
   return await fetch(`${URL}/auth/register`, {

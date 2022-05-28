@@ -2,7 +2,7 @@ import React from 'react'
 import AppHeaderStyles from './AppHeader.module.css'
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { NavLink } from 'react-router-dom'
-import { URL_PROFILE, URL_MAIN, URL_ORDERS } from '../../utils/constants'
+import { URL_PROFILE, URL_MAIN, URL_FEED } from '../../utils/constants'
 
 const AppHeader = () => {
   return (
@@ -16,7 +16,7 @@ const AppHeader = () => {
             </NavLink>
           </li>
           <li className={AppHeaderStyles.navItem}>
-            <NavLink exact to={URL_ORDERS} className={AppHeaderStyles.button} activeClassName={AppHeaderStyles.active}>
+            <NavLink exact to={URL_FEED} className={AppHeaderStyles.button} activeClassName={AppHeaderStyles.active}>
               <ListIcon type="secondary"/>
               <p className={`text text_type_main-default text_color_inactive ml-2`}>Лента заказов</p>
             </NavLink>
