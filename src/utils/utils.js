@@ -196,6 +196,6 @@ export const formatDate = (createdDate) => {
   const dayDiff = today.getDate() - createdAt.getDate();
   const day = dayDiff === 0 ? 'Сегодня' 
     : dayDiff === 1 ? 'Вчера' 
-    : `${dayDiff}  дня назад`
+    : `${dayDiff} дня назад`
   return `${day}, ${hours}:${(minutes < 10) ? `0${minutes}` : minutes} i-GMT+3`;
 }
