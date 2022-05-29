@@ -11,11 +11,18 @@ export const OrderInfo = () => {
   const orderData = useSelector(state => state.ws.orders)
 
   const currentOrder = orderData.find(order => order._id === id)
-  const selectedIngredients = ingredients.filter(ingredient => currentOrder.ingredients.includes(ingredient._id))
+
+  const selectedIngredients = currentOrder.ingredients.map(
+    ingredientId => ingredients.find(
+      ingredient => ingredient._id === ingredientId
+    )
+  );
+
+  const uniqueIngredients = [... new Set(selectedIngredients)]
 
   const burgerPrice = useMemo(
     () => {
-      return selectedIngredients.reduce((acc, el) => acc + ( el.type === 'bun' ? el.price * 2 : el.price ), 0)
+      return selectedIngredients.reduce((acc, el) => acc + el.price, 0)
     },
     [selectedIngredients]
   )
@@ -27,12 +34,14 @@ export const OrderInfo = () => {
       <p className={`${OrderInfoStyles.status} text text_type_main-small`}>{currentOrder.status === 'done' ? 'Выполнен' : 'Готовится'}</p>
       <p className={`text text_type_main-medium mb-6 mt-15`}>Состав:</p>
       <ul className={`${OrderInfoStyles.list} custom-scroll mb-15`}>
-        {selectedIngredients.map(ingredient => (
-          <li className={`${OrderInfoStyles.listItem} mb-4 mr-6`} key={ingredient._id}>
+        {uniqueIngredients.map((ingredient, index) => (
+          <li className={`${OrderInfoStyles.listItem} mb-4 mr-6`} key={index + ingredient._id}>
             <div className={OrderInfoStyles.image} style={{backgroundImage: `url(${ingredient.image_mobile})`}}/>
             <p className={`${OrderInfoStyles.name} text text_type_main-default`}>{ingredient.name}</p>
             <div className={`${OrderInfoStyles.price}`}>
-              <p className={`text text_type_digits-default mr-2`}>{`${ingredient.type === 'bun' ? '2' : '1'} x ${ingredient.price}`}</p>
+              <p className={`text text_type_digits-default mr-2`}>
+                {`${selectedIngredients.filter(el => el._id === ingredient._id).length} x ${ingredient.price}`}
+              </p>
               <CurrencyIcon type="primary" />
             </div>
           </li>

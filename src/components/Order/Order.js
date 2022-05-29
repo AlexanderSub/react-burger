@@ -9,20 +9,26 @@ export const Order = ({data}) => {
   const location = useLocation()
   const ingredients = useSelector(state => state.ingredients.data)
 
-  const selectedIngredients = ingredients.filter(ingredient => data.ingredients.includes(ingredient._id))
-
-  let restIngredients
-
-  if (selectedIngredients.length > 5) {
-    restIngredients = selectedIngredients.splice(5)
-  }
+  const selectedIngredients = data.ingredients.map(
+    ingredientId => ingredients.find(
+      ingredient => ingredient._id === ingredientId
+    )
+  )
 
   const burgerPrice = useMemo(
     () => {
-      return selectedIngredients.reduce((acc, el) => acc + ( el.type === 'bun' ? el.price * 2 : el.price ), 0)
+      return selectedIngredients.reduce((acc, el) => acc + el.price, 0)
     },
     [selectedIngredients]
   )
+
+  const uniqueIngredients = [... new Set(selectedIngredients)]
+
+  let restIngredients
+
+  if (uniqueIngredients.length > 5) {
+    restIngredients = uniqueIngredients.splice(5)
+  }
 
   return (
     <Link className={OrderStyles.link} to={{ pathname: `/feed/${data._id}`, state: { background: location } }}>
@@ -40,9 +46,9 @@ export const Order = ({data}) => {
               </div>
               ) : '' }
             {
-              selectedIngredients.reverse().map(ingredient => {
+              uniqueIngredients.reverse().map((ingredient, index) => {
                 return (
-                  <div key={ingredient._id} className={OrderStyles.image} style={{backgroundImage: `url(${ingredient.image_mobile})`}}/>
+                  <div key={index + ingredient._id} className={OrderStyles.image} style={{backgroundImage: `url(${ingredient.image_mobile})`}}/>
                 )
               })
             }

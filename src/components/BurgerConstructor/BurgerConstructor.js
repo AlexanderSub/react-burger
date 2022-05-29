@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { BurgerConstructorItem } from '../BurgerConstructorItem/BurgerConstructorItem'
 import { useHistory } from 'react-router-dom'
 import { URL_LOGIN } from '../../utils/constants'
+import { Preloader } from '../Preloader/Preloader'
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch()
@@ -26,6 +27,7 @@ const BurgerConstructor = () => {
   const orderId = items.map(item => item._id)
   const order = useSelector(store => store.order.order)
   const openOrderDetails = useSelector(state => state.order.isOpen)
+  const orderRequest = useSelector(state => state.order.orderRequest)
 
   const isAuthorized = useSelector(state => state.auth.authorized)
 
@@ -97,7 +99,15 @@ const BurgerConstructor = () => {
       type: RESET_CONSTRUCTOR
     })
   }
- 
+
+  if (orderRequest) {
+    return (
+    <div className={BurgerConstructorStyles.loader}>
+      <Preloader text={'Отправка заказа на кухню'} />
+    </div>
+    )
+  }
+
   return (
     <section className={`${BurgerConstructorStyles.section} mt-25`}>
       {(bun.length === 0 || fillings.length === 0) && 
