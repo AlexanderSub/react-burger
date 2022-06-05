@@ -1,5 +1,6 @@
 import { ClipLoader } from 'react-spinners'
 import PreloaderStyles from './Preloader.module.css'
+import PropTypes from 'prop-types'
 
 export const Preloader = ({text}) => {
   return (
@@ -8,4 +9,8 @@ export const Preloader = ({text}) => {
       <ClipLoader color={'#fff'} size={100} />
     </div>  
   )
+}
+
+Preloader.propTypes = {
+  text: PropTypes.string
 }

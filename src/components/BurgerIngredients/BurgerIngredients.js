@@ -1,14 +1,10 @@
-import React, {useState} from 'react'
+import {useState} from 'react'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import BurgerIngredientsStyles from './BurgerIngredients.module.css'
-import { useDispatch, useSelector } from "react-redux"
-import Modal from '../Modal/Modal'
-import IngredientDetails from '../IngredientDetails/IngredientDetails'
-import { CLOSE_INGREDIENT_DETAILS } from '../../services/actions/details'
+import { useSelector } from "react-redux"
 import Ingredient from '../Ingredient/Ingredient'
 
 const BurgerIngredients = () => {
-  const dispatch = useDispatch()
   const ingredients = useSelector(store => store.ingredients.data)
 
   const [current, setCurrent] = useState('bun')

@@ -1,4 +1,3 @@
-import React from 'react'
 import IngredientDetailsStyles from './IngredientDetails.module.css'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'

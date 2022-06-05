@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react"
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import AppStyles from '../../components/App/App.module.css'
 import ProfileStyles from './profile.module.css'
 import { NavLink } from "react-router-dom"
-import { URL_PROFILE, URL_ORDERS } from '../../utils/constants'
-import { useDispatch, useSelector } from "react-redux";
-import { logout, updateUserData } from "../../services/actions/auth";
+import { useDispatch, useSelector } from "react-redux"
+import { logout, updateUserData } from "../../services/actions/auth"
 
 const Profile = () => {
   const dispatch = useDispatch()
@@ -45,16 +44,18 @@ const Profile = () => {
 
   return (
     <section className={`${ProfileStyles.profile} mt-30`}>
-      <div className={`${ProfileStyles.leftContainer} mr-15`}>
-        <NavLink 
-          to={URL_PROFILE} 
+      <div className={`${ProfileStyles.leftContainer} mr-10`}>
+        <NavLink
+          exact
+          to='/profile' 
           className={`${ProfileStyles.link} text text_type_main-medium text_color_inactive`}
           activeClassName={ProfileStyles.active}
         >
           Профиль
         </NavLink>
-        <NavLink 
-          to={URL_ORDERS} 
+        <NavLink
+          exact
+          to='/profile/orders' 
           className={`${ProfileStyles.link} text text_type_main-medium text_color_inactive`}
           activeClassName={ProfileStyles.active}
         >

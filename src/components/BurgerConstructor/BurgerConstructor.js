@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react'
+import {useMemo} from 'react'
 import BurgerConstructorStyles from './BurgerConstructor.module.css'
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import Modal from '../Modal/Modal'
@@ -10,7 +10,6 @@ import { ADD_BUN, ADD_FILLING, GENERATE_ID, MOVE_ITEM, RESET_CONSTRUCTOR } from 
 import { v4 as uuidv4 } from 'uuid'
 import { BurgerConstructorItem } from '../BurgerConstructorItem/BurgerConstructorItem'
 import { useHistory } from 'react-router-dom'
-import { URL_LOGIN } from '../../utils/constants'
 import { Preloader } from '../Preloader/Preloader'
 
 const BurgerConstructor = () => {
@@ -82,7 +81,7 @@ const BurgerConstructor = () => {
 
   const orderDetails = () => {
     if (!isAuthorized) {
-      history.push({pathname: URL_LOGIN, state: {prevPathname: history.location.pathname}})
+      history.push({pathname: '/login', state: {prevPathname: history.location.pathname}})
       return
     }
     dispatch(getOrder(orderId))

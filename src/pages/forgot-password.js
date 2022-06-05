@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react"
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, Redirect, useHistory } from 'react-router-dom'
 import AppStyles from '../components/App/App.module.css'
-import { URL_LOGIN, URL_RESET } from '../utils/constants'
-import { useDispatch, useSelector } from "react-redux";
-import { forgotPasswordUser } from "../services/actions/auth";
+import { useDispatch, useSelector } from "react-redux"
+import { forgotPasswordUser } from "../services/actions/auth"
 
 const Forgot = () => {
   const dispatch = useDispatch()
@@ -15,14 +14,14 @@ const Forgot = () => {
   const history = useHistory()
   const goToPage = useCallback(
     (url) => {
-        history.replace({ pathname: url });
+      history.replace({ pathname: url })
     },
     [history]
   )
 
   useEffect(() => {
     if (isPasswordForgotten) {
-      goToPage(URL_RESET)
+      goToPage('/reset-password')
     }
   })
 
@@ -66,7 +65,7 @@ const Forgot = () => {
           
           <span className={'text text_type_main-default text_color_inactive'}>
             Вспомнили пароль?
-            <Link to={URL_LOGIN} className={AppStyles.linkText}> Войти</Link>
+            <Link to={'/login'} className={AppStyles.linkText}> Войти</Link>
           </span>
         </form>
       </div>

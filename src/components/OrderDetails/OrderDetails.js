@@ -1,4 +1,3 @@
-import React from "react";
 import OrderDetailsStyles from './OrderDetails.module.css'
 import PropTypes from 'prop-types'
 

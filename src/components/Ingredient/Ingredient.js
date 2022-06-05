@@ -1,4 +1,3 @@
-import React from 'react'
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useSelector } from "react-redux"
 import IngredientStyles from './Ingredient.module.css'

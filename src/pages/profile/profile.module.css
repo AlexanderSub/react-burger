@@ -15,6 +15,7 @@
   flex-direction: column;
   width: 480px;
 }
+
 .link {
   display: flex;
   flex-direction: column;
@@ -37,4 +38,19 @@
 .buttons {
   display: flex;
   justify-content: flex-end;
+}
+
+.orders {
+  margin-top: -80px;
+  width: 872px;
+  height: calc(100vh - 150px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  list-style: none;
+  padding: 8px 8px 0 8px;
+}
+
+.card {
+  text-decoration: none;
+  color: inherit;
 }

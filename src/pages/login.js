@@ -1,8 +1,7 @@
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
-import {Link, Redirect, useLocation} from 'react-router-dom'
+import { Link, Redirect, useLocation } from 'react-router-dom'
 import AppStyles from '../components/App/App.module.css'
-import { URL_REGISTER, URL_FORGOT, URL_MAIN } from '../utils/constants'
 import { useDispatch, useSelector } from "react-redux";
 import { loginUserRequest } from "../services/actions/auth";
 
@@ -26,7 +25,7 @@ const Login = () => {
   )
 
   if (isAuthorized) {
-    let { from } = location.state || { from: { pathname: URL_MAIN } }
+    let { from } = location.state || { from: { pathname: '/' } }
     return (
       <Redirect 
         to={ from }
@@ -64,11 +63,11 @@ const Login = () => {
           
           <span className={'text text_type_main-default text_color_inactive mb-4'}>
             Вы - новый пользователь? 
-            <Link to={URL_REGISTER} className={AppStyles.linkText}> Зарегистрироваться</Link>
+            <Link to={'/register'} className={AppStyles.linkText}> Зарегистрироваться</Link>
           </span>
           <span className={'text text_type_main-default text_color_inactive'}>
             Забыли пароль?
-            <Link to={URL_FORGOT} className={AppStyles.linkText}> Восстановить пароль</Link>
+            <Link to='/forgot-password' className={AppStyles.linkText}> Восстановить пароль</Link>
           </span>
         </form>
       </div>

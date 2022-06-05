@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react"
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, Redirect, useHistory } from 'react-router-dom'
 import AppStyles from '../components/App/App.module.css'
-import { URL_LOGIN } from '../utils/constants'
-import { useDispatch, useSelector } from "react-redux";
-import { resetPasswordUser } from "../services/actions/auth";
+import { useDispatch, useSelector } from "react-redux"
+import { resetPasswordUser } from "../services/actions/auth"
 
 const Reset = () => {
   const dispatch = useDispatch()
@@ -19,7 +18,7 @@ const Reset = () => {
 
   useEffect(() => {
     if (isPasswordReset) {
-      goToPage(URL_LOGIN)
+      goToPage('/login')
     }
   })
 
@@ -98,7 +97,7 @@ const Reset = () => {
         
         <span className={'text text_type_main-default text_color_inactive'}>
           Вспомнили пароль?
-          <Link to={URL_LOGIN} className={AppStyles.linkText}> Войти</Link>
+          <Link to={'/login'} className={AppStyles.linkText}> Войти</Link>
         </span>
       </form>
     </div>

@@ -1,31 +1,63 @@
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components"
-import { useMemo } from "react"
-import { useSelector } from "react-redux"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
+import { WS_CONNECTION_CLOSED, WS_CONNECTION_START } from "../../services/action-types/wsActionTypes"
 import { formatDate } from "../../utils/utils"
+import { Preloader } from "../Preloader/Preloader"
 import OrderInfoStyles from './OrderInfo.module.css'
+import PropTypes from 'prop-types'
 
-export const OrderInfo = () => {
+export const OrderInfo = ({path}) => {
+  const dispatch = useDispatch()
+
   const { id } = useParams()
   const ingredients = useSelector(state => state.ingredients.data)
   const orderData = useSelector(state => state.ws.orders)
 
-  const currentOrder = orderData.find(order => order._id === id)
+  let currentOrder
+  let selectedIngredients
+  let uniqueIngredients
+  let burgerPrice
 
-  const selectedIngredients = currentOrder.ingredients.map(
-    ingredientId => ingredients.find(
-      ingredient => ingredient._id === ingredientId
-    )
-  );
+  if (ingredients.length && orderData.length) {
+    currentOrder = orderData?.find(order => order._id === id)
 
-  const uniqueIngredients = [... new Set(selectedIngredients)]
+    selectedIngredients = currentOrder.ingredients.map(
+      ingredientId => ingredients.find(
+        ingredient => ingredient._id === ingredientId
+      )
+    );
+  
+    uniqueIngredients = [... new Set(selectedIngredients)]
+  
+    burgerPrice = selectedIngredients.reduce((acc, el) => acc + el.price, 0)
+  }
 
-  const burgerPrice = useMemo(
-    () => {
-      return selectedIngredients.reduce((acc, el) => acc + el.price, 0)
-    },
-    [selectedIngredients]
-  )
+  useEffect(() => {
+    if (path === 'feed') {
+      dispatch({ 
+        type: WS_CONNECTION_START,
+        user: false,
+      });
+    } else if (path === 'profile') {
+      dispatch({ 
+        type: WS_CONNECTION_START,
+        user: true,
+      });
+    }
+    return () => {
+      dispatch({ type: WS_CONNECTION_CLOSED });
+    };
+  }, []);
+
+  if (!ingredients) {
+    return <Preloader />;
+  }
+
+  if (!orderData.length) {
+    return <Preloader />;
+  }
 
   return (
     <div className={OrderInfoStyles.card}>
@@ -56,4 +88,8 @@ export const OrderInfo = () => {
       </div>
     </div>
   )
+}
+
+OrderInfo.propTypes = {
+  path: PropTypes.string.isRequired
 }
