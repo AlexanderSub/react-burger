@@ -75,11 +75,11 @@ const App = () => {
           <IngredientPage />
         </Route>
         <Route path='/feed/:id'>
-          <OrderPage path={'feed'} />
+          <OrderPage />
         </Route>
-        <Route path='/profile/orders/:id'>
-          <OrderPage path={'profile'} />
-        </Route>
+        <ProtectedRoute path='/profile/orders/:id'>
+          <OrderPage />
+        </ProtectedRoute>
       </Switch>
       {
         background && (
@@ -94,7 +94,7 @@ const App = () => {
         background && (
           <Route path='/feed/:id'>
             <Modal closeModal={closeModal}>
-              <OrderInfo path={'feed'} />
+              <OrderInfo />
             </Modal>
           </Route>
         )
@@ -103,7 +103,7 @@ const App = () => {
         background && (
           <Route path='/profile/orders/:id'>
             <Modal closeModal={closeModal}>
-              <OrderInfo path={'profile'} />
+              <OrderInfo />
             </Modal>
           </Route>
         )

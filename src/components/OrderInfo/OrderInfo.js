@@ -1,14 +1,14 @@
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useParams } from "react-router-dom"
+import { useLocation, useParams } from "react-router-dom"
 import { WS_CONNECTION_CLOSED, WS_CONNECTION_START } from "../../services/action-types/wsActionTypes"
 import { formatDate } from "../../utils/utils"
 import { Preloader } from "../Preloader/Preloader"
 import OrderInfoStyles from './OrderInfo.module.css'
-import PropTypes from 'prop-types'
 
-export const OrderInfo = ({path}) => {
+export const OrderInfo = () => {
+  const location = useLocation()
   const dispatch = useDispatch()
 
   const { id } = useParams()
@@ -35,12 +35,12 @@ export const OrderInfo = ({path}) => {
   }
 
   useEffect(() => {
-    if (path === 'feed') {
+    if (location.pathname.includes('feed')) {
       dispatch({ 
         type: WS_CONNECTION_START,
         user: false,
       });
-    } else if (path === 'profile') {
+    } else if (location.pathname.includes('profile')) {
       dispatch({ 
         type: WS_CONNECTION_START,
         user: true,
@@ -49,7 +49,9 @@ export const OrderInfo = ({path}) => {
     return () => {
       dispatch({ type: WS_CONNECTION_CLOSED });
     };
-  }, []);
+  }, [])
+
+
 
   if (!ingredients) {
     return <Preloader />;
@@ -88,8 +90,4 @@ export const OrderInfo = ({path}) => {
       </div>
     </div>
   )
-}
-
-OrderInfo.propTypes = {
-  path: PropTypes.string.isRequired
 }
