@@ -7,9 +7,11 @@ import {
   WS_SEND_MESSAGE
 } from '../action-types/wsActionTypes';
 
-export const wsConnectionStart = () => {
+export const wsConnectionStart = (url) => {
+  
   return {
-    type: WS_CONNECTION_START
+    type: WS_CONNECTION_START,
+    payload: url
   };
 };
 

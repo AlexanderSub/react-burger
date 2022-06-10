@@ -13,7 +13,7 @@ export const Order = ({data, showStatus}) => {
     ingredientId => ingredients.find(
       ingredient => ingredient._id === ingredientId
     )
-  )
+  ).filter(ingredient => ingredient != undefined)
 
   const burgerPrice = useMemo(
     () => {

@@ -6,14 +6,20 @@ import { wsConnectionStart } from "../../services/actions/wsActions"
 import { Order } from "../../components/Order/Order"
 import { Link, useLocation } from "react-router-dom"
 import { Preloader } from "../../components/Preloader/Preloader"
+import { WS_CONNECTION_CLOSED } from "../../services/action-types/wsActionTypes";
 
 export const Feed = () => {
   const dispatch = useDispatch()
   const location = useLocation()
 
   useEffect(() => {
-    dispatch(wsConnectionStart())
-  }, [])
+    dispatch(wsConnectionStart('/all'))
+    return () => {
+      dispatch({
+        type: WS_CONNECTION_CLOSED
+      })
+    }
+  }, [dispatch])
 
   const orders = useSelector(state => state.ws.orders)
   const ordersTotal = useSelector(state => state.ws.total)
