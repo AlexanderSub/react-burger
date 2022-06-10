@@ -28,7 +28,7 @@ const Login = () => {
     let { from } = location.state || { from: { pathname: '/' } }
     return (
       <Redirect 
-        to={ location.search?.from || '/' }
+        to={ location.state?.from || '/' }
       />
     )
   } else {
