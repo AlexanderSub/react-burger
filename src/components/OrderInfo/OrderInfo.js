@@ -3,6 +3,7 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useLocation, useParams } from "react-router-dom"
 import { WS_CONNECTION_CLOSED, WS_CONNECTION_START } from "../../services/action-types/wsActionTypes"
+import { wsConnectionStart } from "../../services/actions/wsActions"
 import { formatDate } from "../../utils/utils"
 import { Preloader } from "../Preloader/Preloader"
 import OrderInfoStyles from './OrderInfo.module.css'
@@ -36,10 +37,7 @@ export const OrderInfo = () => {
 
   useEffect(() => {
     if (location.pathname.includes('feed')) {
-      dispatch({ 
-        type: WS_CONNECTION_START,
-        user: false,
-      });
+      dispatch(wsConnectionStart('/all'))
     } else if (location.pathname.includes('profile')) {
       dispatch({ 
         type: WS_CONNECTION_START,
