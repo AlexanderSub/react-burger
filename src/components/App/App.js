@@ -26,7 +26,7 @@ const App = () => {
   const location = useLocation()
   const history = useHistory()
 
-  const background = location.state && location.state.background
+  const background =  (history.action === 'PUSH' || history.action === 'REPLACE') && location.state && location.state.background
 
   const closeModal = () => {
     history.goBack()

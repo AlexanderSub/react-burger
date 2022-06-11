@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { logout } from "../../services/actions/auth"
 import { Order } from "../../components/Order/Order"
 import { WS_CONNECTION_START } from "../../services/action-types/wsActionTypes"
+import { Preloader } from "../../components/Preloader/Preloader"
 
 const Orders = () => {
   const dispatch = useDispatch()
@@ -22,7 +23,14 @@ const Orders = () => {
       type: WS_CONNECTION_START,
       user: true
     })
-  }, [])
+  }, [dispatch])
+
+  if (!orders.length) {
+    return(
+      <Preloader text={'Загрузка данных о заказах'} />
+    )
+  }
+
 
   return (
     <section className={`${ProfileStyles.profile} mt-30`}>
