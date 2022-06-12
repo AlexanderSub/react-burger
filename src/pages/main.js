@@ -1,9 +1,8 @@
-import React from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd"
+import { HTML5Backend } from "react-dnd-html5-backend"
 import AppStyles from '../components/App/App.module.css'
-import BurgerConstructor from "../components/BurgerConstructor/BurgerConstructor";
-import BurgerIngredients from "../components/BurgerIngredients/BurgerIngredients";
+import BurgerConstructor from "../components/BurgerConstructor/BurgerConstructor"
+import BurgerIngredients from "../components/BurgerIngredients/BurgerIngredients"
 
 const Main = () => {
   return (

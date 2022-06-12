@@ -1,24 +1,5 @@
 import { URL, URL_INGREDIENTS, URL_ORDERS } from './constants'
 
-export const getIngredientsRequest = async () => {
-  return await fetch(`${URL}${URL_INGREDIENTS}`)
-}
-
-export const getOrderRequest = ingredients => {
-  return fetch(`${URL}${URL_ORDERS}`, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ingredients})
-  });
-}
-
-export const checkResponse = res => {
-  if (res.ok) {
-    return res.json()
-  }
-  return Promise.reject(`Ошибка: ${res.status}`)
-}
-
 export function getCookie(name) {
   const matches = document.cookie.match(
     new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
@@ -51,6 +32,29 @@ export function setCookie(name, value, props) {
 
 export function deleteCookie(name) {
   setCookie(name, null, { expires: -1 });
+}
+
+export const getIngredientsRequest = async () => {
+  return await fetch(`${URL}${URL_INGREDIENTS}`)
+}
+
+export const getOrderRequest = ingredients => {
+  return fetch(`${URL}${URL_ORDERS}`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ingredients}),
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + getCookie('accessToken')
+    },
+  });
+}
+
+export const checkResponse = res => {
+  if (res.ok) {
+    return res.json()
+  }
+  return Promise.reject(`Ошибка: ${res.status}`)
 }
 
 //Регистрация в системе
@@ -184,4 +188,22 @@ export const updateUser = async (name, email) => {
     referrerPolicy: 'no-referrer',
     body: JSON.stringify({name, email})
   })
+}
+
+//Приведение даты и времени к формату
+export const formatDate = (createdDate) => {
+  const createdAt = new Date(createdDate)
+  const today = new Date()
+  const hours = createdAt.getHours()
+  const minutes = createdAt.getMinutes()
+
+  const todaySecondsLeft = (24*60*60*1000 - (today.getHours()*60 + today.getMinutes())*60*1000 + today.getMilliseconds())
+  
+  const dayDiff = Math.floor((today.getTime() - createdAt.getTime() + todaySecondsLeft) / 1000 / 60 / 60 / 24)
+  
+  const day = dayDiff === 0 ? 'Сегодня' 
+    : dayDiff === 1 ? 'Вчера'
+    : dayDiff > 1 && dayDiff < 5 ? `${dayDiff} дня назад`
+    : `${dayDiff} дней назад`
+  return `${day}, ${hours}:${(minutes < 10) ? `0${minutes}` : minutes} i-GMT+3`;
 }

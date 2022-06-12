@@ -1,10 +1,9 @@
-import React, {useEffect} from 'react'
+import {useEffect} from 'react'
 import AppStyles from './App.module.css'
 import AppHeader from '../AppHeader/AppHeader'
 import { useDispatch } from 'react-redux'
 import { getIngredients } from '../../services/actions/ingredients'
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
-import { URL_MAIN, URL_LOGIN, URL_PROFILE, URL_FORGOT, URL_RESET, URL_REGISTER, URL_INGREDIENT_DETAILS, URL_ORDERS } from '../../utils/constants'
 import Main from '../../pages/main'
 import Login from '../../pages/login'
 import Profile from '../../pages/profile/profile'
@@ -18,15 +17,18 @@ import { getCookie } from '../../utils/utils'
 import { getUserData } from '../../services/actions/auth'
 import Modal from '../Modal/Modal'
 import IngredientDetails from '../IngredientDetails/IngredientDetails'
+import { Feed } from '../../pages/feed/feed'
+import OrderPage from '../../pages/order-page/order-page'
+import { OrderInfo } from '../OrderInfo/OrderInfo'
 
 const App = () => {
   const dispatch = useDispatch()
   const location = useLocation()
   const history = useHistory()
 
-  const background = location.state && location.state.background
+  const background =  (history.action === 'PUSH' || history.action === 'REPLACE') && location.state && location.state.background
 
-  const closeIngredientDetails = () => {
+  const closeModal = () => {
     history.goBack()
   }
 
@@ -39,43 +41,69 @@ const App = () => {
     if (accessToken) {
       dispatch(getUserData())
     }
-  }, [dispatch])
-
+  }, [])
 
   return (
     <div className={AppStyles.page}>
       <AppHeader />
       <Switch location={ background || location }>
-        <Route path={URL_MAIN} exact>
+        <Route path='/' exact>
           <Main />
         </Route>
-        <Route path={URL_LOGIN}>
+        <Route path='/feed' exact>
+          <Feed />
+        </Route>
+        <Route path='/login'>
           <Login />
         </Route>
-        <ProtectedRoute path={URL_PROFILE}>
+        <ProtectedRoute path='/profile' exact>
           <Profile />
         </ProtectedRoute>
-        <ProtectedRoute path={URL_ORDERS}>
+        <ProtectedRoute path='/profile/orders' exact>
           <Orders />
         </ProtectedRoute>
-        <Route path={URL_FORGOT}>
+        <Route path='/forgot-password'>
           <Forgot />
         </Route>
-        <Route path={URL_RESET}>
+        <Route path='/reset-password'>
           <Reset />
         </Route>
-        <Route path={URL_REGISTER}>
+        <Route path='/register'>
           <Register />
         </Route>
-        <Route path={URL_INGREDIENT_DETAILS}>
+        <Route path='/ingredients/:id'>
           <IngredientPage />
         </Route>
+        <Route path='/feed/:id'>
+          <OrderPage />
+        </Route>
+        <ProtectedRoute path='/profile/orders/:id'>
+          <OrderPage />
+        </ProtectedRoute>
       </Switch>
       {
         background && (
-          <Route path={URL_INGREDIENT_DETAILS}>
-            <Modal closeModal={closeIngredientDetails}>
+          <Route path='/ingredients/:id'>
+            <Modal closeModal={closeModal}>
               <IngredientDetails />
+            </Modal>
+          </Route>
+        )
+      }
+      {
+        background && (
+          <Route path='/feed/:id'>
+            <Modal closeModal={closeModal}>
+              <OrderInfo />
+            </Modal>
+          </Route>
+        )
+      }
+      {
+        background && (
+          <Route path='/profile/orders/:id'>
+            <Modal closeModal={closeModal}>
+              <OrderInfo />
             </Modal>
           </Route>
         )

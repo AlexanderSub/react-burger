@@ -1,0 +1,63 @@
+.card {
+  padding: 0 40px 40px 40px;
+}
+
+.number {
+  display: flex;
+  align-items: center;
+  height: 64px;
+}
+
+.title {
+  width: 640px;
+}
+
+.status {
+  margin: 0;
+  padding: 0;
+  color: #0CC;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  max-height: 384px;
+  overflow-y: scroll;
+}
+
+.listItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.image {
+  width: 64px;
+  height: 64px;
+  background-color: #131316;
+  border-radius: 50%;
+  background-size: auto 85%;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow: hidden;
+  z-index: 0;
+  border: #801ab3 solid 2px;
+}
+
+.name {
+  width: 320px;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 192px;
+}
+
+.wrapper {
+  width: 640px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

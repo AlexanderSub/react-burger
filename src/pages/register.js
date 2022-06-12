@@ -1,10 +1,9 @@
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react"
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import {Link, Redirect, useHistory, useLocation} from 'react-router-dom'
 import AppStyles from '../components/App/App.module.css'
-import { URL_LOGIN, URL_MAIN } from '../utils/constants'
-import { useDispatch, useSelector } from "react-redux";
-import { register } from "../services/actions/auth";
+import { useDispatch, useSelector } from "react-redux"
+import { register } from "../services/actions/auth"
 
 const Register = () => {
   const location = useLocation()
@@ -29,7 +28,7 @@ const Register = () => {
     e => {
       e.preventDefault()
       dispatch(register(form))
-      goToPage(URL_MAIN)
+      goToPage('/')
     },
     [dispatch, form]
   )
@@ -95,7 +94,7 @@ const Register = () => {
           
           <span className={'text text_type_main-default text_color_inactive'}>
           Уже зарегистрированы?
-            <Link to={URL_LOGIN} className={AppStyles.linkText}> Войти</Link>
+            <Link to={'/login'} className={AppStyles.linkText}> Войти</Link>
           </span>
         </form>
       </div>
