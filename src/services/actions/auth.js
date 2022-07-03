@@ -32,6 +32,8 @@ export const UPDATE_TOKEN_REQUEST = 'UPDATE_TOKEN_REQUEST'
 export const UPDATE_TOKEN_FAILED = 'UPDATE_TOKEN_FAILED'
 export const UPDATE_TOKEN_SUCCESS = 'UPDATE_TOKEN_SUCCESS'
 
+export let TAuthActions
+
 //Регистрация в системе
 const registerRequest = () => ({
   type: REGISTER_REQUEST
