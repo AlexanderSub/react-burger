@@ -1,11 +1,21 @@
+import { TwsActions } from '../actions/wsActions';
 import {
   WS_CONNECTION_SUCCESS,
   WS_CONNECTION_ERROR,
   WS_CONNECTION_CLOSED,
   WS_GET_MESSAGE
-} from '../action-types/wsActionTypes';
+} from '../constants'
 
-const initialState = {
+type TwsState = {
+  wsConnected: boolean,
+    success: boolean,
+    orders: string[],
+    total: number,
+    totalToday: number,
+    error: string | undefined
+};
+
+const wsInitialState: TwsState = {
   wsConnected: false,
     success: false,
     orders: [],
@@ -14,7 +24,7 @@ const initialState = {
     error: undefined
 };
 
-export const wsReducer = (state = initialState, action) => {
+export const wsReducer = (state = wsInitialState, action: TwsActions): TwsState => {
   switch (action.type) {
     case WS_CONNECTION_SUCCESS:
       return {

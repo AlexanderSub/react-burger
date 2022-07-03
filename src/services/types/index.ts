@@ -5,6 +5,7 @@ import { store } from "../store";
 import { TIngredientsActions } from "../actions/ingredients";
 import { TOrderActions } from "../actions/order";
 import { TDetailsActions } from "../actions/details";
+import { TwsActions } from "../actions/wsActions";
 
 export type RootState = ReturnType<typeof store.getState>
 
@@ -13,6 +14,7 @@ type TApplicationActions =
   | TIngredientsActions
   | TOrderActions
   | TDetailsActions
+  | TwsActions
 
 // Типизация thunk в нашем приложении
 export type AppThunk<TReturn = void> = ActionCreator<

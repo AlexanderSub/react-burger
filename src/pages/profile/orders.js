@@ -4,7 +4,7 @@ import { Link, NavLink, useLocation } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { logout } from "../../services/actions/auth"
 import { Order } from "../../components/Order/Order"
-import { WS_CONNECTION_START } from "../../services/action-types/wsActionTypes"
+import { WS_CONNECTION_START } from "../../services/constants"
 import { Preloader } from "../../components/Preloader/Preloader"
 
 const Orders = () => {

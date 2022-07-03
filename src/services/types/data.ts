@@ -18,8 +18,14 @@ export type TOrder = {
   name: string,
   number: number,
   status: string,
-  ingredients: Array<string>,
-  // ingredients: string[],
+  ingredients: string[],
   createdAt: string,
   updatedAt: string
+}
+
+export type TOrders = {
+  success: boolean,
+  orders: string[],
+  total: number,
+  totalToday: number
 }

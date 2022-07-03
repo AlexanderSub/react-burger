@@ -2,7 +2,7 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useLocation, useParams } from "react-router-dom"
-import { WS_CONNECTION_CLOSED, WS_CONNECTION_START } from "../../services/action-types/wsActionTypes"
+import { WS_CONNECTION_CLOSED, WS_CONNECTION_START } from "../../services/constants"
 import { wsConnectionStart } from "../../services/actions/wsActions"
 import { formatDate } from "../../utils/utils"
 import { Preloader } from "../Preloader/Preloader"

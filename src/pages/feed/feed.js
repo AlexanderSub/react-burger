@@ -6,7 +6,7 @@ import { wsConnectionStart } from "../../services/actions/wsActions"
 import { Order } from "../../components/Order/Order"
 import { Link, useLocation } from "react-router-dom"
 import { Preloader } from "../../components/Preloader/Preloader"
-import { WS_CONNECTION_CLOSED } from "../../services/action-types/wsActionTypes";
+import { WS_CONNECTION_CLOSED } from "../../services/constants";
 
 export const Feed = () => {
   const dispatch = useDispatch()
