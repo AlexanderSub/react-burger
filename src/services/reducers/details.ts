@@ -1,14 +1,17 @@
-import { 
-  OPEN_INGREDIENT_DETAILS, 
-  CLOSE_INGREDIENT_DETAILS
-} from '../actions/details'
+import { TDetailsActions } from "../actions/details";
+import { OPEN_INGREDIENT_DETAILS, CLOSE_INGREDIENT_DETAILS } from "../constants";
 
-const initialState = {
+type TDetailsState = {
+  isOpen: boolean,
+  ingredient: {}
+}
+
+const detailsInitialState: TDetailsState = {
   isOpen: false,
   ingredient: {}
 }
 
-export const detailsReducer = (state = initialState, action) => {
+export const detailsReducer = (state = detailsInitialState, action: TDetailsActions): TDetailsState => {
   switch (action.type) {
     case OPEN_INGREDIENT_DETAILS: {
       return {
