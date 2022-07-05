@@ -33,7 +33,15 @@ export type TwsActions =
   | IwsConnectionClosedAction
   | IwsGetMessageAction
 
-export const wsConnectionStart = (url: any): IwsConnectionStartAction => {
+export type TwsIActions = {
+  wsInit: typeof WS_CONNECTION_START,
+  onOpen: typeof WS_CONNECTION_SUCCESS,
+  onClose: typeof WS_CONNECTION_CLOSED,
+  onError: typeof WS_CONNECTION_ERROR,
+  onMessage: typeof WS_GET_MESSAGE
+};
+
+export const wsConnectionStart = (url: string): IwsConnectionStartAction => {
   return {
     type: WS_CONNECTION_START,
     payload: url
