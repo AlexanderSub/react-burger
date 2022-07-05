@@ -1,11 +1,11 @@
-import { 
-  ADD_BUN,
-  ADD_FILLING,
-  DELETE_FILLING,
-  MOVE_ITEM,
-  RESET_CONSTRUCTOR,
+import {
+  ADD_BUN, 
+  ADD_FILLING, 
+  DELETE_FILLING, 
+  MOVE_ITEM, 
+  RESET_CONSTRUCTOR, 
   GENERATE_ID
-} from '../actions/constructor'
+} from '../constants'
 
 const initialState = {
   bun: [],
