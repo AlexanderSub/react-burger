@@ -1,3 +1,4 @@
+import { TConstructorActions } from '../actions/constructor'
 import {
   ADD_BUN, 
   ADD_FILLING, 
@@ -6,14 +7,21 @@ import {
   RESET_CONSTRUCTOR, 
   GENERATE_ID
 } from '../constants'
+import { TIngredient } from '../types/data'
 
-const initialState = {
+type TConstructorState = {
+  bun: Array<TIngredient>,
+  fillings: Array<TIngredient>,
+  generateId: Array<string>
+}
+
+const constructorInitialState: TConstructorState = {
   bun: [],
   fillings: [],
   generateId: []
 }
 
-export const constructorReducer = (state = initialState, action) => {
+export const constructorReducer = (state = constructorInitialState, action: TConstructorActions): TConstructorState => {
   switch (action.type) {
     case ADD_BUN: {
       return {
@@ -49,7 +57,7 @@ export const constructorReducer = (state = initialState, action) => {
     }
     case RESET_CONSTRUCTOR: {
       return {
-        ...initialState
+        ...constructorInitialState
       }
     }
     default:

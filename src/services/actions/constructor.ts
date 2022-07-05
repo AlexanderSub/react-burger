@@ -20,10 +20,13 @@ export interface IAddFillingAction {
 
 export interface IDeleteFillingAction {
   readonly type: typeof DELETE_FILLING
+  readonly index: number
 }
 
 export interface IMoveItemAction {
   readonly type: typeof MOVE_ITEM
+  readonly dragIndex: number
+  readonly hoverIndex: number
 }
 
 export interface IResetConstructorAction {
