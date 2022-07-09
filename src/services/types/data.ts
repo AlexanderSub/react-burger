@@ -29,3 +29,8 @@ export type TOrders = {
   total: number,
   totalToday: number
 }
+
+export type TAuth = {
+  name: string,
+  email: string
+}

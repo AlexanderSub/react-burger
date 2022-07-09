@@ -1,31 +1,65 @@
-import {
+import { TAuthActions } from '../actions/auth'
+import { 
   REGISTER_REQUEST, 
-  REGISTER_FAILED, 
   REGISTER_SUCCESS, 
+  REGISTER_FAILED, 
   LOGIN_REQUEST, 
-  LOGIN_FAILED, 
   LOGIN_SUCCESS, 
-  LOGOUT_REQUEST, 
-  LOGOUT_FAILED, 
-  LOGOUT_SUCCESS, 
-  FORGOT_PASSWORD_REQUEST, 
-  FORGOT_PASSWORD_FAILED, 
-  FORGOT_PASSWORD_SUCCESS, 
-  RESET_PASSWORD_REQUEST, 
-  RESET_PASSWORD_FAILED, 
-  RESET_PASSWORD_SUCCESS, 
-  GET_USER_SUCCESS, 
-  GET_USER_FAILED, 
-  GET_USER_REQUEST, 
-  UPDATE_USER_REQUEST, 
-  UPDATE_USER_FAILED, 
-  UPDATE_USER_SUCCESS, 
-  UPDATE_TOKEN_REQUEST, 
-  UPDATE_TOKEN_FAILED, 
-  UPDATE_TOKEN_SUCCESS 
-} from '../actions/auth'
+  LOGIN_FAILED,
+  LOGOUT_REQUEST,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAILED,
+  FORGOT_PASSWORD_REQUEST,
+  FORGOT_PASSWORD_SUCCESS,
+  FORGOT_PASSWORD_FAILED,
+  RESET_PASSWORD_REQUEST,
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_FAILED,
+  GET_USER_REQUEST,
+  GET_USER_SUCCESS,
+  GET_USER_FAILED,
+  UPDATE_USER_REQUEST,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_FAILED,
+  UPDATE_TOKEN_REQUEST,
+  UPDATE_TOKEN_SUCCESS,
+  UPDATE_TOKEN_FAILED
+} from '../constants'
 
-const initialState = {
+type TAuthState = {
+  name: string,
+  email: string,
+  isAuthChecked: boolean,
+  authorized: boolean,
+  
+  registerRequest: boolean,
+  registerFailed: boolean,
+
+  loginRequest: boolean,
+  loginFailed: boolean,
+
+  logoutRequest: boolean,
+  logoutFailed: boolean,
+
+  isPasswordForgotten: boolean,
+  forgotPasswordRequest: boolean,
+  forgotPasswordFailed: boolean,
+
+  isPasswordReset: boolean,
+  resetPasswordRequest: boolean,
+  resetPasswordFailed: boolean,
+
+  getUserRequest: boolean,
+  getUserFailed: boolean,
+
+  updateUserRequest: boolean,
+  updateUserFailed: boolean,
+
+  updateTokenRequest: boolean,
+  updateTokenFailed: boolean,
+}
+
+const authInitialState: TAuthState = {
   name: '',
   email: '',
   isAuthChecked: false,
@@ -58,7 +92,7 @@ const initialState = {
   updateTokenFailed: false,
 }
 
-export const authReducer = (state = initialState, action) => {
+export const authReducer = (state = authInitialState, action: TAuthActions): TAuthState => {
   switch (action.type) {
     case REGISTER_REQUEST: {
       return {
