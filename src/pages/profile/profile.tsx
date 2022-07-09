@@ -3,7 +3,7 @@ import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-component
 import AppStyles from '../../components/App/App.module.css'
 import ProfileStyles from './profile.module.css'
 import { NavLink } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector } from '../../services/hooks'
 import { logout, updateUserData } from "../../services/actions/auth"
 
 const Profile = () => {
@@ -24,7 +24,7 @@ const Profile = () => {
     )
   }
 
-  const update = (name, email, password) => {
+  const update = (name: string, email: string, password: string) => {
     dispatch(
       updateUserData(name, email, password)
     )
@@ -77,7 +77,6 @@ const Profile = () => {
             onIconClick={() => setEditName(!editName)}
             errorText={'Ошибка'}
             size={'default'}
-            className={'mb-6'}
             disabled={editName === false}
           />
         </div>
