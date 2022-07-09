@@ -34,3 +34,13 @@ export type TAuth = {
   name: string,
   email: string
 }
+
+export type TLocationState = {
+  from: string,
+  background: {
+    pathname: string;
+    state: {};
+    search: string;
+    hash: string;
+  }
+}

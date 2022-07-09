@@ -26,7 +26,6 @@ import {
   UPDATE_TOKEN_SUCCESS,
   UPDATE_TOKEN_FAILED
 } from '../constants'
-import { authReducer } from '../reducers/auth'
 import { AppDispatch, AppThunk } from '../types'
 import { TAuth } from '../types/data'
 
@@ -293,11 +292,6 @@ export const getUserData: AppThunk = () => {
             name: res.user.name,
             email: res.user.email
           }
-        })
-      } else {
-        dispatch(updateToken())
-        .then(() => {
-          dispatch(getUserData())
         })
       }
     })

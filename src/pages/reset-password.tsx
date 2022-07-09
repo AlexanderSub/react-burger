@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useState } from "react"
-import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
+import { ChangeEvent, useCallback, useEffect, useState } from "react"
+import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, Redirect, useHistory } from 'react-router-dom'
 import AppStyles from '../components/App/App.module.css'
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector } from '../services/hooks'
 import { resetPasswordUser } from "../services/actions/auth"
 
 const Reset = () => {
@@ -12,7 +12,7 @@ const Reset = () => {
   const isPasswordReset = useSelector(state => state.auth.isPasswordReset)
   const isAuthorized = useSelector(state => state.auth.authorized)
 
-  const onChange = e => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({...form, [e.target.name]: e.target.value})
   }
 
@@ -63,7 +63,7 @@ const Reset = () => {
       <form onSubmit={resetPassword} className={AppStyles.card}>
         <h4 className={`text text_type_main-medium mb-6`}>Восстановление пароля</h4>
         <div className={`${AppStyles.input} mb-6`}>
-          <PasswordInput
+          <Input
             type={'password'}
             placeholder={'Введите новый пароль'}
             onChange={onChange}

@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import ProfileStyles from './profile.module.css'
 import { Link, NavLink, useLocation } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector } from '../../services/hooks'
 import { logout } from "../../services/actions/auth"
 import { Order } from "../../components/Order/Order"
 import { WS_CONNECTION_START } from "../../services/constants"

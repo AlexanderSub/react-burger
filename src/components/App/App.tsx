@@ -20,10 +20,11 @@ import IngredientDetails from '../IngredientDetails/IngredientDetails'
 import { Feed } from '../../pages/feed/feed'
 import OrderPage from '../../pages/order-page/order-page'
 import { OrderInfo } from '../OrderInfo/OrderInfo'
+import { TLocationState } from '../../services/types/data'
 
 const App = () => {
   const dispatch = useDispatch()
-  const location = useLocation()
+  const location = useLocation<TLocationState>()
   const history = useHistory()
 
   const background =  (history.action === 'PUSH' || history.action === 'REPLACE') && location.state && location.state.background

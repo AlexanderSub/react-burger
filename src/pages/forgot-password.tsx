@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useState } from "react"
+import { ChangeEvent, useCallback, useEffect, useState } from "react"
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, Redirect, useHistory } from 'react-router-dom'
 import AppStyles from '../components/App/App.module.css'
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector } from '../services/hooks'
 import { forgotPasswordUser } from "../services/actions/auth"
 
 const Forgot = () => {
@@ -25,7 +25,7 @@ const Forgot = () => {
     }
   })
 
-  const onChange = e => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({...form, [e.target.name]: e.target.value})
   }
 
@@ -33,7 +33,7 @@ const Forgot = () => {
     e => {
       e.preventDefault()
       dispatch(forgotPasswordUser(form))
-    }
+    }, []
   )
 
   if (isAuthorized) {

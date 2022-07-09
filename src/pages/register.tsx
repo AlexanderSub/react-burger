@@ -1,12 +1,13 @@
-import { useCallback, useState } from "react"
-import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
+import { ChangeEvent, useCallback, useState } from "react"
+import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import {Link, Redirect, useHistory, useLocation} from 'react-router-dom'
 import AppStyles from '../components/App/App.module.css'
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector } from '../services/hooks'
 import { register } from "../services/actions/auth"
+import { TLocationState } from "../services/types/data"
 
 const Register = () => {
-  const location = useLocation()
+  const location = useLocation<TLocationState>()
   const dispatch = useDispatch()
   const history = useHistory()
 
@@ -20,7 +21,7 @@ const Register = () => {
     [history]
   )
 
-  const onChange = e => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({...form, [e.target.name]: e.target.value})
   }
 
@@ -34,10 +35,9 @@ const Register = () => {
   )
 
   if (isAuthorized) {
-    const { from } = location.state || { from: { pathname: '/' } }
     return (
       <Redirect 
-        to={ from }
+        to={ location.state?.from || '/' }
       />
     )
   } else {
@@ -70,7 +70,7 @@ const Register = () => {
             />
           </div>
           <div className={`${AppStyles.input} mb-6`}>
-            <PasswordInput
+            <Input
               type={'password'}
               placeholder={'Пароль'}
               onChange={onChange}

@@ -1,7 +1,13 @@
 import OrderDetailsStyles from './OrderDetails.module.css'
-import PropTypes from 'prop-types'
+import { FC } from 'react';
 
-const OrderDetails = ({order}) => {
+type TOrderProps = {
+  order: {
+    number: number
+  };
+};
+
+const OrderDetails: FC<TOrderProps> = ({order}) => {
 
   return (
     <>
@@ -12,10 +18,6 @@ const OrderDetails = ({order}) => {
       <p className="text text_type_main-default text_color_inactive mb-30">Дождитесь готовности на орбитальной станции</p>
     </>
   )
-}
-
-OrderDetails.propTypes = {
-  order: PropTypes.object.isRequired,
 }
 
 export default OrderDetails
