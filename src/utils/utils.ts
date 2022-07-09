@@ -1,13 +1,14 @@
 import { URL, URL_INGREDIENTS, URL_ORDERS } from './constants'
+import { TIngredient } from '../services/types/data'
 
-export function getCookie(name) {
+export function getCookie(name: string) {
   const matches = document.cookie.match(
     new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
   );
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-export function setCookie(name, value, props) {
+export function setCookie(name: string, value: string | number | boolean, props?: any) {
   props = props || {};
   let exp = props.expires;
   if (typeof exp == 'number' && exp) {
@@ -30,18 +31,17 @@ export function setCookie(name, value, props) {
   document.cookie = updatedCookie;
 }
 
-export function deleteCookie(name) {
-  setCookie(name, null, { expires: -1 });
+export function deleteCookie(name: string) {
+  setCookie(name, false, { expires: -1 });
 }
 
 export const getIngredientsRequest = async () => {
   return await fetch(`${URL}${URL_INGREDIENTS}`)
 }
 
-export const getOrderRequest = ingredients => {
+export const getOrderRequest = (ingredients: Array<TIngredient>) => {
   return fetch(`${URL}${URL_ORDERS}`, {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({ingredients}),
     headers: {
       'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ export const getOrderRequest = ingredients => {
   });
 }
 
-export const checkResponse = res => {
+export const checkResponse = (res: Response) => {
   if (res.ok) {
     return res.json()
   }
@@ -58,7 +58,7 @@ export const checkResponse = res => {
 }
 
 //Регистрация в системе
-export const registerUser = async (form) => {
+export const registerUser = async (form: {email: string, password: string, name: string}) => {
   return await fetch(`${URL}/auth/register`, {
     method: 'POST',
     mode: 'cors',
@@ -74,7 +74,7 @@ export const registerUser = async (form) => {
 }
 
 //Вход в систему
-export const loginUser = async (form) => {
+export const loginUser = async (form: {email: string, password: string}) => {
   return await fetch(`${URL}/auth/login`, {
     method: 'POST',
     mode: 'cors',
@@ -108,7 +108,7 @@ export const logoutUser = async () => {
 }
 
 //Запрос сброса пароля
-export const forgotPassword = async (form) => {
+export const forgotPassword = async (form: {email: string}) => {
   return await fetch(`${URL}/password-reset`, {
     method: 'POST',
     mode: 'cors',
@@ -124,7 +124,7 @@ export const forgotPassword = async (form) => {
 }
 
 //Сброс пароля
-export const resetPassword = async (form) => {
+export const resetPassword = async (form: {password: string, token: string}) => {
   return await fetch(`${URL}/password-reset/reset`, {
     method: 'POST',
     mode: 'cors',
@@ -174,7 +174,7 @@ export const refreshToken = async () => {
 }
 
 // Обновление данных о пользователе
-export const updateUser = async (name, email) => {
+export const updateUser = async (name: string, email: string) => {
   return await fetch(`${URL}/auth/user`, {
     method: 'PATCH',
     mode: 'cors',
@@ -191,7 +191,7 @@ export const updateUser = async (name, email) => {
 }
 
 //Приведение даты и времени к формату
-export const formatDate = (createdDate) => {
+export const formatDate = (createdDate: string) => {
   const createdAt = new Date(createdDate)
   const today = new Date()
   const hours = createdAt.getHours()
