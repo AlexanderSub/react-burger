@@ -6,9 +6,10 @@ import {
   OPEN_ORDER_DETAILS, 
   CLOSE_ORDER_DETAILS
 } from '../constants'
+import { TOrder } from '../types/data'
 
 type TOrderState = {
-  order: any,
+  order: TOrder | null,
   orderRequest: boolean,
   orderFailed: boolean,
   isOpen: boolean

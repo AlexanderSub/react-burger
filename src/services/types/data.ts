@@ -25,7 +25,7 @@ export type TOrder = {
 
 export type TOrders = {
   success: boolean,
-  orders: string[],
+  orders: TOrder[],
   total: number,
   totalToday: number
 }

@@ -5,11 +5,12 @@ import {
   WS_CONNECTION_CLOSED,
   WS_GET_MESSAGE
 } from '../constants'
+import { TOrder } from '../types/data';
 
 type TwsState = {
   wsConnected: boolean,
     success: boolean,
-    orders: string[],
+    orders: TOrder[],
     total: number,
     totalToday: number,
     error: string | undefined
