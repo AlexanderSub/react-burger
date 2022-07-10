@@ -1,39 +1,33 @@
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components"
 import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector } from '../../services/hooks'
 import { useLocation, useParams } from "react-router-dom"
 import { WS_CONNECTION_CLOSED, WS_CONNECTION_START } from "../../services/constants"
 import { wsConnectionStart } from "../../services/actions/wsActions"
 import { formatDate } from "../../utils/utils"
 import { Preloader } from "../Preloader/Preloader"
 import OrderInfoStyles from './OrderInfo.module.css'
+import { TIngredient, TOrder } from "../../services/types/data"
 
 export const OrderInfo = () => {
   const location = useLocation()
   const dispatch = useDispatch()
 
-  const { id } = useParams()
+  const { id } = useParams<{id: string}>()
   const ingredients = useSelector(state => state.ingredients.data)
   const orderData = useSelector(state => state.ws.orders)
 
-  let currentOrder
-  let selectedIngredients
-  let uniqueIngredients
-  let burgerPrice
+  const currentOrder: TOrder | undefined = orderData?.find(order => order._id === id)
 
-  if (ingredients.length && orderData.length) {
-    currentOrder = orderData?.find(order => order._id === id)
-
-    selectedIngredients = currentOrder.ingredients.map(
+  const selectedIngredients = currentOrder?.ingredients.map(
       ingredientId => ingredients.find(
         ingredient => ingredient._id === ingredientId
       )
-    );
+    ) as TIngredient[]
   
-    uniqueIngredients = [... new Set(selectedIngredients)]
+  const uniqueIngredients = [... new Set(selectedIngredients)]
   
-    burgerPrice = selectedIngredients.reduce((acc, el) => acc + el.price, 0)
-  }
+  const burgerPrice = selectedIngredients?.reduce((acc, el) => acc + el.price, 0)
 
   useEffect(() => {
     if (location.pathname.includes('feed')) {
@@ -52,18 +46,18 @@ export const OrderInfo = () => {
 
 
   if (!ingredients) {
-    return <Preloader text='' />;
+    return <Preloader text=''/>;
   }
 
   if (!orderData.length) {
-    return <Preloader text='' />;
+    return <Preloader text=''/>;
   }
 
   return (
     <div className={OrderInfoStyles.card}>
-      <h4 className={`${OrderInfoStyles.number} text text_type_digits-default mb-5`}>#{currentOrder.number}</h4>
-      <h3 className={`${OrderInfoStyles.title} text text_type_main-medium mb-2`}>{currentOrder.name}</h3>
-      <p className={`${OrderInfoStyles.status} text text_type_main-small`}>{currentOrder.status === 'done' ? 'Выполнен' : 'Готовится'}</p>
+      <h4 className={`${OrderInfoStyles.number} text text_type_digits-default mb-5`}>#{currentOrder?.number}</h4>
+      <h3 className={`${OrderInfoStyles.title} text text_type_main-medium mb-2`}>{currentOrder?.name}</h3>
+      <p className={`${OrderInfoStyles.status} text text_type_main-small`}>{currentOrder?.status === 'done' ? 'Выполнен' : 'Готовится'}</p>
       <p className={`text text_type_main-medium mb-6 mt-15`}>Состав:</p>
       <ul className={`${OrderInfoStyles.list} custom-scroll mb-15`}>
         {uniqueIngredients.map((ingredient, index) => (
@@ -80,7 +74,7 @@ export const OrderInfo = () => {
         ))}
       </ul>
       <div className={OrderInfoStyles.wrapper}>
-        <span className='text text_type_main-default text_color_inactive'>{formatDate(currentOrder.createdAt)}</span>
+        <span className='text text_type_main-default text_color_inactive'>{currentOrder ? formatDate(currentOrder.createdAt) : ''}</span>
         <div className={`${OrderInfoStyles.price}`}>
           <p className={`text text_type_digits-default mr-2`}>{burgerPrice ? burgerPrice : 0}</p>
           <CurrencyIcon type="primary" />

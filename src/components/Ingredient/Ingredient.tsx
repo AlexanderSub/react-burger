@@ -3,9 +3,14 @@ import { useSelector } from '../../services/hooks'
 import IngredientStyles from './Ingredient.module.css'
 import { useDrag } from 'react-dnd'
 import { Link, useLocation } from 'react-router-dom'
+import { TIngredient } from '../../services/types/data'
+import { FC } from 'react'
 
+type TIngredientProps = {
+  data: TIngredient
+}
 
-const Ingredient = ({data}) => {
+const Ingredient: FC<TIngredientProps> = ({data}) => {
   let location = useLocation()
   const id = data._id
 

@@ -1,23 +1,31 @@
-import {useState} from 'react'
+import { useState, createRef } from 'react'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import BurgerIngredientsStyles from './BurgerIngredients.module.css'
-import { useSelector } from "react-redux"
+import { useSelector } from '../../services/hooks'
 import Ingredient from '../Ingredient/Ingredient'
+import { TIngredient } from '../../services/types/data'
 
 const BurgerIngredients = () => {
   const ingredients = useSelector(store => store.ingredients.data)
 
   const [current, setCurrent] = useState('bun')
 
-  const handleScroll = (e) => {
-    let element = e.target
-    if (element.scrollTop > 0 && element.scrollTop < 290) {
-      setCurrent('bun')
-    } else if (element.scrollTop > 290 && element.scrollTop < 700) {
-      setCurrent('sauce')
-    } else if (element.scrollTop > 700) {
-      setCurrent('main')
+  const ingredientContainer = createRef<HTMLDivElement>();
+  const bun = createRef<HTMLDivElement>();
+  const sauce = createRef<HTMLDivElement>();
+  const main = createRef<HTMLDivElement>();
+
+  const handleScroll = () => {
+    const tab = () => {
+      if (ingredientContainer.current!.scrollTop - bun.current!.clientHeight < 0) {
+        return 'bun';
+      } else if (ingredientContainer.current!.scrollTop - bun.current!.clientHeight - sauce.current!.clientHeight < 0) {
+        return 'sauce';
+      } else {
+        return 'main';
+      }
     }
+    setCurrent(tab);
   }
 
   const buns = ingredients.filter(ingredient => ingredient.type === 'bun')
@@ -39,25 +47,25 @@ const BurgerIngredients = () => {
         </a>
       </nav>
 
-      <div className={`${BurgerIngredientsStyles.window} custom-scroll`} onScroll={handleScroll}>
-        <section className={BurgerIngredientsStyles.menu}>
+      <div ref={ingredientContainer} className={`${BurgerIngredientsStyles.window} custom-scroll`} onScroll={handleScroll}>
+        <section ref={bun} className={BurgerIngredientsStyles.menu}>
           <h2 className='text text_type_main-medium mb-6' id={'bun'}>Булки</h2>
           <ul className={`${BurgerIngredientsStyles.list} pl-4 pr-4 mb-10`}>
-            {buns.map(item => <Ingredient data={item} key={item._id}/>)}
+            {buns.map((item: TIngredient) => <Ingredient data={item} key={item._id}/>)}
           </ul>
         </section>
 
-        <section className={BurgerIngredientsStyles.menu}>
+        <section ref={sauce} className={BurgerIngredientsStyles.menu}>
           <h2 className='text text_type_main-medium mb-6' id={'sauce'}>Соусы</h2>
           <ul className={`${BurgerIngredientsStyles.list} pl-4 pr-4 mb-10`} >
-            {sauces.map(item => <Ingredient data={item} key={item._id}/>)}
+            {sauces.map((item: TIngredient) => <Ingredient data={item} key={item._id}/>)}
           </ul>
         </section>
 
-        <section className={BurgerIngredientsStyles.menu}>
+        <section ref={main} className={BurgerIngredientsStyles.menu}>
           <h2 className='text text_type_main-medium mb-6' id={'main'}>Начинки</h2>
           <ul className={`${BurgerIngredientsStyles.list} pl-4 pr-4 mb-10`}>
-            {mains.map(item => <Ingredient data={item} key={item._id}/>)}
+            {mains.map((item: TIngredient) => <Ingredient data={item} key={item._id}/>)}
           </ul>
         </section>
       </div>
