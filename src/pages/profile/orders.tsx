@@ -12,8 +12,6 @@ const Orders = () => {
   const location = useLocation()
   const orders = useSelector(state => state.ws.orders)
 
-  console.log(orders)
-
   const logoutHandler = () => {
     dispatch(
       logout()

@@ -1,7 +1,7 @@
 import {useEffect} from 'react'
 import AppStyles from './App.module.css'
 import AppHeader from '../AppHeader/AppHeader'
-import { useDispatch } from 'react-redux'
+import { useDispatch } from '../../services/hooks'
 import { getIngredients } from '../../services/actions/ingredients'
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
 import Main from '../../pages/main'
