@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import AppStyles from '../../components/App/App.module.css'
 import FeedStyles from '../feed/feed.module.css'
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector } from '../../services/hooks'
 import { wsConnectionStart } from "../../services/actions/wsActions"
 import { Order } from "../../components/Order/Order"
 import { Link, useLocation } from "react-router-dom"

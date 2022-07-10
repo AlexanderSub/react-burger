@@ -10,7 +10,8 @@ export type TIngredient = {
   image: string,
   image_mobile: string,
   image_large: string,
-  __v: number
+  __v: number,
+  uniqueId?: number
 }
 
 export type TOrder = {

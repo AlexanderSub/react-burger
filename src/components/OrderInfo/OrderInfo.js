@@ -52,11 +52,11 @@ export const OrderInfo = () => {
 
 
   if (!ingredients) {
-    return <Preloader />;
+    return <Preloader text='' />;
   }
 
   if (!orderData.length) {
-    return <Preloader />;
+    return <Preloader text='' />;
   }
 
   return (

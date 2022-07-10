@@ -1,17 +1,25 @@
-import { useRef } from 'react'
+import { FC, useRef } from 'react'
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDrag, useDrop } from 'react-dnd'
-import { useDispatch } from 'react-redux'
+import { useDispatch } from '../../services/hooks'
 import { DELETE_FILLING } from '../../services/constants'
 import BurgerConstructorItemStyles from './BurgerConstructorItem.module.css'
+import { TIngredient } from '../../services/types/data'
 
-export const BurgerConstructorItem = ({data, index, moveItem}) => {
+type TBurgerConstructorItemProps = {
+  data: TIngredient,
+  index: number,
+  moveItem: (dragIndex: number, hoverIndex: number) => void
+}
+
+
+export const BurgerConstructorItem: FC<TBurgerConstructorItemProps> = ({data, index, moveItem}) => {
   const dispatch = useDispatch()
-  const ref = useRef(null)
+  const ref = useRef<HTMLDivElement>(null)
 
   const [{isDrag}, dragRef] = useDrag({
     type: 'item',
-    item: {index},
+    item: {data, index},
     collect: monitor => ({
       isDrag: monitor.isDragging()
     })
@@ -21,7 +29,7 @@ export const BurgerConstructorItem = ({data, index, moveItem}) => {
 
   const [, dropRef] = useDrop({
     accept: 'item',
-    hover(item, monitor) {
+    hover(item: TBurgerConstructorItemProps, monitor) {
       if (!ref.current) {
         return
       }
@@ -32,7 +40,7 @@ export const BurgerConstructorItem = ({data, index, moveItem}) => {
       const hoverBoundingRect = ref.current?.getBoundingClientRect()
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
       const clientOffset = monitor.getClientOffset()
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top
+      const hoverClientY = (clientOffset as any).y - hoverBoundingRect.top
 
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return
@@ -42,7 +50,7 @@ export const BurgerConstructorItem = ({data, index, moveItem}) => {
     }
   })
 
-  const dndRef = dragRef(dropRef(ref))
+  dragRef(dropRef(ref))
 
   const onDelete = () => {
     dispatch({
@@ -52,13 +60,13 @@ export const BurgerConstructorItem = ({data, index, moveItem}) => {
   }
 
   return (
-    <div className={BurgerConstructorItemStyles.ingredient} ref={dndRef} style={{opacity}}>
+    <div className={BurgerConstructorItemStyles.ingredient} ref={ref} style={{opacity}}>
       <DragIcon type="primary" />
       <ConstructorElement 
         text={data.name}
         price={data.price} 
         thumbnail={data.image}
-        handleClose={(e) => onDelete(e.target)}
+        handleClose={() => onDelete()}
       />
     </div>
   )
