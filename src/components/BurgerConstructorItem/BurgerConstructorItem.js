@@ -3,8 +3,6 @@ import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burg
 import { useDrag, useDrop } from 'react-dnd'
 import { useDispatch } from 'react-redux'
 import { DELETE_FILLING } from '../../services/constants'
-import { ingredientPropType } from '../../utils/types'
-import PropTypes from 'prop-types'
 import BurgerConstructorItemStyles from './BurgerConstructorItem.module.css'
 
 export const BurgerConstructorItem = ({data, index, moveItem}) => {
@@ -64,10 +62,4 @@ export const BurgerConstructorItem = ({data, index, moveItem}) => {
       />
     </div>
   )
-}
-
-BurgerConstructorItem.propTypes = {
-  data: ingredientPropType.isRequired,
-  index: PropTypes.number.isRequired,
-  moveItem: PropTypes.func.isRequired
 }

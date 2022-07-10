@@ -1,19 +1,25 @@
 import OrderStyles from './Order.module.css'
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useSelector } from 'react-redux'
-import { useMemo } from 'react'
+import { useSelector } from '../../services/hooks'
+import { FC, useMemo } from 'react'
 import { formatDate } from '../../utils/utils'
-import PropTypes from 'prop-types'
-import { orderPropType } from '../../utils/types'
+import { TOrder, TIngredient } from '../../services/types/data'
 
-export const Order = ({data, showStatus}) => {
+type TOrderProps = {
+  data: TOrder,
+  showStatus: boolean
+}
+
+export const Order: FC<TOrderProps> = ({data, showStatus}) => {
   const ingredients = useSelector(state => state.ingredients.data)
 
   const selectedIngredients = data.ingredients.map(
     ingredientId => ingredients.find(
       ingredient => ingredient._id === ingredientId
     )
-  ).filter(ingredient => ingredient != undefined)
+  ).filter(ingredient => ingredient != undefined) as TIngredient[]
+
+  
 
   const burgerPrice = useMemo(
     () => {
@@ -37,7 +43,7 @@ export const Order = ({data, showStatus}) => {
       <div className={`${OrderStyles.titleWrapper} mb-6`}>
         <h3 className='text text_type_main-medium'>{data.name}</h3>
         {showStatus && 
-          <span className='text text_type_main-default' style={data.status === 'done' ? {color: '#0CC'} : ''}>
+          <span className='text text_type_main-default' style={{color: data.status === 'done' ? '#0CC' : ''}}>
             {data.status === 'created' ? 'Создан' : data.status === 'pending' ? 'Готовится' : data.status === 'done' ? 'Выполнен' : ''}
           </span>
         }
@@ -64,9 +70,4 @@ export const Order = ({data, showStatus}) => {
       </div>
     </li>
   )
-}
-
-Order.propTypes = {
-  data: orderPropType.isRequired,
-  showStatus: PropTypes.bool.isRequired
 }

@@ -2,11 +2,7 @@ import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-c
 import { useSelector } from '../../services/hooks'
 import IngredientStyles from './Ingredient.module.css'
 import { useDrag } from 'react-dnd'
-import { ingredientPropType } from '../../utils/types'
 import { Link, useLocation } from 'react-router-dom'
-
-
-
 
 
 const Ingredient = ({data}) => {
@@ -41,10 +37,6 @@ const Ingredient = ({data}) => {
       </li>
     )
   )
-}
-
-Ingredient.propTypes = {
-  data: ingredientPropType.isRequired
 }
 
 export default Ingredient

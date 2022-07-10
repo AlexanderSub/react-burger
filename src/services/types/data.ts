@@ -18,7 +18,7 @@ export type TOrder = {
   name: string,
   number: number,
   status: string,
-  ingredients: string[],
+  ingredients: Array<string>,
   createdAt: string,
   updatedAt: string
 }
