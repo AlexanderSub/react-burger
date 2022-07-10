@@ -1,8 +1,8 @@
-import React from "react"
-import { useSelector } from "react-redux"
-import { Route, Redirect } from "react-router-dom"
+import { useSelector } from '../../services/hooks'
+import { Route, Redirect, RouteProps } from "react-router-dom"
+import { FC } from 'react';
 
-const ProtectedRoute = ({children, ...rest}) => {
+const ProtectedRoute: FC<RouteProps> = ({children, ...rest}) => {
   const isAuthorized = useSelector(state => state.auth.authorized)
 
   return (
