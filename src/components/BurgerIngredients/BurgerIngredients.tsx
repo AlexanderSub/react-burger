@@ -2,8 +2,7 @@ import { useState, createRef } from 'react'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import BurgerIngredientsStyles from './BurgerIngredients.module.css'
 import { useSelector } from '../../services/hooks'
-import Ingredient from '../Ingredient/Ingredient'
-import { TIngredient } from '../../services/types/data'
+import { Ingredient } from '../Ingredient/Ingredient'
 
 const BurgerIngredients = () => {
   const ingredients = useSelector(store => store.ingredients.data)
@@ -51,21 +50,21 @@ const BurgerIngredients = () => {
         <section ref={bun} className={BurgerIngredientsStyles.menu}>
           <h2 className='text text_type_main-medium mb-6' id={'bun'}>Булки</h2>
           <ul className={`${BurgerIngredientsStyles.list} pl-4 pr-4 mb-10`}>
-            {buns.map((item: TIngredient) => <Ingredient data={item} key={item._id}/>)}
+            {buns.map(item => <Ingredient {...item} key={item._id}/>)}
           </ul>
         </section>
 
         <section ref={sauce} className={BurgerIngredientsStyles.menu}>
           <h2 className='text text_type_main-medium mb-6' id={'sauce'}>Соусы</h2>
           <ul className={`${BurgerIngredientsStyles.list} pl-4 pr-4 mb-10`} >
-            {sauces.map((item: TIngredient) => <Ingredient data={item} key={item._id}/>)}
+            {sauces.map(item => <Ingredient {...item} key={item._id}/>)}
           </ul>
         </section>
 
         <section ref={main} className={BurgerIngredientsStyles.menu}>
           <h2 className='text text_type_main-medium mb-6' id={'main'}>Начинки</h2>
           <ul className={`${BurgerIngredientsStyles.list} pl-4 pr-4 mb-10`}>
-            {mains.map((item: TIngredient) => <Ingredient data={item} key={item._id}/>)}
+            {mains.map(item => <Ingredient {...item} key={item._id}/>)}
           </ul>
         </section>
       </div>

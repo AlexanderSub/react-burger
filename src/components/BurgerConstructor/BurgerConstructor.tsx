@@ -3,15 +3,18 @@ import BurgerConstructorStyles from './BurgerConstructor.module.css'
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import Modal from '../Modal/Modal'
 import OrderDetails from '../OrderDetails/OrderDetails'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from '../../services/hooks'
 import { OPEN_ORDER_DETAILS, CLOSE_ORDER_DETAILS } from '../../services/constants'
 import { getOrder } from '../../services/actions/order'
 import { useDrop } from 'react-dnd'
 import { ADD_BUN, ADD_FILLING, GENERATE_ID, MOVE_ITEM, RESET_CONSTRUCTOR } from '../../services/constants'
-import { v4 as uuidv4 } from 'uuid'
 import { BurgerConstructorItem } from '../BurgerConstructorItem/BurgerConstructorItem'
 import { useHistory } from 'react-router-dom'
 import { Preloader } from '../Preloader/Preloader'
+
+type TDropItem = {
+  id: string
+}
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch()
@@ -33,11 +36,10 @@ const BurgerConstructor = () => {
 
   const [{ bunHover }, drop] = useDrop({
     accept: 'bun',
-    drop(item) {
+    drop(item: TDropItem) {
       dispatch({
         type: ADD_BUN,
-        ...item,
-        payload: data.find((el) => el._id === item.id),
+        payload: data.find(el => el._id === item.id),
       })
     },
     collect: (monitor) => ({
@@ -47,10 +49,10 @@ const BurgerConstructor = () => {
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: ingredients,
-    drop(item) {
+    drop(item: TDropItem) {
       dispatch({
         type: GENERATE_ID,
-        payload: uuidv4()
+        payload: Math.random() * 1000
       })
       dispatch({
         type: ADD_FILLING,
@@ -63,7 +65,7 @@ const BurgerConstructor = () => {
     })
   })
 
-  const moveItem = (dragIndex, hoverIndex) => {
+  const moveItem = (dragIndex: number, hoverIndex: number) => {
     dispatch({
       type: MOVE_ITEM,
       dragIndex,
